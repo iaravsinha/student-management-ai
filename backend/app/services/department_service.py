@@ -83,6 +83,11 @@ def ensure_department_catalog_entry(db: Session, name: str) -> Department:
 def create_department(db: Session, payload: DepartmentCreate) -> Department:
   if get_department_by_name(db, payload.name):
     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Department name already exists")
+  if payload.batch_end_year < payload.batch_start_year:
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Batch end year must be greater than or equal to batch start year",
+    )
   code = _unique_code(db, payload.code.strip().upper())
   if payload.head_user_id is not None:
     head_user = db.query(User).filter(User.id == payload.head_user_id).first()
@@ -92,6 +97,9 @@ def create_department(db: Session, payload: DepartmentCreate) -> Department:
   department = Department(
       name=payload.name.strip(),
       code=code,
+      batch_start_year=payload.batch_start_year,
+      batch_end_year=payload.batch_end_year,
+      semester_count=payload.semester_count,
       head_user_id=payload.head_user_id,
       is_active=payload.is_active,
   )
@@ -106,6 +114,14 @@ def update_department(db: Session, department_id: int, payload: DepartmentUpdate
   updates = payload.model_dump(exclude_unset=True)
   if not updates:
     return department
+
+  next_batch_start = updates.get("batch_start_year", department.batch_start_year)
+  next_batch_end = updates.get("batch_end_year", department.batch_end_year)
+  if next_batch_end < next_batch_start:
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Batch end year must be greater than or equal to batch start year",
+    )
 
   if "name" in updates and updates["name"] is not None:
     existing = get_department_by_name(db, updates["name"])
@@ -133,6 +149,15 @@ def update_department(db: Session, department_id: int, payload: DepartmentUpdate
 
   if "is_active" in updates and updates["is_active"] is not None:
     department.is_active = updates["is_active"]
+
+  if "batch_start_year" in updates and updates["batch_start_year"] is not None:
+    department.batch_start_year = updates["batch_start_year"]
+
+  if "batch_end_year" in updates and updates["batch_end_year"] is not None:
+    department.batch_end_year = updates["batch_end_year"]
+
+  if "semester_count" in updates and updates["semester_count"] is not None:
+    department.semester_count = updates["semester_count"]
 
   db.add(department)
   db.commit()
@@ -179,7 +204,7 @@ def list_departments_with_summary(db: Session) -> list[DepartmentSummary]:
         .scalar()
         or 0
     )
-    batches = [
+    student_batches = [
         value
         for (value,) in (
             db.query(Student.batch_year)
@@ -189,7 +214,7 @@ def list_departments_with_summary(db: Session) -> list[DepartmentSummary]:
             .all()
         )
     ]
-    semesters = [
+    student_semesters = [
         value
         for (value,) in (
             db.query(Student.semester)
@@ -199,11 +224,18 @@ def list_departments_with_summary(db: Session) -> list[DepartmentSummary]:
             .all()
         )
     ]
+    configured_batches = list(range(department.batch_start_year, department.batch_end_year + 1))
+    configured_semesters = list(range(1, department.semester_count + 1))
+    batches = sorted(set(configured_batches + student_batches))
+    semesters = sorted(set(configured_semesters + student_semesters))
     summaries.append(
         DepartmentSummary(
             id=department.id,
             name=department.name,
             code=department.code,
+            batch_start_year=department.batch_start_year,
+            batch_end_year=department.batch_end_year,
+            semester_count=department.semester_count,
             head_user_id=department.head_user_id,
             is_active=department.is_active,
             created_at=department.created_at,

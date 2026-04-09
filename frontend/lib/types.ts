@@ -22,6 +22,9 @@ export type DepartmentSummary = {
   id: number;
   name: string;
   code: string;
+  batch_start_year: number;
+  batch_end_year: number;
+  semester_count: number;
   head_user_id?: number | null;
   is_active: boolean;
   created_at: string;

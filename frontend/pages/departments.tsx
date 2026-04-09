@@ -12,6 +12,9 @@ import { formatLabel, getErrorMessage } from "../lib/utils";
 type DepartmentFormState = {
   name: string;
   code: string;
+  batch_start_year: string;
+  batch_end_year: string;
+  semester_count: string;
   head_user_id: string;
   is_active: boolean;
 };
@@ -19,6 +22,9 @@ type DepartmentFormState = {
 const emptyForm: DepartmentFormState = {
   name: "",
   code: "",
+  batch_start_year: String(new Date().getFullYear() - 1),
+  batch_end_year: String(new Date().getFullYear() + 3),
+  semester_count: "8",
   head_user_id: "",
   is_active: true,
 };
@@ -73,6 +79,9 @@ const DepartmentsPage = () => {
     setFormState({
       name: selectedDepartment.name,
       code: selectedDepartment.code,
+      batch_start_year: String(selectedDepartment.batch_start_year),
+      batch_end_year: String(selectedDepartment.batch_end_year),
+      semester_count: String(selectedDepartment.semester_count),
       head_user_id: selectedDepartment.head_user_id ? String(selectedDepartment.head_user_id) : "",
       is_active: selectedDepartment.is_active,
     });
@@ -94,6 +103,9 @@ const DepartmentsPage = () => {
       const payload = {
         name: formState.name,
         code: formState.code,
+        batch_start_year: Number(formState.batch_start_year),
+        batch_end_year: Number(formState.batch_end_year),
+        semester_count: Number(formState.semester_count),
         head_user_id: formState.head_user_id ? Number(formState.head_user_id) : null,
         is_active: formState.is_active,
       };
@@ -198,6 +210,12 @@ const DepartmentsPage = () => {
                     <span className="rounded-full bg-white px-3 py-1">
                       Semesters {department.active_semesters.join(", ") || "-"}
                     </span>
+                    <span className="rounded-full bg-white px-3 py-1">
+                      Program {department.batch_start_year} to {department.batch_end_year}
+                    </span>
+                    <span className="rounded-full bg-white px-3 py-1">
+                      {department.semester_count} semesters
+                    </span>
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -245,6 +263,44 @@ const DepartmentsPage = () => {
                       setFormState((current) => ({ ...current, code: event.target.value.toUpperCase() }))
                     }
                     placeholder="CS"
+                  />
+                </Field>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Field label="Batch start year" hint="First intake year available for this department.">
+                    <input
+                      type="number"
+                      min={2000}
+                      max={2100}
+                      value={formState.batch_start_year}
+                      onChange={(event) =>
+                        setFormState((current) => ({ ...current, batch_start_year: event.target.value }))
+                      }
+                    />
+                  </Field>
+
+                  <Field label="Batch end year" hint="Last intake year currently open for admissions.">
+                    <input
+                      type="number"
+                      min={2000}
+                      max={2100}
+                      value={formState.batch_end_year}
+                      onChange={(event) =>
+                        setFormState((current) => ({ ...current, batch_end_year: event.target.value }))
+                      }
+                    />
+                  </Field>
+                </div>
+
+                <Field label="Semester count" hint="Total number of semesters for this program.">
+                  <input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={formState.semester_count}
+                    onChange={(event) =>
+                      setFormState((current) => ({ ...current, semester_count: event.target.value }))
+                    }
                   />
                 </Field>
 

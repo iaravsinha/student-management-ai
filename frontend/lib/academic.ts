@@ -6,6 +6,9 @@ export type DepartmentCatalog = {
   code: string;
   batches: number[];
   semesters: number[];
+  batchStartYear: number;
+  batchEndYear: number;
+  semesterCount: number;
 };
 
 const sortNumbers = (values: number[]) => [...values].sort((left, right) => left - right);
@@ -16,6 +19,9 @@ export const buildDepartmentCatalog = (departments: DepartmentSummary[]): Depart
       id: department.id,
       name: department.name,
       code: department.code,
+      batchStartYear: department.batch_start_year,
+      batchEndYear: department.batch_end_year,
+      semesterCount: department.semester_count,
       batches: sortNumbers(department.active_batches),
       semesters: sortNumbers(department.active_semesters),
     }))
