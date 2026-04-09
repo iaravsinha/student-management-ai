@@ -7,7 +7,7 @@ services:
       - .env
     environment:
       - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
-      - NEXT_PUBLIC_AI_SERVICE_URL=${NEXT_PUBLIC_AI_SERVICE_URL:-http://localhost:8001}
+      - NEXT_PUBLIC_AI_SERVICE_URL=${NEXT_PUBLIC_AI_SERVICE_URL:-http://localhost:8001/ai}
     ports:
       - "3000:3000"
     depends_on:
@@ -44,6 +44,8 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - SECRET_KEY=${JWT_SECRET}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost:3000","http://localhost"]}
+    command: ["sh", "-c", "PYTHONPATH=/app alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
     ports:
       - "8000:8000"
     depends_on:
@@ -68,6 +70,8 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=${REDIS_URL}
+      - BACKEND_URL=${BACKEND_URL:-http://backend:8000}
+      - BACKEND_API_TOKEN=${BACKEND_API_TOKEN}
     ports:
       - "8001:8001"
     depends_on:
@@ -85,9 +89,9 @@ services:
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB:-student_management}
+      - POSTGRES_USER=${POSTGRES_USER:-student_admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-student_password}
     ports:
       - "5432:5432"
     volumes:

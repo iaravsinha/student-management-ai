@@ -1,0 +1,152 @@
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: student-management-nginx
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      # - "443:443" # Enable when TLS certs are mounted and SSL block is enabled
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # - ./docker/certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-/api}
+      - NEXT_PUBLIC_AI_SERVICE_URL=${NEXT_PUBLIC_AI_SERVICE_URL:-/ai}
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-student_management}
+      - POSTGRES_USER=${POSTGRES_USER:-student_admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-student_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - SECRET_KEY=${JWT_SECRET}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost"]}
+    expose:
+      - "8000"
+    command:
+      [
+        "sh",
+        "-c",
+        "PYTHONPATH=/app alembic upgrade head && gunicorn -k uvicorn.workers.UvicornWorker -w 3 -b 0.0.0.0:8000 app.main:app"
+      ]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/health/live >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: ../docker/ai-service.Dockerfile
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - BACKEND_URL=${BACKEND_URL:-http://backend:8000}
+      - BACKEND_API_TOKEN=${BACKEND_API_TOKEN}
+    expose:
+      - "8001"
+    command:
+      [
+        "gunicorn",
+        "-k",
+        "uvicorn.workers.UvicornWorker",
+        "-w",
+        "2",
+        "-b",
+        "0.0.0.0:8001",
+        "app.main:app"
+      ]
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8001/health/live >/dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-student_management}
+      - POSTGRES_USER=${POSTGRES_USER:-student_admin}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-student_password}
+    expose:
+      - "5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-student_admin} -d ${POSTGRES_DB:-student_management} -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    expose:
+      - "6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:
+

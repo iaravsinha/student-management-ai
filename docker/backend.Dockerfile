@@ -21,6 +21,7 @@ COPY --from=builder /wheels /wheels
 RUN pip install --no-cache-dir /wheels/* && rm -rf /wheels
 
 COPY . /app
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000

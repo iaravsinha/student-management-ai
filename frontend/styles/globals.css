@@ -1,8 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 244 247 251;
+    --foreground: 11 23 42;
+    --card: 255 255 255;
+    --card-muted: 248 250 252;
+    --border: 226 232 240;
+    --brand: 9 99 125;
+    --brand-strong: 17 94 89;
+    --accent: 240 180 41;
+    --success: 5 150 105;
+    --warning: 217 119 6;
+    --danger: 190 24 93;
+  }
+
+  * {
+    @apply border-slate-200;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-slate-100 text-slate-900 antialiased;
+    font-family: Aptos, "Segoe UI", sans-serif;
+    background-image:
+      radial-gradient(circle at top left, rgba(9, 99, 125, 0.12), transparent 28%),
+      radial-gradient(circle at top right, rgba(240, 180, 41, 0.08), transparent 24%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(241, 245, 249, 0.98));
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  input,
+  select,
+  textarea {
+    @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-cyan-600 focus:ring-4 focus:ring-cyan-100;
+  }
+
+  button {
+    @apply outline-none focus-visible:ring-4 focus-visible:ring-cyan-100;
+  }
+
+  ::selection {
+    @apply bg-cyan-100 text-slate-900;
+  }
+}
+
+@layer components {
+  .app-surface {
+    @apply rounded-[30px] border border-white/70 bg-white/90 shadow-[0_20px_70px_-32px_rgba(15,23,42,0.28)] backdrop-blur;
+  }
+
+  .soft-panel {
+    @apply rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.96))];
+  }
+
+  .metric-card {
+    @apply rounded-[28px] border border-slate-200 p-5 shadow-sm shadow-slate-200/60;
+  }
+
+  .hero-panel {
+    @apply overflow-hidden rounded-[34px] border border-slate-200 bg-[linear-gradient(135deg,#0f172a,#123c4b_55%,#1d6a73)] text-white shadow-[0_24px_80px_-36px_rgba(15,23,42,0.8)];
+  }
+}
 
 body {
-  @apply bg-slate-950 text-slate-50;
+  margin: 0;
 }
 

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
@@ -16,6 +17,7 @@
   "devDependencies": {
     "autoprefixer": "latest",
     "postcss": "latest",
+    "@tailwindcss/postcss": "latest",
     "tailwindcss": "latest",
     "typescript": "latest",
     "@types/react": "latest",

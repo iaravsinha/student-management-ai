@@ -1,14 +1,23 @@
-from fastapi import FastAPI
+from time import perf_counter
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.auth_middleware import TokenValidationMiddleware
 from app.core.config import settings
-from app.routes import health, students
+from app.core.database import Base, engine
+from app.core.logging import configure_logging
+import app.models  # noqa: F401
+from app.routes import attendance, auth, departments, faculty, health, overview, results, students, subjects, timetable
+
+
+logger = configure_logging("backend")
 
 
 def create_app() -> FastAPI:
   app = FastAPI(
-      title="Student Management API",
-      version="0.1.0",
+      title=settings.APP_NAME,
+      version=settings.APP_VERSION,
       docs_url="/docs",
       redoc_url="/redoc",
   )
@@ -20,12 +29,49 @@ def create_app() -> FastAPI:
       allow_methods=["*"],
       allow_headers=["*"],
   )
+  app.add_middleware(TokenValidationMiddleware)
+
+  @app.on_event("startup")
+  def ensure_tables_exist() -> None:
+    Base.metadata.create_all(bind=engine)
+
+  @app.middleware("http")
+  async def log_requests(request: Request, call_next):
+    start = perf_counter()
+    logger.info(f"request {request.method} {request.url.path}")
+    try:
+      response = await call_next(request)
+      elapsed_ms = (perf_counter() - start) * 1000
+      level_log = logger.warning if response.status_code >= 400 else logger.info
+      level_log(
+          f"response {request.method} {request.url.path} "
+          f"status={response.status_code} duration_ms={elapsed_ms:.2f}",
+      )
+      return response
+    except Exception as exc:
+      elapsed_ms = (perf_counter() - start) * 1000
+      logger.error(
+          f"error {request.method} {request.url.path} "
+          f"duration_ms={elapsed_ms:.2f} detail={exc}",
+      )
+      raise
+
+  @app.get("/health", tags=["health"])
+  def health_check() -> dict[str, str]:
+    return {"status": "ok"}
 
   app.include_router(health.router, prefix="/health", tags=["health"])
+  app.include_router(auth.router, prefix="/auth", tags=["auth"])
+  app.include_router(departments.router, prefix="/departments", tags=["departments"])
+  app.include_router(faculty.router, prefix="/faculty", tags=["faculty"])
+  app.include_router(overview.router, prefix="/overview", tags=["overview"])
   app.include_router(students.router, prefix="/students", tags=["students"])
+  app.include_router(subjects.router, prefix="/subjects", tags=["subjects"])
+  app.include_router(results.router, prefix="/results", tags=["results"])
+  app.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
+  app.include_router(timetable.router, prefix="/timetable", tags=["timetable"])
 
   return app
 
 
 app = create_app()
-
