@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends
 from datetime import date
 from sqlalchemy.orm import Session
 
-from app.core.auth import require_roles
 from app.core.db import get_db
+from app.core.permissions import Operation, require_permission
 from app.models.user import User
-from app.models.user import UserRole
 from app.schemas.attendance import (
     AttendanceBulkMarkRequest,
     AttendanceMarkRequest,
@@ -21,7 +20,7 @@ router = APIRouter()
 def mark_attendance(
     payload: AttendanceMarkRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.teacher)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_MARK)),
 ):
   return attendance_service.mark_attendance(db, payload, current_user=current_user)
 
@@ -30,7 +29,7 @@ def mark_attendance(
 def mark_bulk_attendance(
     payload: AttendanceBulkMarkRequest,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.teacher)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_MARK)),
 ):
   return attendance_service.mark_bulk_attendance_for_class(db, payload, current_user=current_user)
 
@@ -40,7 +39,7 @@ def class_attendance_for_date(
     timetable_id: int,
     attendance_date: date,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.teacher)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_MARK)),
 ):
   return attendance_service.get_class_attendance_for_date(
       db,
@@ -54,7 +53,7 @@ def class_attendance_for_date(
 def student_attendance_history(
     student_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_READ)),
 ):
   attendance_service.ensure_attendance_access(db, current_user, student_id)
   return attendance_service.get_attendance_history(db, student_id)
@@ -68,7 +67,7 @@ def attendance_percentage(
     student_id: int,
     subject_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_READ)),
 ):
   attendance_service.ensure_attendance_access(db, current_user, student_id)
   total_classes, attended_classes, percentage = (

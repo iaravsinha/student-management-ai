@@ -205,6 +205,15 @@ export type AdminCreateUserPayload = {
 
 export type AIResponse = {
   answer: string;
+  command?: {
+    action: "attendance_summary" | "list_absent" | "mark_attendance" | "unsupported";
+    student_id?: number | null;
+    timetable_id?: number | null;
+    date?: string | null;
+    present_roll_numbers?: string[];
+    absent_roll_numbers?: string[];
+    message?: string | null;
+  } | null;
   metadata?: Record<string, unknown>;
 };
 

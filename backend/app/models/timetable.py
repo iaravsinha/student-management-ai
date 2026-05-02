@@ -32,7 +32,11 @@ class Timetable(Base):
 
   id: Mapped[int] = mapped_column(primary_key=True, index=True)
   day: Mapped[WeekDay] = mapped_column(SqlEnum(WeekDay, name="weekday_enum"), index=True)
-  subject_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+  subject_id: Mapped[int] = mapped_column(
+      ForeignKey("subjects.id", ondelete="CASCADE"),
+      index=True,
+      nullable=False,
+  )
   subject_name: Mapped[str] = mapped_column(String(120), nullable=False)
   department: Mapped[str] = mapped_column(String(100), index=True, nullable=False)
   batch_year: Mapped[int] = mapped_column(Integer, index=True, nullable=False)

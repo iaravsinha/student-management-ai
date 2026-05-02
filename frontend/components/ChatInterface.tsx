@@ -3,8 +3,8 @@
 import { useAuth } from "../context/AuthContext";
 import { aiApi } from "../lib/ai-api";
 import { api } from "../lib/api";
-import { AIResponse, Student } from "../lib/types";
-import { getErrorMessage } from "../lib/utils";
+import { AIResponse, Student, StudentListResponse, TimetableEntry } from "../lib/types";
+import { formatLabel, formatTime, getErrorMessage, getLocalDateInputValue } from "../lib/utils";
 import { ActionButton, Badge, EmptyState, SectionCard } from "./ui";
 
 type ChatMessage = {
@@ -13,16 +13,28 @@ type ChatMessage = {
   content: string;
 };
 
+type AssistantHistoryMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 const suggestionPrompts = [
   "Show weak subjects for this student.",
   "Summarize attendance risk for the current student.",
+  "Show students absent today.",
+  "Mark all present except roll 4 5 6.",
   "What should I focus on next based on recent performance?",
 ];
 
 export const ChatInterface = () => {
   const { user } = useAuth();
   const isStudentUser = user?.role === "student";
-  const [studentId, setStudentId] = useState("1");
+  const [studentId, setStudentId] = useState("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [classes, setClasses] = useState<TimetableEntry[]>([]);
+  const [timetableId, setTimetableId] = useState("");
+  const [selectedDate, setSelectedDate] = useState(getLocalDateInputValue());
+  const [executeCommand, setExecuteCommand] = useState(false);
   const [myProfile, setMyProfile] = useState<Student | null>(null);
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -31,8 +43,8 @@ export const ChatInterface = () => {
   const historyRef = useRef<HTMLDivElement | null>(null);
 
   const canSend = useMemo(
-    () => query.trim().length > 0 && Number(studentId) > 0 && !loading,
-    [query, studentId, loading],
+    () => query.trim().length > 0 && !loading && (Number(studentId) > 0 || Number(timetableId) > 0),
+    [query, studentId, timetableId, loading],
   );
 
   useEffect(() => {
@@ -59,6 +71,29 @@ export const ChatInterface = () => {
     void loadMyProfile();
   }, [isStudentUser]);
 
+  useEffect(() => {
+    if (isStudentUser) {
+      return;
+    }
+
+    const loadContextOptions = async () => {
+      try {
+        const [studentsResponse, timetableResponse] = await Promise.all([
+          api.get<StudentListResponse>("/students", { params: { page: 1, page_size: 100 } }),
+          api.get<TimetableEntry[]>("/timetable"),
+        ]);
+        setStudents(studentsResponse.data.items);
+        setClasses(timetableResponse.data);
+        setStudentId((current) => current || String(studentsResponse.data.items[0]?.id || ""));
+        setTimetableId((current) => current || String(timetableResponse.data[0]?.id || ""));
+      } catch (loadError) {
+        setError(getErrorMessage(loadError, "Unable to load assistant context"));
+      }
+    };
+
+    void loadContextOptions();
+  }, [isStudentUser]);
+
   const sendMessage = async (prompt: string) => {
     const cleanQuery = prompt.trim();
     if (!cleanQuery || Number(studentId) <= 0) {
@@ -77,9 +112,20 @@ export const ChatInterface = () => {
     setLoading(true);
 
     try {
+      const conversationHistory: AssistantHistoryMessage[] = [...messages, userMessage]
+        .slice(-12)
+        .map((message) => ({
+          role: message.role === "ai" ? "assistant" : "user",
+          content: message.content,
+        }));
+
       const response = await aiApi.post<AIResponse>("/query", {
-        student_id: Number(studentId),
+        student_id: Number(studentId) > 0 ? Number(studentId) : undefined,
+        timetable_id: Number(timetableId) > 0 ? Number(timetableId) : undefined,
+        date: selectedDate,
+        execute: executeCommand,
         query: cleanQuery,
+        conversation_history: conversationHistory,
       });
       const aiMessage: ChatMessage = {
         id: `${Date.now()}-a`,
@@ -109,10 +155,52 @@ export const ChatInterface = () => {
           <div className="rounded-2xl bg-slate-50 p-4">
             <label className="block space-y-2">
               <span className="text-sm font-medium text-slate-700">Student ID</span>
-              <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Student ID" disabled={isStudentUser} />
+              {isStudentUser ? (
+                <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Student ID" disabled />
+              ) : (
+                <select value={studentId} onChange={(event) => setStudentId(event.target.value)}>
+                  <option value="">No student selected</option>
+                  {students.map((student) => (
+                    <option key={student.id} value={student.id}>
+                      {student.enrollment_number} - {student.name}
+                    </option>
+                  ))}
+                </select>
+              )}
             </label>
             {isStudentUser && myProfile ? <p className="mt-3 text-sm text-slate-500">Locked to your profile: {myProfile.name} ({myProfile.enrollment_number})</p> : null}
           </div>
+
+          {!isStudentUser ? (
+            <div className="rounded-2xl bg-slate-50 p-4">
+              <label className="block space-y-2">
+                <span className="text-sm font-medium text-slate-700">Class context</span>
+                <select value={timetableId} onChange={(event) => setTimetableId(event.target.value)}>
+                  <option value="">No class selected</option>
+                  {classes.map((entry) => (
+                    <option key={entry.id} value={entry.id}>
+                      {formatLabel(entry.day)} {formatTime(entry.start_time)} - {entry.subject_name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <label className="block space-y-2">
+                  <span className="text-sm font-medium text-slate-700">Command date</span>
+                  <input type="date" value={selectedDate} onChange={(event) => setSelectedDate(event.target.value)} />
+                </label>
+                <label className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={executeCommand}
+                    onChange={(event) => setExecuteCommand(event.target.checked)}
+                    className="h-4 w-4 rounded border-slate-300 p-0"
+                  />
+                  Execute allowed commands
+                </label>
+              </div>
+            </div>
+          ) : null}
 
           <div>
             <p className="text-sm font-medium text-slate-700">Suggested prompts</p>
@@ -134,7 +222,7 @@ export const ChatInterface = () => {
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-sm text-slate-500">How this helps</p>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              The assistant can help interpret student-specific questions, attendance signals, and learning priorities using the configured AI service.
+              The assistant injects your role, allowed operations, selected records, and class context before producing a structured command.
             </p>
           </div>
         </div>

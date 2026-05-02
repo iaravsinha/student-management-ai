@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, Response, UploadFile, status
 from sqlalchemy.orm import Session
 
-from app.core.auth import get_current_active_user, require_roles
+from app.core.auth import get_current_active_user
 from app.core.db import get_db
+from app.core.permissions import Operation, require_permission
 from app.models.user import User
 from app.models.user import UserRole
 from app.schemas.student import (
+    StudentImportSummary,
     StudentCreate,
     StudentListResponse,
     StudentRead,
@@ -20,9 +22,18 @@ router = APIRouter()
 def create_student(
     payload: StudentCreate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin, UserRole.teacher)),
+    _=Depends(require_permission(Operation.STUDENT_CREATE)),
 ):
   return student_service.create_student(db, payload)
+
+
+@router.post("/import", response_model=StudentImportSummary)
+async def import_students(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_permission(Operation.STUDENT_IMPORT)),
+):
+  return await student_service.import_students_from_excel(db, file, current_user=current_user)
 
 
 @router.get("/", response_model=StudentListResponse)
@@ -34,7 +45,7 @@ def list_students(
     batch_year: int | None = Query(default=None, ge=2000, le=2100),
     roll_number: str | None = Query(default=None),
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.STUDENT_READ)),
 ):
   items, total = student_service.list_students(
       db,
@@ -63,7 +74,7 @@ def get_my_student_profile(
 def list_students_for_class(
     timetable_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher)),
+    current_user: User = Depends(require_permission(Operation.ATTENDANCE_MARK)),
 ):
   return student_service.list_students_for_timetable(db, current_user=current_user, timetable_id=timetable_id)
 
@@ -72,7 +83,7 @@ def list_students_for_class(
 def get_student(
     student_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.STUDENT_READ)),
 ):
   return student_service.ensure_student_access(db, current_user, student_id)
 
@@ -82,7 +93,7 @@ def update_student(
     student_id: int,
     payload: StudentUpdate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin, UserRole.teacher)),
+    _=Depends(require_permission(Operation.STUDENT_UPDATE)),
 ):
   return student_service.update_student(db, student_id, payload)
 
@@ -91,7 +102,7 @@ def update_student(
 def delete_student(
     student_id: int,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.STUDENT_DELETE)),
 ) -> Response:
   student_service.delete_student(db, student_id)
   return Response(status_code=status.HTTP_204_NO_CONTENT)

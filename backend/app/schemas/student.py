@@ -42,3 +42,16 @@ class StudentListResponse(BaseModel):
   page: int
   page_size: int
 
+
+class StudentImportRowError(BaseModel):
+  row: int
+  email: str | None = None
+  reason: str
+
+
+class StudentImportSummary(BaseModel):
+  inserted: int
+  skipped: int
+  total_rows: int
+  errors: list[StudentImportRowError] = Field(default_factory=list)
+

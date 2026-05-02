@@ -9,6 +9,10 @@ This repository is now wired for secure auth defaults:
 - public self-signup is disabled
 - first admin is created once via bootstrap endpoint
 - after bootstrap, only admins can create new users
+- role permissions are centralized and exposed through `/auth/permissions`
+- user/data changes and AI actions are stored in database audit logs
+- admins can bulk-import students from `.xlsx` files
+- the AI assistant returns structured commands before executing allowed operations
 
 ## Prerequisites
 
@@ -18,19 +22,32 @@ This repository is now wired for secure auth defaults:
 
 ## 1) Initialize From Scratch (Docker Local)
 
+Windows (PowerShell) commands are shown first, with Unix alternatives where needed.
+
 1. Copy env file:
 
 ```bash
+# PowerShell (Windows)
+Copy-Item .env.example .env
+
+# Bash/macOS/Linux
 cp .env.example .env
 ```
 
-2. Set required values in `.env`:
+2. Open `.env` in your editor and set these values (this is where you enter keys/secrets):
 - `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
 - `DATABASE_URL` (compose-local example: `postgresql+psycopg2://<user>:<pass>@db:5432/<db>`)
 - `REDIS_URL` (compose-local example: `redis://redis:6379/0`)
-- `JWT_SECRET`
-- `BACKEND_CORS_ORIGINS` (comma-separated)
-- `OPENAI_API_KEY` (optional unless you require external LLM access)
+- `JWT_SECRET` (use a long random value, 32+ chars)
+- `BACKEND_CORS_ORIGINS` (comma-separated, include `http://localhost:3000`)
+- `LLM_PROVIDER` (`openrouter`, `groq`, or `gemini`)
+- `LLM_MODEL` (model name for your provider)
+- one provider key matching `LLM_PROVIDER`:
+  - `OPENROUTER_API_KEY` for OpenRouter
+  - `GROQ_API_KEY` for Groq
+  - `GEMINI_API_KEY` for Gemini
+
+`OPENAI_API_KEY` is optional/legacy and is not required for the current command flow.
 
 3. Start stack:
 
@@ -43,6 +60,12 @@ The backend now runs `alembic upgrade head` automatically on startup.
 4. Bootstrap first admin (only works if no admin exists yet):
 
 ```bash
+# PowerShell (Windows)
+Invoke-RestMethod -Method Post http://localhost:8000/auth/bootstrap-admin `
+  -ContentType "application/json" `
+  -Body '{"email":"admin@example.com","password":"ChangeMe123!"}'
+
+# curl alternative
 curl -X POST http://localhost:8000/auth/bootstrap-admin \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"ChangeMe123!"}'
@@ -81,6 +104,12 @@ Services:
 - ai-service: `8001`
 - postgres: `5432`
 - redis: `6379`
+
+If `make` is unavailable on Windows, use direct Docker commands:
+- Start: `docker compose up -d --build`
+- Stop: `docker compose down`
+- Logs: `docker compose logs -f --tail=150`
+- Status: `docker compose ps`
 
 ## 4) Production Deployment (Nginx Reverse Proxy)
 
@@ -138,6 +167,33 @@ curl -X POST http://localhost:8001/ai/query \
   -H "Content-Type: application/json" \
   -d '{"student_id":1,"query":"Show weak subjects"}'
 ```
+
+Attendance command preparation:
+
+```bash
+curl -X POST http://localhost:8001/ai/query \
+  -H "Authorization: Bearer <TEACHER_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"timetable_id":1,"date":"2026-05-02","query":"Mark all present except roll 4 5 6","execute":false}'
+```
+
+Set `execute` to `true` only when the selected teacher is allowed to mark that class. The AI service sends structured commands through the backend, where RBAC and class ownership checks are enforced.
+
+Key placement reminder:
+- frontend/backend/ai-service all read from root `.env` when running through Docker Compose.
+- do not place API keys inside `frontend/.env`; keep provider keys only in root `.env`.
+
+### Bulk Student Import
+
+Admins can upload `students.xlsx` to:
+
+```bash
+curl -X POST http://localhost:8000/students/import \
+  -H "Authorization: Bearer <ADMIN_TOKEN>" \
+  -F "file=@students.xlsx"
+```
+
+Required columns: `name`, `email`, `department`, `batch_year`, `semester`.
 
 ## 6) Useful Commands
 

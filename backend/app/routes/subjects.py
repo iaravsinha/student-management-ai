@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.orm import Session
 
-from app.core.auth import require_roles
 from app.core.db import get_db
-from app.models.user import UserRole
+from app.core.permissions import Operation, require_permission
 from app.schemas.subject import SubjectCreate, SubjectRead, SubjectUpdate
 from app.services import subject_service
 
@@ -16,7 +15,7 @@ def list_subjects(
     batch_year: int | None = Query(default=None, ge=2000, le=2100),
     semester: int | None = Query(default=None, ge=1, le=12),
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    _=Depends(require_permission(Operation.SUBJECT_READ)),
 ):
   return subject_service.list_subjects(
       db,
@@ -30,7 +29,7 @@ def list_subjects(
 def create_subject(
     payload: SubjectCreate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.SUBJECT_MANAGE)),
 ):
   return subject_service.create_subject(db, payload)
 
@@ -40,7 +39,7 @@ def update_subject(
     subject_id: int,
     payload: SubjectUpdate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.SUBJECT_MANAGE)),
 ):
   return subject_service.update_subject(db, subject_id, payload)
 
@@ -49,7 +48,7 @@ def update_subject(
 def delete_subject(
     subject_id: int,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.SUBJECT_MANAGE)),
 ) -> Response:
   subject_service.delete_subject(db, subject_id)
   return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -4,7 +4,9 @@ import argparse
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
+import os
 import random
+import secrets
 
 from sqlalchemy import or_
 
@@ -28,8 +30,8 @@ from app.schemas.timetable import WeeklyTimetableUpsertRequest, WeeklyTimetableS
 
 DEMO_DOMAIN = "studentmsdemo.edu"
 LEGACY_DEMO_DOMAINS = ["demo.studentms.local", DEMO_DOMAIN]
-DEMO_PASSWORD = "Demo@123"
-CURRENT_YEAR = 2026
+DEMO_PASSWORD = os.getenv("DEMO_PASSWORD") or secrets.token_urlsafe(12)
+CURRENT_YEAR = datetime.now(UTC).year
 DEPARTMENT_OPTIONS = [
     {
         "label": "BTECH CSE",
@@ -103,10 +105,10 @@ STUDENT_LAST_NAMES = [
     "Mishra", "Kulkarni", "Bansal", "Jain", "Thakur", "Saxena", "Pandey", "Yadav", "Pillai", "Ghosh",
 ]
 HOLIDAY_DESCRIPTIONS = [
-    ("2026-08-15", "[Demo] Independence Day"),
-    ("2026-10-02", "[Demo] Gandhi Jayanti"),
-    ("2026-11-12", "[Demo] Diwali Break"),
-    ("2026-12-25", "[Demo] Winter Recess"),
+    (f"{CURRENT_YEAR}-08-15", "[Demo] Independence Day"),
+    (f"{CURRENT_YEAR}-10-02", "[Demo] Gandhi Jayanti"),
+    (f"{CURRENT_YEAR}-11-12", "[Demo] Diwali Break"),
+    (f"{CURRENT_YEAR}-12-25", "[Demo] Winter Recess"),
 ]
 TIME_ROWS = ["09:00", "09:45", "10:30", "11:15", "13:00", "13:45"]
 WEEKDAY_SEQUENCE = [WeekDay.monday, WeekDay.tuesday, WeekDay.wednesday, WeekDay.thursday, WeekDay.friday]

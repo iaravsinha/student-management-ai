@@ -66,7 +66,9 @@ def create_subject(db: Session, payload: SubjectCreate) -> Subject:
       batch_year=payload.batch_year,
       semester=payload.semester,
   )
-  subject = Subject(**payload.model_dump(), department=department.name)
+  subject_data = payload.model_dump()
+  subject_data["department"] = department.name
+  subject = Subject(**subject_data)
   db.add(subject)
   db.commit()
   db.refresh(subject)

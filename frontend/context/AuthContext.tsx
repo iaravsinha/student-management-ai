@@ -5,6 +5,7 @@ import { User } from "../lib/types";
 
 type AuthContextValue = {
   user: User | null;
+  permissions: string[];
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
@@ -15,14 +16,20 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [permissions, setPermissions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refreshMe = async () => {
     try {
-      const response = await api.get<User>("/auth/me");
-      setUser(response.data);
+      const [userResponse, permissionsResponse] = await Promise.all([
+        api.get<User>("/auth/me"),
+        api.get<string[]>("/auth/permissions"),
+      ]);
+      setUser(userResponse.data);
+      setPermissions(permissionsResponse.data);
     } catch {
       setUser(null);
+      setPermissions([]);
     }
   };
 
@@ -38,6 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     window.localStorage.removeItem("auth_token");
     setUser(null);
+    setPermissions([]);
   };
 
   useEffect(() => {
@@ -60,12 +68,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
+      permissions,
       loading,
       login,
       logout,
       refreshMe,
     }),
-    [user, loading],
+    [user, permissions, loading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

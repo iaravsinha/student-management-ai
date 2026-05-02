@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 
 from fastapi import HTTPException, status
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.models.faculty import FacultyProfile
 from app.models.student import Student
 from app.models.subject import Subject
@@ -12,7 +14,7 @@ from app.schemas.timetable import HolidayCreate, TimetableCreate, WeeklyTimetabl
 from app.services import department_service
 
 
-CLASS_DURATION = timedelta(minutes=45)
+CLASS_DURATION = timedelta(minutes=settings.CLASS_DURATION_MINUTES)
 
 
 def create_timetable_entry(db: Session, payload: TimetableCreate) -> Timetable:
@@ -67,6 +69,21 @@ def create_timetable_entry(db: Session, payload: TimetableCreate) -> Timetable:
     raise HTTPException(
         status_code=status.HTTP_409_CONFLICT,
         detail="Timetable slot already exists",
+    )
+  faculty_conflict = (
+      db.query(Timetable.id)
+      .filter(
+          Timetable.day == payload.day,
+          Timetable.faculty_user_id == payload.faculty_user_id,
+          Timetable.start_time == payload.start_time,
+          Timetable.end_time == payload.end_time,
+      )
+      .first()
+  )
+  if faculty_conflict:
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Selected faculty already has a class in this time slot",
     )
 
   entry = Timetable(**payload.model_dump(), department=department.name, subject_name=subject.name)
@@ -175,6 +192,7 @@ def replace_weekly_timetable(
 ) -> list[Timetable]:
   department = department_service.require_department(db, payload.department)
   seen_slots: set[tuple[WeekDay, str]] = set()
+  seen_faculty_slots: set[tuple[int, WeekDay, str]] = set()
   normalized_entries: list[Timetable] = []
 
   for slot in payload.slots:
@@ -224,6 +242,32 @@ def replace_weekly_timetable(
 
     start_dt = datetime.combine(datetime.today().date(), slot.start_time)
     end_time = (start_dt + CLASS_DURATION).time()
+    faculty_slot_key = (slot.faculty_user_id, slot.day, slot.start_time.isoformat())
+    if faculty_slot_key in seen_faculty_slots:
+      raise HTTPException(
+          status_code=status.HTTP_400_BAD_REQUEST,
+          detail="A faculty member cannot be assigned twice in the same weekly time slot",
+      )
+    seen_faculty_slots.add(faculty_slot_key)
+    faculty_conflict = (
+        db.query(Timetable.id)
+        .filter(
+            Timetable.faculty_user_id == slot.faculty_user_id,
+            Timetable.day == slot.day,
+            Timetable.start_time == slot.start_time,
+            or_(
+                Timetable.department != department.name,
+                Timetable.batch_year != payload.batch_year,
+                Timetable.semester != payload.semester,
+            ),
+        )
+        .first()
+    )
+    if faculty_conflict:
+      raise HTTPException(
+          status_code=status.HTTP_409_CONFLICT,
+          detail="A faculty member already has a class in another department at this time",
+      )
     normalized_entries.append(
         Timetable(
             day=slot.day,

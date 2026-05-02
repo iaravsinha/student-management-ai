@@ -1,13 +1,19 @@
+from io import BytesIO
+
+from fastapi import UploadFile
 from fastapi import HTTPException, status
+from openpyxl import load_workbook
+from pydantic import ValidationError
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.models.faculty import FacultyProfile
 from app.models.student import Student
 from app.models.timetable import Timetable
 from app.models.user import User, UserRole
-from app.schemas.student import StudentCreate, StudentUpdate
-from app.services import department_service
+from app.schemas.student import StudentCreate, StudentImportRowError, StudentImportSummary, StudentUpdate
+from app.services import audit_service, department_service
 
 
 def _ensure_unique_constraints(
@@ -250,4 +256,102 @@ def list_students_for_timetable(db: Session, *, current_user: User, timetable_id
       .order_by(Student.name.asc(), Student.id.asc())
       .all()
   )
+
+
+def _normalize_header(value) -> str:
+  return str(value or "").strip().lower().replace(" ", "_").replace("-", "_")
+
+
+async def import_students_from_excel(
+    db: Session,
+    file: UploadFile,
+    *,
+    current_user: User,
+) -> StudentImportSummary:
+  filename = file.filename or ""
+  if not filename.lower().endswith(".xlsx"):
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Upload must be an .xlsx file",
+    )
+
+  contents = await file.read()
+  if len(contents) > settings.UPLOAD_MAX_BYTES:
+    raise HTTPException(
+        status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+        detail="Uploaded file is too large",
+    )
+
+  try:
+    workbook = load_workbook(BytesIO(contents), read_only=True, data_only=True)
+  except Exception as exc:  # noqa: BLE001
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Unable to parse Excel file",
+    ) from exc
+
+  sheet = workbook.active
+  rows = sheet.iter_rows(values_only=True)
+  try:
+    headers = [_normalize_header(value) for value in next(rows)]
+  except StopIteration as exc:
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail="Excel file is empty",
+    ) from exc
+
+  required_columns = {"name", "email", "department", "batch_year", "semester"}
+  missing_columns = sorted(required_columns - set(headers))
+  if missing_columns:
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        detail=f"Missing required columns: {', '.join(missing_columns)}",
+    )
+
+  inserted = 0
+  total_rows = 0
+  seen_emails: set[str] = set()
+  errors: list[StudentImportRowError] = []
+
+  for row_number, values in enumerate(rows, start=2):
+    if not values or all(value in (None, "") for value in values):
+      continue
+    total_rows += 1
+    raw = dict(zip(headers, values, strict=False))
+    email = str(raw.get("email") or "").strip().lower()
+    if email in seen_emails:
+      errors.append(StudentImportRowError(row=row_number, email=email, reason="Duplicate email in uploaded file"))
+      continue
+    seen_emails.add(email)
+
+    try:
+      payload = StudentCreate(
+          name=str(raw.get("name") or "").strip(),
+          department=str(raw.get("department") or "").strip(),
+          batch_year=int(raw.get("batch_year")),
+          semester=int(raw.get("semester")),
+          email=email,
+      )
+      create_student(db, payload)
+      inserted += 1
+    except (TypeError, ValueError, ValidationError) as exc:
+      errors.append(StudentImportRowError(row=row_number, email=email or None, reason=str(exc)))
+    except HTTPException as exc:
+      errors.append(StudentImportRowError(row=row_number, email=email or None, reason=str(exc.detail)))
+
+  summary = StudentImportSummary(
+      inserted=inserted,
+      skipped=len(errors),
+      total_rows=total_rows,
+      errors=errors,
+  )
+  audit_service.log_action(
+      db,
+      actor=current_user,
+      action="student:import",
+      entity_type="student",
+      status="success" if not errors else "partial_success",
+      meta=summary.model_dump(),
+  )
+  return summary
 

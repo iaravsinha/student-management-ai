@@ -12,22 +12,24 @@ type NavItem = {
   label: string;
   studentLabel?: string;
   roles: UserRole[];
+  permission?: string;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", roles: ["admin", "teacher", "student"] },
-  { href: "/departments", label: "Departments", roles: ["admin", "teacher"] },
-  { href: "/students", label: "Students", studentLabel: "My Profile", roles: ["admin", "teacher", "student"] },
-  { href: "/faculty", label: "Faculty", roles: ["admin"] },
-  { href: "/attendance", label: "Attendance", roles: ["admin", "teacher", "student"] },
-  { href: "/timetable", label: "Timetable", roles: ["admin", "teacher", "student"] },
+  { href: "/dashboard", label: "Dashboard", roles: ["admin", "teacher", "student"], permission: "overview:read" },
+  { href: "/departments", label: "Departments", roles: ["admin", "teacher"], permission: "department:read" },
+  { href: "/students", label: "Students", studentLabel: "My Profile", roles: ["admin", "teacher", "student"], permission: "student:read" },
+  { href: "/faculty", label: "Faculty", roles: ["admin"], permission: "faculty:read" },
+  { href: "/attendance", label: "Attendance", roles: ["admin", "teacher", "student"], permission: "attendance:read" },
+  { href: "/timetable", label: "Timetable", roles: ["admin", "teacher", "student"], permission: "timetable:read" },
   { href: "/chat", label: "AI Assistant", roles: ["admin", "teacher", "student"] },
-  { href: "/admin/users", label: "Admin Users", roles: ["admin"] },
+  { href: "/admin/users", label: "Admin Users", roles: ["admin"], permission: "auth:user:create" },
 ];
 
 const NavIcon = ({ href }: { href: string }) => {
   const icons: Record<string, ReactNode> = {
     "/dashboard": <path d="M4 12h6V4H4v8Zm0 8h6v-6H4v6Zm10 0h6V12h-6v8Zm0-16v6h6V4h-6Z" />,
+    "/departments": <path d="M3 21h18v-2H3v2Zm2-4h3V7H5v10Zm5 0h4V3h-4v14Zm6 0h3v-8h-3v8Z" />,
     "/students": <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3ZM8 11c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.98 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z" />,
     "/faculty": <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5Zm-7 8v-1c0-2.67 5.33-4 8-4s8 1.33 8 4v1H5Zm13-8.75V8h-2V6h-2v2h-2v2h2v2h2v-2h2Z" />,
     "/attendance": <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5c0-1.11-.89-2-2-2Zm0 16H5V8h14v11Zm-7-8h5v5h-5z" />,
@@ -53,7 +55,7 @@ export const AppLayout = ({
   actions?: ReactNode;
 }) => {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, permissions } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const roleHeadline = {
     admin: "Institution control center",
@@ -62,8 +64,13 @@ export const AppLayout = ({
   }[(user?.role || "student") as UserRole];
 
   const navItems = useMemo(
-    () => NAV_ITEMS.filter((item) => item.roles.includes((user?.role || "student") as UserRole)),
-    [user?.role],
+    () =>
+      NAV_ITEMS.filter((item) => {
+        const roleAllowed = item.roles.includes((user?.role || "student") as UserRole);
+        const permissionAllowed = !item.permission || permissions.includes(item.permission);
+        return roleAllowed && permissionAllowed;
+      }),
+    [permissions, user?.role],
   );
 
   const handleLogout = () => {

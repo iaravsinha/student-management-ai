@@ -1,6 +1,7 @@
 from functools import lru_cache
+import json
 
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -16,9 +17,11 @@ class Settings(BaseSettings):
   APP_VERSION: str = "1.0.0"
   ENVIRONMENT: str = "development"
   DEBUG: bool = False
+  AUTO_CREATE_TABLES: bool = False
 
   BACKEND_HOST: str = "0.0.0.0"
   BACKEND_PORT: int = 8000
+  BACKEND_ROOT_PATH: str = ""
 
   POSTGRES_HOST: str = "db"
   POSTGRES_PORT: int = 5432
@@ -35,6 +38,16 @@ class Settings(BaseSettings):
   JWT_SECRET: str = "change_me_in_production"
   JWT_ALGORITHM: str = "HS256"
   ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+  MIN_PASSWORD_LENGTH: int = 8
+
+  LOGIN_RATE_LIMIT_COUNT: int = 10
+  LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = 60
+  REQUEST_RATE_LIMIT_COUNT: int = 240
+  REQUEST_RATE_LIMIT_WINDOW_SECONDS: int = 60
+
+  CLASS_DURATION_MINUTES: int = 45
+  ATTENDANCE_TARGET_PERCENT: float = 75.0
+  UPLOAD_MAX_BYTES: int = 5_000_000
 
   BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:3000"]
 
@@ -57,8 +70,31 @@ class Settings(BaseSettings):
   @classmethod
   def parse_cors_origins(cls, value: str | list[str]) -> list[str]:
     if isinstance(value, str):
-      return [origin.strip() for origin in value.split(",") if origin.strip()]
+      raw = value.strip()
+      if not raw:
+        return []
+      # Accept JSON-style lists in env vars, e.g. ["https://a.com","http://localhost:3000"]
+      if raw.startswith("[") and raw.endswith("]"):
+        try:
+          parsed = json.loads(raw)
+          if isinstance(parsed, list):
+            return [str(origin).strip() for origin in parsed if str(origin).strip()]
+        except json.JSONDecodeError:
+          # Fall back to comma-separated parsing
+          pass
+      return [origin.strip().strip('"').strip("'") for origin in raw.split(",") if origin.strip()]
     return value
+
+  @model_validator(mode="after")
+  def validate_production_secrets(self) -> "Settings":
+    if self.ENVIRONMENT.lower() == "production":
+      if self.JWT_SECRET in {"change_me_in_production", "some_long_random_secret"}:
+        raise ValueError("JWT_SECRET must be set to a strong production value")
+      if len(self.JWT_SECRET) < 32:
+        raise ValueError("JWT_SECRET must be at least 32 characters in production")
+      if not self.DATABASE_URL:
+        raise ValueError("DATABASE_URL is required in production")
+    return self
 
 
 @lru_cache

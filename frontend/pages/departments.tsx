@@ -184,7 +184,12 @@ const DepartmentsPage = () => {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-lg font-semibold text-slate-950">{department.name}</p>
+                      <Link
+                        href={`/departments/${encodeURIComponent(department.name)}`}
+                        className="text-lg font-semibold text-slate-950 hover:text-brand-700"
+                      >
+                        {department.name}
+                      </Link>
                       <p className="mt-1 text-sm text-slate-500">Code {department.code}</p>
                     </div>
                     <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600">
@@ -219,6 +224,22 @@ const DepartmentsPage = () => {
                   </div>
 
                   <div className="mt-4 flex flex-wrap gap-2">
+                    {department.active_semesters.slice(0, 6).map((semester) => (
+                      <Link
+                        key={`${department.id}-semester-${semester}`}
+                        href={{
+                          pathname: "/timetable",
+                          query: {
+                            department: department.name,
+                            batch_year: department.active_batches[0] || department.batch_start_year,
+                            semester,
+                          },
+                        }}
+                        className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      >
+                        Semester {semester}
+                      </Link>
+                    ))}
                     <Link
                       href={{ pathname: "/students", query: { department: department.name } }}
                       className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"

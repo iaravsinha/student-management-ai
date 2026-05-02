@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { GlobalAssistantWidget } from "../components/GlobalAssistantWidget";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 
 import "../styles/globals.css";
@@ -41,7 +42,12 @@ const AuthGate = ({ Component, pageProps }: AppProps) => {
       </main>
     );
   }
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Component {...pageProps} />
+      {!isPublicRoute && user ? <GlobalAssistantWidget /> : null}
+    </>
+  );
 };
 
 export default function App(appProps: AppProps) {

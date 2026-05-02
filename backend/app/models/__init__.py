@@ -1,4 +1,5 @@
 from app.core.db import Base  # noqa: F401
+from app.models.audit import AuditLog  # noqa: F401
 from app.models.attendance import Attendance, AttendanceStatus  # noqa: F401
 from app.models.department import Department  # noqa: F401
 from app.models.faculty import FacultyProfile  # noqa: F401

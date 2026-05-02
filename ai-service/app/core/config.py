@@ -14,6 +14,13 @@ class Settings(BaseSettings):
   BACKEND_API_TOKEN: str | None = None
   REQUEST_TIMEOUT_SECONDS: float = 10.0
   ATTENDANCE_TARGET_PERCENT: float = 75.0
+  LLM_PROVIDER: str = "groq"
+  LLM_MODEL: str = "llama-3.3-70b-versatile"
+  OPENROUTER_API_KEY: str | None = None
+  GROQ_API_KEY: str | None = None
+  GEMINI_API_KEY: str | None = None
+  AI_RATE_LIMIT_COUNT: int = 60
+  AI_RATE_LIMIT_WINDOW_SECONDS: int = 60
 
 
 @lru_cache

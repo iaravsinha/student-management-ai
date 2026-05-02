@@ -3,12 +3,13 @@ from time import perf_counter
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.audit_middleware import AuditLoggingMiddleware
 from app.core.auth_middleware import TokenValidationMiddleware
 from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.logging import configure_logging
 import app.models  # noqa: F401
-from app.routes import attendance, auth, departments, faculty, health, overview, results, students, subjects, timetable
+from app.routes import audit, attendance, auth, departments, faculty, health, overview, results, students, subjects, timetable
 
 
 logger = configure_logging("backend")
@@ -20,6 +21,7 @@ def create_app() -> FastAPI:
       version=settings.APP_VERSION,
       docs_url="/docs",
       redoc_url="/redoc",
+      root_path=settings.BACKEND_ROOT_PATH,
   )
 
   app.add_middleware(
@@ -30,10 +32,12 @@ def create_app() -> FastAPI:
       allow_headers=["*"],
   )
   app.add_middleware(TokenValidationMiddleware)
+  app.add_middleware(AuditLoggingMiddleware)
 
   @app.on_event("startup")
   def ensure_tables_exist() -> None:
-    Base.metadata.create_all(bind=engine)
+    if settings.AUTO_CREATE_TABLES:
+      Base.metadata.create_all(bind=engine)
 
   @app.middleware("http")
   async def log_requests(request: Request, call_next):
@@ -62,6 +66,7 @@ def create_app() -> FastAPI:
 
   app.include_router(health.router, prefix="/health", tags=["health"])
   app.include_router(auth.router, prefix="/auth", tags=["auth"])
+  app.include_router(audit.router, prefix="/audit", tags=["audit"])
   app.include_router(departments.router, prefix="/departments", tags=["departments"])
   app.include_router(faculty.router, prefix="/faculty", tags=["faculty"])
   app.include_router(overview.router, prefix="/overview", tags=["overview"])

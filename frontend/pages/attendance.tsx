@@ -44,8 +44,8 @@ const AttendancePage = () => {
   const today = useMemo(() => getLocalDateInputValue(new Date()), []);
   const [selectedDate, setSelectedDate] = useState(today);
   const [myProfile, setMyProfile] = useState<Student | null>(null);
-  const [lookupStudentId, setLookupStudentId] = useState("1");
-  const [lookupSubjectId, setLookupSubjectId] = useState("1");
+  const [lookupStudentId, setLookupStudentId] = useState("");
+  const [lookupSubjectId, setLookupSubjectId] = useState("");
   const [history, setHistory] = useState<AttendanceRecord[]>([]);
   const [percentage, setPercentage] = useState<AttendancePercentage | null>(null);
   const [weeklyTeacherTimetable, setWeeklyTeacherTimetable] = useState<TimetableEntry[]>([]);
@@ -192,9 +192,15 @@ const AttendancePage = () => {
     try {
       const studentId = Number(lookupStudentId);
       const subjectId = Number(lookupSubjectId);
+      if (!studentId) {
+        setError("Select a student before loading attendance insights.");
+        return;
+      }
       const [historyResponse, percentageResponse] = await Promise.all([
         api.get<AttendanceRecord[]>(`/attendance/student/${studentId}`),
-        api.get<AttendancePercentage>(`/attendance/percentage/${studentId}/${subjectId}`),
+        subjectId
+          ? api.get<AttendancePercentage>(`/attendance/percentage/${studentId}/${subjectId}`)
+          : Promise.resolve({ data: null as AttendancePercentage | null }),
       ]);
       setHistory(historyResponse.data);
       setPercentage(percentageResponse.data);
@@ -234,6 +240,12 @@ const AttendancePage = () => {
     } finally {
       setSavingRoster(false);
     }
+  };
+
+  const setAllRosterStatuses = (status: AttendanceStatus) => {
+    setAttendanceDraft(
+      Object.fromEntries(classStudents.map((student) => [student.id, status])) as Record<number, AttendanceStatus>,
+    );
   };
 
   return (
@@ -318,7 +330,7 @@ const AttendancePage = () => {
               title={selectedClass ? `${selectedClass.subject_name} roster` : "Class roster"}
               description={
                 selectedClass
-                  ? "Review each student and use the dropdown to mark present, absent, or late. Nothing is saved until you press submit."
+                  ? "Review each student with a checkbox roster. Checked students are present, unchecked students are absent, and late can be applied explicitly."
                   : "Select a class from your daily list to load the roster."
               }
             >
@@ -342,6 +354,14 @@ const AttendancePage = () => {
                     <StatCard label="Subject" value={selectedClass.subject_name} />
                   </div>
                   <p className="text-sm text-slate-500">Default status loads from existing attendance for that date when available, otherwise it starts as present for quick review.</p>
+                  <div className="flex flex-wrap gap-3">
+                    <ActionButton type="button" variant="secondary" onClick={() => setAllRosterStatuses("present")}>
+                      Mark all
+                    </ActionButton>
+                    <ActionButton type="button" variant="secondary" onClick={() => setAllRosterStatuses("absent")}>
+                      Unmark all
+                    </ActionButton>
+                  </div>
                   <div className="overflow-hidden rounded-2xl border border-slate-200">
                     <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
                       <thead className="bg-slate-50 text-slate-500">
@@ -366,20 +386,33 @@ const AttendancePage = () => {
                               <td className="px-4 py-4 text-slate-600">{student.enrollment_number}</td>
                               <td className="px-4 py-4 text-slate-600">{student.department}</td>
                               <td className="px-4 py-4">
-                                <div className="flex items-center gap-3">
-                                  <select
-                                    value={currentStatus}
-                                    onChange={(event) =>
+                                <div className="flex flex-wrap items-center gap-3">
+                                  <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-700">
+                                    <input
+                                      type="checkbox"
+                                      checked={currentStatus !== "absent"}
+                                      onChange={(event) =>
+                                        setAttendanceDraft((current) => ({
+                                          ...current,
+                                          [student.id]: event.target.checked ? "present" : "absent",
+                                        }))
+                                      }
+                                      className="h-4 w-4 rounded border-slate-300 p-0"
+                                    />
+                                    Present
+                                  </label>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
                                       setAttendanceDraft((current) => ({
                                         ...current,
-                                        [student.id]: event.target.value as AttendanceStatus,
+                                        [student.id]: currentStatus === "late" ? "present" : "late",
                                       }))
                                     }
+                                    className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-amber-200 hover:bg-amber-50"
                                   >
-                                    <option value="present">Present</option>
-                                    <option value="absent">Absent</option>
-                                    <option value="late">Late</option>
-                                  </select>
+                                    {currentStatus === "late" ? "Clear late" : "Late"}
+                                  </button>
                                   <Badge tone={statusToneMap[currentStatus]}>{currentStatus}</Badge>
                                 </div>
                               </td>
@@ -407,7 +440,7 @@ const AttendancePage = () => {
               <SectionCard title="Attendance insights" description="Enter a student and subject to review attendance percentage and detailed history.">
                 <form className="grid gap-4 md:grid-cols-[1fr_1fr_auto]" onSubmit={(event) => void loadHistory(event)}>
                   <input type="number" min={1} value={lookupStudentId} onChange={(event) => setLookupStudentId(event.target.value)} placeholder="Student ID" disabled={isStudentUser} />
-                  <input type="number" min={1} value={lookupSubjectId} onChange={(event) => setLookupSubjectId(event.target.value)} placeholder="Subject ID" />
+                  <input type="number" min={1} value={lookupSubjectId} onChange={(event) => setLookupSubjectId(event.target.value)} placeholder="Subject ID (optional)" />
                   <ActionButton type="submit" disabled={loadingHistory}>{loadingHistory ? "Loading..." : "View insights"}</ActionButton>
                 </form>
                 {isStudentUser && myProfile ? <p className="mt-3 text-sm text-slate-500">Bound to your profile: {myProfile.name} ({myProfile.enrollment_number})</p> : null}

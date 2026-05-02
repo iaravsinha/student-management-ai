@@ -6,22 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "axios": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "axios": "1.14.0",
+    "axios-fc13683ac9a02a51": "npm:axios@^1.14.0",
+    "next": "^15.5.15",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "autoprefixer": "latest",
-    "postcss": "latest",
-    "@tailwindcss/postcss": "latest",
-    "tailwindcss": "latest",
-    "typescript": "latest",
-    "@types/react": "latest",
-    "@types/node": "latest"
+    "@tailwindcss/postcss": "4.2.2",
+    "@types/node": "25.5.2",
+    "@types/react": "19.2.14",
+    "autoprefixer": "10.4.27",
+    "postcss": "8.5.9",
+    "tailwindcss": "4.2.2",
+    "typescript": "6.0.2"
   }
 }
-

@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.core.auth import require_roles
 from app.core.db import get_db
+from app.core.permissions import Operation, require_permission
 from app.models.timetable import WeekDay
 from app.models.user import User
-from app.models.user import UserRole
 from app.schemas.timetable import (
     HolidayCreate,
     HolidayRead,
@@ -22,7 +21,7 @@ router = APIRouter()
 def create_timetable(
     payload: TimetableCreate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.TIMETABLE_MANAGE)),
 ):
   return timetable_service.create_timetable_entry(db, payload)
 
@@ -33,7 +32,7 @@ def list_timetable(
     batch_year: int | None = None,
     semester: int | None = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.TIMETABLE_READ)),
 ):
   return timetable_service.list_timetable_for_user_with_filters(
       db,
@@ -48,7 +47,7 @@ def list_timetable(
 def replace_weekly_timetable(
     payload: WeeklyTimetableUpsertRequest,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.TIMETABLE_MANAGE)),
 ):
   return timetable_service.replace_weekly_timetable(db, payload)
 
@@ -57,7 +56,7 @@ def replace_weekly_timetable(
 def timetable_by_day(
     day: WeekDay,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    current_user: User = Depends(require_permission(Operation.TIMETABLE_READ)),
 ):
   return timetable_service.list_timetable_for_user_by_day(db, current_user, day)
 
@@ -66,7 +65,7 @@ def timetable_by_day(
 def create_holiday(
     payload: HolidayCreate,
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin)),
+    _=Depends(require_permission(Operation.HOLIDAY_MANAGE)),
 ):
   return timetable_service.create_holiday(db, payload)
 
@@ -74,7 +73,7 @@ def create_holiday(
 @router.get("/holidays", response_model=list[HolidayRead])
 def list_holidays(
     db: Session = Depends(get_db),
-    _=Depends(require_roles(UserRole.admin, UserRole.teacher, UserRole.student)),
+    _=Depends(require_permission(Operation.TIMETABLE_READ)),
 ):
   return timetable_service.list_holidays(db)
 

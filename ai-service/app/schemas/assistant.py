@@ -1,23 +1,55 @@
-from pydantic import BaseModel
+from datetime import date as dt_date
+from typing import Any, Optional
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+
+class AssistantChatTurn(BaseModel):
+  role: Literal["user", "assistant"]
+  content: str = Field(min_length=1, max_length=4000)
 
 
 class AssistantQuery(BaseModel):
-  student_id: int
-  query: str
+  student_id: Optional[int] = Field(default=None, gt=0)
+  timetable_id: Optional[int] = Field(default=None, gt=0)
+  date: Optional[dt_date] = None
+  query: str = Field(min_length=1, max_length=2000)
+  execute: bool = False
+  conversation_history: list[AssistantChatTurn] = Field(default_factory=list, max_length=20)
 
 
-MetadataValue = (
-    float
-    | int
-    | str
-    | bool
-    | list[int]
-    | list[str]
-    | dict[str, float | int | str | bool]
-)
+class StructuredCommand(BaseModel):
+  action: Literal[
+      "attendance_summary",
+      "list_departments",
+      "list_subjects",
+      "list_faculty",
+      "list_timetable",
+      "list_holidays",
+      "get_overview",
+      "list_results",
+      "list_students",
+      "list_absent",
+      "mark_attendance",
+      "create_subject",
+      "unsupported",
+  ]
+  student_id: Optional[int] = None
+  timetable_id: Optional[int] = None
+  date: Optional[dt_date] = None
+  present_roll_numbers: list[str] = Field(default_factory=list)
+  absent_roll_numbers: list[str] = Field(default_factory=list)
+  subject_name: str | None = None
+  subject_code: str | None = None
+  department: str | None = None
+  batch_year: int | None = None
+  semester: int | None = None
+  message: str | None = None
 
 
 class AssistantResponse(BaseModel):
   answer: str
-  metadata: dict[str, MetadataValue] | None = None
+  command: Optional[StructuredCommand] = None
+  metadata: Optional[dict[str, Any]] = None
 

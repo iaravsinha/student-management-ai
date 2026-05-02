@@ -25,7 +25,11 @@ class Attendance(Base):
       index=True,
       nullable=False,
   )
-  subject_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+  subject_id: Mapped[int] = mapped_column(
+      ForeignKey("subjects.id", ondelete="CASCADE"),
+      index=True,
+      nullable=False,
+  )
   date: Mapped[date] = mapped_column(Date, index=True, nullable=False)
   status: Mapped[AttendanceStatus] = mapped_column(
       SqlEnum(AttendanceStatus, name="attendance_status"),
