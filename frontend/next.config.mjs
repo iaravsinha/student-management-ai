@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
+const backendProxyTarget =
+  process.env.BACKEND_PROXY_TARGET?.trim() || "http://127.0.0.1:8000";
+const aiProxyTarget = process.env.AI_PROXY_TARGET?.trim() || "http://127.0.0.1:8001";
+
 const nextConfig = {
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${backendProxyTarget.replace(/\/$/, "")}/:path*`,
+      },
+      {
+        source: "/ai/:path*",
+        destination: `${aiProxyTarget.replace(/\/$/, "")}/ai/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -12,6 +12,8 @@ services:
     environment:
       - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8000}
       - NEXT_PUBLIC_AI_SERVICE_URL=${NEXT_PUBLIC_AI_SERVICE_URL:-http://localhost:8001/ai}
+      - BACKEND_PROXY_TARGET=${BACKEND_PROXY_TARGET:-http://backend:8000}
+      - AI_PROXY_TARGET=${AI_PROXY_TARGET:-http://ai-service:8001}
     ports:
       - "3000:3000"
     depends_on:

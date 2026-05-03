@@ -22,6 +22,7 @@ const emptyHolidayForm: HolidayPayload = {
 const emptySubjectForm = (department = "", batchYear = new Date().getFullYear(), semester = 1): SubjectPayload => ({
   name: "",
   code: "",
+  syllabus: "",
   department,
   batch_year: batchYear,
   semester,
@@ -348,6 +349,7 @@ const TimetablePage = () => {
     setSubjectForm({
       name: subject.name,
       code: subject.code || "",
+      syllabus: subject.syllabus || "",
       department: subject.department,
       batch_year: subject.batch_year,
       semester: subject.semester,
@@ -469,6 +471,7 @@ const TimetablePage = () => {
                         <div>
                           <p className="font-semibold text-slate-900">{subject.name}</p>
                           <p className="mt-1 text-sm text-slate-500">{subject.code || "No code"} - {subject.department} - {subject.batch_year} batch - Semester {subject.semester}</p>
+                          {subject.syllabus ? <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{subject.syllabus}</p> : null}
                         </div>
                         {canManage ? (
                           <div className="flex gap-2">
@@ -490,6 +493,12 @@ const TimetablePage = () => {
                     <input value={subjectForm.name} onChange={(event) => setSubjectForm((current) => ({ ...current, name: event.target.value }))} placeholder="Subject name" />
                     <input value={subjectForm.code || ""} onChange={(event) => setSubjectForm((current) => ({ ...current, code: event.target.value }))} placeholder="Subject code" />
                   </div>
+                  <textarea
+                    value={subjectForm.syllabus || ""}
+                    onChange={(event) => setSubjectForm((current) => ({ ...current, syllabus: event.target.value }))}
+                    placeholder="Syllabus outline, units, or outcomes"
+                    rows={4}
+                  />
                   <div className="flex flex-wrap gap-3">
                     <ActionButton type="submit" disabled={submittingSubject}>{submittingSubject ? "Saving..." : editingSubjectId ? "Update subject" : "Add subject"}</ActionButton>
                     {editingSubjectId ? <ActionButton type="button" variant="secondary" onClick={() => { setEditingSubjectId(null); setSubjectForm(emptySubjectForm(department, batchYear, semester)); }}>Cancel edit</ActionButton> : null}

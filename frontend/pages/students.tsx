@@ -15,6 +15,7 @@ import {
   Student,
   StudentListResponse,
   StudentPayload,
+  Subject,
   TimetableEntry,
 } from "../lib/types";
 import { formatTime, getErrorMessage } from "../lib/utils";
@@ -47,6 +48,7 @@ const StudentsPage = () => {
   const [appliedBatchYear, setAppliedBatchYear] = useState<number | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [detailError, setDetailError] = useState("");
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [panelMode, setPanelMode] = useState<"create" | "edit" | null>(null);
   const [formState, setFormState] = useState<StudentPayload>(createEmptyStudentForm());
@@ -56,7 +58,11 @@ const StudentsPage = () => {
   const [attendanceHistory, setAttendanceHistory] = useState<AttendanceRecord[]>([]);
   const [resultRecords, setResultRecords] = useState<ResultRecord[]>([]);
   const [studentSchedule, setStudentSchedule] = useState<TimetableEntry[]>([]);
+  const [studentSubjects, setStudentSubjects] = useState<Subject[]>([]);
   const [facultyProfiles, setFacultyProfiles] = useState<FacultyProfile[]>([]);
+  const [profileTab, setProfileTab] = useState<"overview" | "subjects" | "results">("overview");
+  const [selectedSubjectId, setSelectedSubjectId] = useState<number | null>(null);
+  const [selectedResultSemester, setSelectedResultSemester] = useState<number | "all">("all");
 
   const totalPages = useMemo(() => Math.max(1, Math.ceil(total / 10)), [total]);
   const selectedDepartmentConfig = useMemo(
@@ -77,25 +83,68 @@ const StudentsPage = () => {
     });
     return summary;
   }, [attendanceHistory]);
-  const latestResults = useMemo(() => resultRecords.slice(0, 12), [resultRecords]);
+  const subjectById = useMemo(() => new Map(studentSubjects.map((subject) => [subject.id, subject])), [studentSubjects]);
+  const resultSemesters = useMemo(() => {
+    const semesters = Array.from(
+      new Set(
+        resultRecords
+          .map((record) => subjectById.get(record.subject_id)?.semester)
+          .filter((semester): semester is number => typeof semester === "number"),
+      ),
+    );
+    return semesters.sort((left, right) => left - right);
+  }, [resultRecords, subjectById]);
+  const filteredResults = useMemo(
+    () =>
+      selectedResultSemester === "all"
+        ? resultRecords
+        : resultRecords.filter((record) => subjectById.get(record.subject_id)?.semester === selectedResultSemester),
+    [resultRecords, selectedResultSemester, subjectById],
+  );
+  const latestResults = useMemo(() => filteredResults.slice(0, 12), [filteredResults]);
   const uniqueSubjects = useMemo(() => {
-    const bySubject = new Map<number, { subjectName: string; facultyName: string; classesPerWeek: number }>();
+    const bySubject = new Map<number, { subjectId: number; subjectName: string; facultyName: string; classesPerWeek: number; subject?: Subject }>();
+    studentSubjects.forEach((subject) => {
+      bySubject.set(subject.id, {
+        subjectId: subject.id,
+        subjectName: subject.name,
+        facultyName: "Faculty pending",
+        classesPerWeek: 0,
+        subject,
+      });
+    });
     studentSchedule.forEach((entry) => {
       const facultyName = facultyProfiles.find((profile) => profile.user_id === entry.faculty_user_id)?.name || "Faculty pending";
-      const current = bySubject.get(entry.subject_id) || { subjectName: entry.subject_name, facultyName, classesPerWeek: 0 };
+      const current = bySubject.get(entry.subject_id) || {
+        subjectId: entry.subject_id,
+        subjectName: entry.subject_name,
+        facultyName,
+        classesPerWeek: 0,
+        subject: subjectById.get(entry.subject_id),
+      };
       current.classesPerWeek += 1;
       current.facultyName = facultyName;
       bySubject.set(entry.subject_id, current);
     });
     return Array.from(bySubject.values());
-  }, [facultyProfiles, studentSchedule]);
+  }, [facultyProfiles, studentSchedule, studentSubjects, subjectById]);
+  const selectedSubjectProfile = useMemo(
+    () => uniqueSubjects.find((subject) => subject.subjectId === selectedSubjectId) || uniqueSubjects[0] || null,
+    [selectedSubjectId, uniqueSubjects],
+  );
+  const selectedSubjectAttendance = useMemo(
+    () =>
+      selectedSubjectProfile
+        ? attendanceHistory
+            .filter((record) => record.subject_id === selectedSubjectProfile.subjectId)
+            .slice()
+            .sort((left, right) => right.date.localeCompare(left.date))
+        : [],
+    [attendanceHistory, selectedSubjectProfile],
+  );
 
   useEffect(() => {
-    if (!fallbackDepartment) {
-      return;
-    }
-    setDepartmentFilter((current) => current || fallbackDepartment.name);
-    setAppliedDepartment((current) => current || fallbackDepartment.name);
+    if (!fallbackDepartment) return;
     setFormState((current) =>
       current.department
         ? current
@@ -105,30 +154,39 @@ const StudentsPage = () => {
             fallbackDepartment.semesters[0],
           ),
     );
-  }, [fallbackDepartment]);
-
-  useEffect(() => {
     if (!router.isReady || isStudentUser) {
+      setDepartmentFilter((current) => current || fallbackDepartment.name);
+      setAppliedDepartment((current) => current || fallbackDepartment.name);
       return;
     }
-    const queryDepartment = typeof router.query.department === "string" ? router.query.department : fallbackDepartment?.name || "";
-    const queryBatch = typeof router.query.batch_year === "string" ? Number(router.query.batch_year) : undefined;
-    setDepartmentFilter(queryDepartment);
-    setAppliedDepartment(queryDepartment);
-    setBatchYearFilter(queryBatch || "");
-    setAppliedBatchYear(queryBatch);
-  }, [fallbackDepartment?.name, router.isReady, router.query.department, router.query.batch_year, isStudentUser]);
+    const qDept = router.query.department;
+    const qBatch = router.query.batch_year;
+    const dept = typeof qDept === "string" && qDept.trim().length > 0 ? qDept : fallbackDepartment.name;
+    setDepartmentFilter(dept);
+    setAppliedDepartment(dept);
+    if (typeof qBatch === "string" && qBatch.trim().length > 0) {
+      const year = Number(qBatch);
+      if (!Number.isNaN(year)) {
+        setBatchYearFilter(year);
+        setAppliedBatchYear(year);
+      }
+    }
+  }, [fallbackDepartment, router.isReady, router.query.department, router.query.batch_year, isStudentUser]);
 
   const loadStudentDetails = async (student: Student | null) => {
     if (!student) {
       setAttendanceHistory([]);
       setResultRecords([]);
       setStudentSchedule([]);
+      setStudentSubjects([]);
+      setFacultyProfiles([]);
+      setDetailError("");
       return;
     }
     setDetailLoading(true);
+    setDetailError("");
     try {
-      const [attendanceResponse, resultsResponse, timetableResponse, facultyResponse] = await Promise.all([
+      const [attendanceResponse, resultsResponse, timetableResponse, subjectsResponse, facultyResponse] = await Promise.all([
         api.get<AttendanceRecord[]>(`/attendance/student/${student.id}`),
         api.get<ResultRecord[]>(`/results/student/${student.id}`),
         api.get<TimetableEntry[]>("/timetable", {
@@ -138,14 +196,25 @@ const StudentsPage = () => {
             semester: student.semester,
           },
         }),
+        api.get<Subject[]>("/subjects", {
+          params: {
+            department: student.department,
+            batch_year: student.batch_year,
+          },
+        }),
         canEdit ? api.get<FacultyProfile[]>("/faculty") : Promise.resolve({ data: [] as FacultyProfile[] }),
       ]);
       setAttendanceHistory(attendanceResponse.data);
       setResultRecords(resultsResponse.data);
       setStudentSchedule(timetableResponse.data);
+      setStudentSubjects(subjectsResponse.data);
       setFacultyProfiles(facultyResponse.data);
+      setSelectedSubjectId((current) => current && subjectsResponse.data.some((subject) => subject.id === current) ? current : subjectsResponse.data[0]?.id ?? timetableResponse.data[0]?.subject_id ?? null);
+      setSelectedResultSemester((current) =>
+        current === "all" || subjectsResponse.data.some((subject) => subject.semester === current) ? current : "all",
+      );
     } catch (loadError) {
-      setError(getErrorMessage(loadError, "Unable to load the student profile details"));
+      setDetailError(getErrorMessage(loadError, "Unable to load the student profile details"));
     } finally {
       setDetailLoading(false);
     }
@@ -159,6 +228,7 @@ const StudentsPage = () => {
   ) => {
     setLoading(true);
     setError("");
+    setDetailError("");
     try {
       const response = isStudentUser
         ? { data: { items: [await api.get<Student>("/students/me").then((result) => result.data)], total: 1, page: 1, page_size: 10 } }
@@ -185,8 +255,16 @@ const StudentsPage = () => {
   };
 
   useEffect(() => {
-    void loadStudents(1, "", appliedDepartment, appliedBatchYear);
-  }, [isStudentUser, appliedDepartment, appliedBatchYear]);
+    if (isStudentUser) {
+      void loadStudents(1, "", "", undefined);
+      return;
+    }
+    if (!fallbackDepartment || !router.isReady) {
+      return;
+    }
+    const dept = appliedDepartment || fallbackDepartment.name;
+    void loadStudents(1, appliedSearch, dept, appliedBatchYear);
+  }, [isStudentUser, fallbackDepartment, router.isReady, appliedDepartment, appliedBatchYear, appliedSearch]);
 
   const openCreatePanel = () => {
     setFormState({
@@ -225,12 +303,11 @@ const StudentsPage = () => {
     );
   };
 
-  const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAppliedSearch(search);
     setAppliedDepartment(departmentFilter);
     setAppliedBatchYear(batchYearFilter || undefined);
-    await loadStudents(1, search, departmentFilter, batchYearFilter || undefined);
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -299,6 +376,7 @@ const StudentsPage = () => {
 
         {departmentsError ? <Notice tone="danger">{departmentsError}</Notice> : null}
         {error ? <Notice tone="danger">{error}</Notice> : null}
+        {detailError ? <Notice tone="danger">{detailError}</Notice> : null}
         {feedback ? <Notice tone="success">{feedback}</Notice> : null}
 
         {departmentsLoading ? (
@@ -409,102 +487,221 @@ const StudentsPage = () => {
                   <div className="rounded-2xl bg-slate-50 p-4"><p className="text-sm text-slate-500">Email</p><p className="mt-2 break-all text-base font-semibold text-slate-900">{selectedStudent.email}</p></div>
                 </div>
 
-                {detailLoading ? <p className="text-sm text-slate-500">Loading academic profile...</p> : null}
+                {detailLoading ? (
+                  <p className="rounded-xl border border-cyan-200/80 bg-cyan-50/90 px-4 py-3 text-sm font-medium text-cyan-900">
+                    Refreshing attendance, results, and timetable…
+                  </p>
+                ) : null}
 
-                {!detailLoading ? (
-                  <>
-                    <div className="grid gap-4 md:grid-cols-3">
-                      <StatCard label="Attendance entries" value={attendanceHistory.length} />
-                      <StatCard label="Result records" value={resultRecords.length} />
-                      <StatCard label="Weekly classes" value={studentSchedule.length} />
+                <div className="flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-2">
+                  {([
+                    ["overview", "Overview"],
+                    ["subjects", "Subjects"],
+                    ["results", "Results"],
+                  ] as const).map(([tab, label]) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setProfileTab(tab)}
+                      className={`rounded-xl px-3 py-2 text-sm font-semibold transition ${
+                        profileTab === tab ? "bg-white text-cyan-800 shadow-sm" : "text-slate-600 hover:bg-white/70"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+
+                <>
+                  <div className={`grid gap-4 md:grid-cols-3 ${profileTab === "overview" ? "" : "hidden"}`}>
+                    <StatCard label="Attendance entries" value={attendanceHistory.length} />
+                    <StatCard label="Result records" value={resultRecords.length} />
+                    <StatCard label="Weekly classes" value={studentSchedule.length} />
+                  </div>
+
+                  <div className={`space-y-3 ${profileTab === "subjects" ? "" : "hidden"}`}>
+                    <h3 className="text-base font-semibold text-slate-950">Subject and faculty map</h3>
+                    {uniqueSubjects.length === 0 ? (
+                      <EmptyState title="No timetable assigned" description="No scheduled class slots were found for this student's batch and semester." />
+                    ) : null}
+                    {uniqueSubjects.map((subject) => (
+                      <button
+                        key={`${subject.subjectId}-${subject.subjectName}`}
+                        type="button"
+                        onClick={() => setSelectedSubjectId(subject.subjectId)}
+                        className={`w-full rounded-2xl border p-4 text-left transition hover:border-cyan-200 hover:bg-cyan-50/40 ${
+                          selectedSubjectProfile?.subjectId === subject.subjectId ? "border-cyan-300 bg-cyan-50/70" : "border-slate-200 bg-slate-50"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="font-semibold text-slate-900">{subject.subjectName}</p>
+                            <p className="mt-1 text-sm text-slate-500">Faculty: {subject.facultyName} | Semester {subject.subject?.semester ?? selectedStudent.semester}</p>
+                          </div>
+                          <Badge tone="brand">{subject.classesPerWeek} classes/week</Badge>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className={`space-y-4 rounded-2xl border border-slate-200 bg-white p-5 ${profileTab === "subjects" && selectedSubjectProfile ? "" : "hidden"}`}>
+                    {selectedSubjectProfile ? (
+                      <>
+                        <div>
+                          <h3 className="text-base font-semibold text-slate-950">{selectedSubjectProfile.subjectName}</h3>
+                          <p className="mt-1 text-sm text-slate-500">Assigned faculty: {selectedSubjectProfile.facultyName}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-slate-700">Syllabus</p>
+                          <p className="mt-2 whitespace-pre-line rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-600">
+                            {selectedSubjectProfile.subject?.syllabus || "No syllabus has been added for this subject yet."}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-slate-700">Date-wise attendance</p>
+                          {selectedSubjectAttendance.length === 0 ? (
+                            <p className="mt-2 text-sm text-slate-500">No attendance has been marked for this subject yet.</p>
+                          ) : (
+                            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                              {selectedSubjectAttendance.map((record) => (
+                                <div key={record.id} className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+                                  <span className="text-sm font-semibold text-slate-800">{formatDate(record.date)}</span>
+                                  <Badge tone={record.status === "present" ? "success" : record.status === "late" ? "warning" : "danger"}>{record.status}</Badge>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    ) : null}
+                  </div>
+
+                  <div className={`space-y-3 ${profileTab === "subjects" ? "" : "hidden"}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="text-base font-semibold text-slate-950">Attendance overview</h3>
+                      {user?.role === "admin" ? (
+                        <button
+                          type="button"
+                          onClick={() => void router.push(`/attendance?student_id=${selectedStudent!.id}`)}
+                          className="text-sm font-semibold text-cyan-700 hover:underline"
+                        >
+                          Full view →
+                        </button>
+                      ) : null}
                     </div>
-
-                    <div className="space-y-3">
-                      <h3 className="text-base font-semibold text-slate-950">Subject and faculty map</h3>
-                      {uniqueSubjects.length === 0 ? <EmptyState title="No timetable assigned" description="No scheduled class slots were found for this student's batch and semester." /> : null}
-                      {uniqueSubjects.map((subject) => (
-                        <div key={`${subject.subjectName}-${subject.facultyName}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    {attendanceHistory.length === 0 ? (
+                      <EmptyState title="No attendance yet" description="Attendance records will appear here once classes start getting marked." />
+                    ) : null}
+                    {Array.from(attendanceSummary.entries()).map(([subjectId, summary]) => {
+                      const subjectName =
+                        studentSchedule.find((entry) => String(entry.subject_id) === subjectId)?.subject_name ||
+                        latestResults.find((item) => String(item.subject_id) === subjectId)?.subject_name ||
+                        `Subject ${subjectId}`;
+                      const percentage = summary.total ? Math.round(((summary.present + summary.late) / summary.total) * 100) : 0;
+                      return (
+                        <div key={subjectId} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                           <div className="flex items-center justify-between gap-3">
                             <div>
-                              <p className="font-semibold text-slate-900">{subject.subjectName}</p>
-                              <p className="mt-1 text-sm text-slate-500">Faculty: {subject.facultyName}</p>
+                              <p className="font-semibold text-slate-900">{subjectName}</p>
+                              <p className="mt-1 text-sm text-slate-500">
+                                Present {summary.present} | Late {summary.late} | Absent {summary.absent}
+                              </p>
                             </div>
-                            <Badge tone="brand">{subject.classesPerWeek} classes/week</Badge>
+                            <Badge tone={percentage >= 75 ? "success" : percentage >= 60 ? "warning" : "danger"}>{percentage}% attendance</Badge>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })}
+                  </div>
 
-                    <div className="space-y-3">
-                      <h3 className="text-base font-semibold text-slate-950">Attendance overview</h3>
-                      {attendanceHistory.length === 0 ? <EmptyState title="No attendance yet" description="Attendance records will appear here once classes start getting marked." /> : null}
-                      {Array.from(attendanceSummary.entries()).map(([subjectId, summary]) => {
-                        const subjectName = studentSchedule.find((entry) => String(entry.subject_id) === subjectId)?.subject_name || latestResults.find((item) => String(item.subject_id) === subjectId)?.subject_name || `Subject ${subjectId}`;
-                        const percentage = summary.total ? Math.round(((summary.present + summary.late) / summary.total) * 100) : 0;
-                        return (
-                          <div key={subjectId} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className={`space-y-3 ${profileTab === "results" ? "" : "hidden"}`}>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h3 className="text-base font-semibold text-slate-950">Historic results</h3>
+                      <select
+                        value={String(selectedResultSemester)}
+                        onChange={(event) => setSelectedResultSemester(event.target.value === "all" ? "all" : Number(event.target.value))}
+                        className="w-auto min-w-[160px]"
+                      >
+                        <option value="all">All semesters</option>
+                        {resultSemesters.map((semester) => (
+                          <option key={semester} value={semester}>Semester {semester}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {latestResults.length === 0 ? (
+                      <EmptyState title="No result records yet" description="Sample or live assessments will appear here once result data is available." />
+                    ) : null}
+                    {latestResults.length > 0 ? (
+                      <div className="overflow-hidden rounded-2xl border border-slate-200">
+                        <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                          <thead className="bg-slate-50 text-slate-500">
+                            <tr>
+                              <th className="px-4 py-3 font-medium">Subject</th>
+                              <th className="px-4 py-3 font-medium">Semester</th>
+                              <th className="px-4 py-3 font-medium">Assessment</th>
+                              <th className="px-4 py-3 font-medium">Marks</th>
+                              <th className="px-4 py-3 font-medium">Grade</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-200 bg-white">
+                            {latestResults.map((record) => (
+                              <tr key={record.id}>
+                                <td className="px-4 py-4 text-slate-700">{record.subject_name}</td>
+                                <td className="px-4 py-4 text-slate-700">Sem {subjectById.get(record.subject_id)?.semester ?? "-"}</td>
+                                <td className="px-4 py-4 text-slate-700">{record.assessment_name}</td>
+                                <td className="px-4 py-4 text-slate-700">
+                                  {record.marks_obtained}/{record.max_marks}
+                                </td>
+                                <td className="px-4 py-4">
+                                  <Badge
+                                    tone={
+                                      record.grade.startsWith("A")
+                                        ? "success"
+                                        : record.grade.startsWith("B")
+                                          ? "brand"
+                                          : record.grade === "C"
+                                            ? "warning"
+                                            : "danger"
+                                    }
+                                  >
+                                    {record.grade}
+                                  </Badge>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className={`space-y-3 ${profileTab === "overview" ? "" : "hidden"}`}>
+                    <h3 className="text-base font-semibold text-slate-950">Weekly schedule</h3>
+                    {studentSchedule.length === 0 ? (
+                      <EmptyState
+                        title="No weekly schedule available"
+                        description="The weekly timetable planner has not assigned class slots for this student's batch yet."
+                      />
+                    ) : null}
+                    {studentSchedule.length > 0 ? (
+                      <div className="space-y-3">
+                        {studentSchedule.slice(0, 10).map((entry) => (
+                          <div key={entry.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                             <div className="flex items-center justify-between gap-3">
                               <div>
-                                <p className="font-semibold text-slate-900">{subjectName}</p>
-                                <p className="mt-1 text-sm text-slate-500">Present {summary.present} | Late {summary.late} | Absent {summary.absent}</p>
+                                <p className="font-semibold text-slate-900">{entry.subject_name}</p>
+                                <p className="mt-1 text-sm text-slate-500">
+                                  {entry.day} | {formatTime(entry.start_time)} to {formatTime(entry.end_time)}
+                                </p>
                               </div>
-                              <Badge tone={percentage >= 75 ? "success" : percentage >= 60 ? "warning" : "danger"}>{percentage}% attendance</Badge>
+                              <Badge>{entry.room ? `Room ${entry.room}` : "Room pending"}</Badge>
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-
-                    <div className="space-y-3">
-                      <h3 className="text-base font-semibold text-slate-950">Latest results</h3>
-                      {latestResults.length === 0 ? <EmptyState title="No result records yet" description="Sample or live assessments will appear here once result data is available." /> : null}
-                      {latestResults.length > 0 ? (
-                        <div className="overflow-hidden rounded-2xl border border-slate-200">
-                          <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
-                            <thead className="bg-slate-50 text-slate-500">
-                              <tr>
-                                <th className="px-4 py-3 font-medium">Subject</th>
-                                <th className="px-4 py-3 font-medium">Assessment</th>
-                                <th className="px-4 py-3 font-medium">Marks</th>
-                                <th className="px-4 py-3 font-medium">Grade</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-200 bg-white">
-                              {latestResults.map((record) => (
-                                <tr key={record.id}>
-                                  <td className="px-4 py-4 text-slate-700">{record.subject_name}</td>
-                                  <td className="px-4 py-4 text-slate-700">{record.assessment_name}</td>
-                                  <td className="px-4 py-4 text-slate-700">{record.marks_obtained}/{record.max_marks}</td>
-                                  <td className="px-4 py-4"><Badge tone={record.grade.startsWith("A") ? "success" : record.grade.startsWith("B") ? "brand" : record.grade === "C" ? "warning" : "danger"}>{record.grade}</Badge></td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : null}
-                    </div>
-
-                    <div className="space-y-3">
-                      <h3 className="text-base font-semibold text-slate-950">Weekly schedule</h3>
-                      {studentSchedule.length === 0 ? <EmptyState title="No weekly schedule available" description="The weekly timetable planner has not assigned class slots for this student's batch yet." /> : null}
-                      {studentSchedule.length > 0 ? (
-                        <div className="space-y-3">
-                          {studentSchedule.slice(0, 10).map((entry) => (
-                            <div key={entry.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                              <div className="flex items-center justify-between gap-3">
-                                <div>
-                                  <p className="font-semibold text-slate-900">{entry.subject_name}</p>
-                                  <p className="mt-1 text-sm text-slate-500">{entry.day} | {formatTime(entry.start_time)} to {formatTime(entry.end_time)}</p>
-                                </div>
-                                <Badge>{entry.room ? `Room ${entry.room}` : "Room pending"}</Badge>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  </>
-                ) : null}
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </>
               </div>
             ) : <EmptyState title="Choose a student" description="Select a record from the directory to open the academic profile here." />}
           </SectionCard>

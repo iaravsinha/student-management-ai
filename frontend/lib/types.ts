@@ -42,6 +42,7 @@ export type Subject = {
   id: number;
   name: string;
   code?: string | null;
+  syllabus?: string | null;
   department: string;
   batch_year: number;
   semester: number;
@@ -51,6 +52,7 @@ export type Subject = {
 export type SubjectPayload = {
   name: string;
   code?: string;
+  syllabus?: string | null;
   department: string;
   batch_year: number;
   semester: number;
@@ -63,6 +65,7 @@ export type ResultRecord = {
   subject_name: string;
   assessment_name: string;
   exam_type: string;
+  semester?: number | null;
   max_marks: number;
   marks_obtained: number;
   grade: string;
@@ -106,6 +109,7 @@ export type AttendanceRecord = {
   subject_id: number;
   date: string;
   status: AttendanceStatus;
+  remarks?: string | null;
 };
 
 export type AttendancePercentage = {
@@ -116,11 +120,22 @@ export type AttendancePercentage = {
   attendance_percentage: number;
 };
 
+export type SubjectAttendanceSnapshot = {
+  subjectId: number;
+  name: string;
+  semester?: number | null;
+  total: number;
+  attended: number;
+  absent: number;
+  percentage: number;
+};
+
 export type AttendanceMarkPayload = {
   student_id: number;
   subject_id: number;
   date: string;
   status: AttendanceStatus;
+  remarks?: string;
 };
 
 export type AttendanceBulkMarkPayload = {
@@ -129,6 +144,7 @@ export type AttendanceBulkMarkPayload = {
   records: {
     student_id: number;
     status: AttendanceStatus;
+    remarks?: string;
   }[];
 };
 

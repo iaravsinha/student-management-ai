@@ -35,33 +35,34 @@ const LoginPage = () => {
         <title>Login | StudentMS</title>
       </Head>
 
-      <main className="min-h-screen px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl overflow-hidden rounded-[32px] border border-white/70 bg-white/85 shadow-xl shadow-slate-200/70 backdrop-blur lg:grid-cols-[1.1fr_0.9fr]">
-          <section className="hero-panel hidden rounded-none border-0 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-            <div>
-              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/10">
-                <span className="text-xl font-semibold">SM</span>
+      <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
+        <div className="mx-auto grid min-h-[calc(100vh-3rem)] max-w-6xl overflow-hidden rounded-[32px] border border-white/80 bg-white/90 shadow-[0_40px_100px_-48px_rgba(15,23,42,0.55)] backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr]">
+          <section className="hero-panel relative hidden flex-col justify-between p-10 lg:flex">
+            <div className="pointer-events-none absolute inset-0 mesh-noise opacity-60" />
+            <div className="relative">
+              <div className="relative grid h-14 w-14 place-items-center">
+                <span className="absolute inset-0 rounded-2xl bg-cyan-400/25 blur-xl" />
+                <span className="relative grid h-14 w-14 place-items-center rounded-2xl bg-white/15 text-lg font-bold ring-2 ring-white/20">
+                  SM
+                </span>
               </div>
-              <p className="mt-8 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-200">
-                Academic workspace
-              </p>
-              <h1 className="mt-4 text-4xl font-semibold tracking-tight">
-                Keep student operations organized, modern, and easy to act on.
+              <p className="mt-10 text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-100">Secure workspace</p>
+              <h1 className="mt-4 max-w-xl text-4xl font-semibold tracking-tight leading-tight">
+                Navigate academics with clarity—records, rhythm, and copilot in one lane.
               </h1>
-              <p className="mt-5 max-w-md text-sm leading-7 text-slate-200">
-                Access student records, attendance workflows, timetable planning, and the built-in
-                AI assistant from one focused role-aware interface.
+              <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-200">
+                StudentMS aligns admins, faculty, and students around shared operational truth rather than scattered spreadsheets.
               </p>
             </div>
 
-            <div className="grid gap-4">
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                <p className="text-sm text-slate-300">Designed for</p>
-                <p className="mt-2 text-xl font-semibold">Admins, teachers, and students</p>
+            <div className="relative grid gap-4">
+              <div className="rounded-[26px] border border-white/12 bg-white/10 p-5 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-wider text-slate-300">Made for distributed campuses</p>
+                <p className="mt-2 text-lg font-semibold">Role fidelity · Audit-ready flows · Fast cues</p>
               </div>
-              <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-                <p className="text-sm text-slate-300">Built-in capabilities</p>
-                <p className="mt-2 text-xl font-semibold">Student data, attendance, timetable, AI</p>
+              <div className="rounded-[26px] border border-white/12 bg-white/10 p-5 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-wider text-slate-300">Companion assistant</p>
+                <p className="mt-2 text-lg font-semibold">Answers anchored on institutional records—not generic fluff.</p>
               </div>
             </div>
           </section>
@@ -69,36 +70,38 @@ const LoginPage = () => {
           <section className="flex items-center justify-center p-6 sm:p-10">
             <div className="w-full max-w-md space-y-8">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-brand-600">Welcome back</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-700">Welcome back</p>
                 <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Sign in to StudentMS</h2>
-                <p className="mt-3 text-sm leading-6 text-slate-500">
-                  Use the credentials provisioned by your administrator to access your workspace.
+                <p className="mt-3 text-sm leading-relaxed text-slate-500">
+                  Authenticate with the credentials provisioned by your institution administrator.
                 </p>
               </div>
 
               <form className="space-y-5" onSubmit={onSubmit}>
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700">Email</span>
+                  <span className="text-sm font-semibold text-slate-700">Email</span>
                   <input
                     type="email"
-                    placeholder="you@example.com"
+                    placeholder="you@campus.edu"
+                    autoComplete="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                   />
                 </label>
 
                 <label className="block space-y-2">
-                  <span className="text-sm font-medium text-slate-700">Password</span>
+                  <span className="text-sm font-semibold text-slate-700">Password</span>
                   <input
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Enter password"
+                    autoComplete="current-password"
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                   />
                 </label>
 
                 {error ? (
-                  <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                  <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
                     {error}
                   </div>
                 ) : null}
@@ -106,15 +109,15 @@ const LoginPage = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex w-full items-center justify-center rounded-2xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 ring-1 ring-white/10 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {loading ? "Signing in..." : "Login"}
+                  {loading ? "Signing you in…" : "Continue"}
                 </button>
               </form>
 
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-600">
-                Accounts are created by administrators. If you don&apos;t have access yet, review{" "}
-                <Link href="/signup" className="font-semibold text-brand-700 hover:text-brand-800">
+              <div className="rounded-xl border border-slate-200/90 bg-slate-50/90 px-4 py-4 text-sm leading-relaxed text-slate-600">
+                Access stays administrator-managed by design—learn{" "}
+                <Link href="/signup" className="font-semibold text-cyan-800 underline-offset-4 hover:underline">
                   how provisioning works
                 </Link>
                 .

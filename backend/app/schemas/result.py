@@ -12,6 +12,7 @@ class ResultRead(BaseModel):
   subject_name: str
   assessment_name: str
   exam_type: str
+  semester: int | None = None
   max_marks: int = Field(ge=1)
   marks_obtained: int = Field(ge=0)
   grade: str

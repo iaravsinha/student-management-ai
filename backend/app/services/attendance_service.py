@@ -45,6 +45,7 @@ def _upsert_attendance_record(
     subject_id: int,
     attendance_date,
     status_value: AttendanceStatus,
+    remarks: str | None = None,
 ) -> Attendance:
   record = (
       db.query(Attendance)
@@ -57,6 +58,7 @@ def _upsert_attendance_record(
   )
   if record:
     record.status = status_value
+    record.remarks = remarks
     return record
 
   record = Attendance(
@@ -64,6 +66,7 @@ def _upsert_attendance_record(
       subject_id=subject_id,
       date=attendance_date,
       status=status_value,
+      remarks=remarks,
   )
   return record
 
@@ -96,6 +99,7 @@ def mark_attendance(db: Session, payload: AttendanceMarkRequest, *, current_user
       subject_id=payload.subject_id,
       attendance_date=payload.date,
       status_value=payload.status,
+      remarks=payload.remarks,
   )
   db.add(record)
   db.commit()
@@ -147,6 +151,7 @@ def mark_bulk_attendance_for_class(
         subject_id=timetable.subject_id,
         attendance_date=payload.date,
         status_value=entry.status,
+        remarks=entry.remarks,
     )
     db.add(record)
     saved_records.append(record)
@@ -222,7 +227,7 @@ def calculate_attendance_percentage(
       .filter(
           Attendance.student_id == student_id,
           Attendance.subject_id == subject_id,
-          Attendance.status == AttendanceStatus.present,
+          Attendance.status.in_([AttendanceStatus.present, AttendanceStatus.late]),
       )
       .scalar()
       or 0

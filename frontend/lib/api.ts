@@ -1,34 +1,42 @@
 import axios from "axios";
 
 function resolveApiBaseUrl() {
-  const fromEnv = process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (fromEnv && fromEnv.trim().length > 0) {
-    return fromEnv;
-  }
+  const fromEnv = process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
 
-  // When the UI is accessed from a remote host (ngrok/production),
-  // default to same-origin reverse-proxy paths.
   if (typeof window !== "undefined") {
+    // HTTPS pages cannot call http://localhost APIs (mixed content). Same-origin /api uses Next rewrites.
+    const httpsPage = window.location.protocol === "https:";
+    if (httpsPage && fromEnv && fromEnv.startsWith("http://")) {
+      return "/api";
+    }
+    if (fromEnv) {
+      return fromEnv;
+    }
     const host = window.location.hostname;
     if (host && host !== "localhost" && host !== "127.0.0.1") {
       return "/api";
     }
+    return "http://localhost:8000";
   }
 
+  if (fromEnv) {
+    return fromEnv;
+  }
   return "http://localhost:8000";
 }
 
-const API_BASE_URL = resolveApiBaseUrl();
-
 export const api = axios.create({
-  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 api.interceptors.request.use((config) => {
+  config.baseURL = resolveApiBaseUrl();
   if (typeof window !== "undefined") {
+    if (window.location.hostname.includes("ngrok")) {
+      config.headers.set("ngrok-skip-browser-warning", "true");
+    }
     const token = window.localStorage.getItem("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -200,7 +200,10 @@ def _personal_overview(db: Session, current_user: User) -> PersonalOverview | No
     attendance_total = db.query(func.count(Attendance.id)).filter(Attendance.student_id == student.id).scalar() or 0
     present_total = (
         db.query(func.count(Attendance.id))
-        .filter(Attendance.student_id == student.id, Attendance.status == AttendanceStatus.present)
+        .filter(
+            Attendance.student_id == student.id,
+            Attendance.status.in_([AttendanceStatus.present, AttendanceStatus.late]),
+        )
         .scalar()
         or 0
     )

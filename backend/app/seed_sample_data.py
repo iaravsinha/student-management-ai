@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime, time, timedelta
 import os
 import random
-import secrets
 
 from sqlalchemy import or_
 
@@ -28,88 +27,94 @@ from app.schemas.student import StudentCreate
 from app.schemas.timetable import WeeklyTimetableUpsertRequest, WeeklyTimetableSlot
 
 
-DEMO_DOMAIN = "studentmsdemo.edu"
-LEGACY_DEMO_DOMAINS = ["demo.studentms.local", DEMO_DOMAIN]
-DEMO_PASSWORD = os.getenv("DEMO_PASSWORD") or secrets.token_urlsafe(12)
+# —— Historic “Blackthorn College” demo realm (medium dataset, login-ready) ——
+DEMO_DOMAIN = "blackthorn.demo"
+LEGACY_DEMO_DOMAINS = ["demo.studentms.local", "studentmsdemo.edu", DEMO_DOMAIN]
+
+DEFAULT_SAMPLE_PASSWORD = "Blackthorn1847!"
+DEMO_PASSWORD = (
+    os.getenv("SAMPLE_DATA_PASSWORD") or os.getenv("DEMO_PASSWORD") or DEFAULT_SAMPLE_PASSWORD
+)
+
 CURRENT_YEAR = datetime.now(UTC).year
+
 DEPARTMENT_OPTIONS = [
     {
-        "label": "BTECH CSE",
-        "code": "CSE",
-        "batches": [2023, 2024, 2025, 2026],
+        "label": "Faculty of Letters & History",
+        "code": "LET",
+        "batches": [2023, 2024],
         "max_semester": 8,
-        "faculty_count": 8,
-        "student_count": 30,
-        "subjects": [
-            ("Programming Fundamentals", "PF"),
-            ("Data Structures", "DS"),
-            ("Database Management Systems", "DBMS"),
-            ("Operating Systems", "OS"),
-            ("Computer Networks", "CN"),
-            ("Software Engineering", "SE"),
-            ("Theory of Computation", "TOC"),
-            ("Artificial Intelligence", "AI"),
-        ],
-    },
-    {
-        "label": "BTECH ECE",
-        "code": "ECE",
-        "batches": [2023, 2024, 2025, 2026],
-        "max_semester": 8,
-        "faculty_count": 7,
-        "student_count": 28,
-        "subjects": [
-            ("Circuit Theory", "CT"),
-            ("Signals and Systems", "SS"),
-            ("Digital Electronics", "DE"),
-            ("Microprocessors", "MP"),
-            ("Communication Systems", "CS"),
-            ("VLSI Design", "VLSI"),
-            ("Embedded Systems", "ES"),
-            ("Control Systems", "CTRL"),
-        ],
-    },
-    {
-        "label": "MBA",
-        "code": "MBA",
-        "batches": [2023, 2024, 2025, 2026],
-        "max_semester": 4,
         "faculty_count": 5,
-        "student_count": 24,
+        "student_count": 8,
         "subjects": [
-            ("Management Principles", "MP"),
-            ("Financial Accounting", "FA"),
-            ("Marketing Management", "MM"),
-            ("Business Analytics", "BA"),
-            ("Operations Management", "OM"),
-            ("Human Resource Management", "HRM"),
+            ("Paleography & Archives", "PAL"),
+            ("British Constitutional History", "BCH"),
+            ("Victorian Poetry Seminar", "VPS"),
+            ("Philosophy of Knowledge", "POK"),
+            ("Latin Readings II", "LAT"),
+            ("Dissertation Workshop", "DIS"),
+        ],
+    },
+    {
+        "label": "Faculty of Natural Philosophy",
+        "code": "NAT",
+        "batches": [2023, 2024],
+        "max_semester": 8,
+        "faculty_count": 5,
+        "student_count": 8,
+        "subjects": [
+            ("Mathematical Methods", "MM"),
+            ("Experimental Physics Laboratory", "EPL"),
+            ("Observational Astronomy", "OA"),
+            ("Thermodynamics & Heat Engines", "THE"),
+            ("Geological Field Methods", "GFM"),
+            ("Research Colloquium", "RC"),
+        ],
+    },
+    {
+        "label": "Faculty of Civic Studies",
+        "code": "CIV",
+        "batches": [2023, 2024],
+        "max_semester": 6,
+        "faculty_count": 4,
+        "student_count": 8,
+        "subjects": [
+            ("History of Institutions", "HOI"),
+            ("Public Ledger & Accountability", "PLA"),
+            ("Ethics of Governance", "EOG"),
+            ("Urban Archives Lab", "UAL"),
+            ("Policy Drafting Studio", "PDS"),
+            ("Capstone Seminar", "CAP"),
         ],
     },
 ]
 
 FACULTY_FIRST_NAMES = [
-    "Aarav", "Vivaan", "Aditya", "Vihaan", "Arjun", "Reyansh", "Kabir", "Ishaan",
-    "Anaya", "Diya", "Kiara", "Myra", "Aditi", "Saanvi", "Riya", "Navya",
+    "Edmund", "Harriet", "Clara", "Thomas", "Margaret", "James", "Helena", "Arthur",
+    "Beatrice", "William", "Isobel", "Richard", "Louisa", "Charles",
 ]
 FACULTY_LAST_NAMES = [
-    "Sharma", "Verma", "Mehta", "Iyer", "Rao", "Kapoor", "Bose", "Nair",
-    "Joshi", "Malhotra", "Reddy", "Kulkarni", "Chopra", "Bhat", "Gupta", "Singh",
+    "Ashworth", "Pemberton", "Whitmore", "Fairfax", "Blackwood", "Ellison",
+    "Thorne", "Yardley", "Hollinghurst", "Mercer", "Kingsley", "Rawlings",
 ]
+
 STUDENT_FIRST_NAMES = [
-    "Aarav", "Vihaan", "Krish", "Ishaan", "Dev", "Arnav", "Ayush", "Kunal", "Rohan", "Yash",
-    "Anaya", "Diya", "Saanvi", "Kavya", "Ritika", "Meera", "Nisha", "Priya", "Tanvi", "Ira",
-    "Neel", "Tanish", "Atharv", "Rahul", "Sneha", "Pooja", "Aman", "Harsh", "Ritu", "Manav",
+    "Oliver", "Sophie", "Henry", "Emma", "George", "Alice", "Frederick", "Rose",
+    "Hugh", "Marianne", "Simon", "Eliza", "Arthur", "Cordelia", "Edmund", "Flora",
 ]
 STUDENT_LAST_NAMES = [
-    "Sharma", "Patel", "Gupta", "Reddy", "Khan", "Das", "Nair", "Roy", "Agarwal", "Verma",
-    "Mishra", "Kulkarni", "Bansal", "Jain", "Thakur", "Saxena", "Pandey", "Yadav", "Pillai", "Ghosh",
+    "Cartwright", "Llewelyn", "Bertram", "Ashford", "Ingram", "Kingsley",
+    "Fairfax", "Yardley", "Mercer", "Blackwood", "Pemberton", "Whitmore",
 ]
+
 HOLIDAY_DESCRIPTIONS = [
-    (f"{CURRENT_YEAR}-08-15", "[Demo] Independence Day"),
-    (f"{CURRENT_YEAR}-10-02", "[Demo] Gandhi Jayanti"),
-    (f"{CURRENT_YEAR}-11-12", "[Demo] Diwali Break"),
-    (f"{CURRENT_YEAR}-12-25", "[Demo] Winter Recess"),
+    (f"{CURRENT_YEAR}-03-21", "[Demo] Blackthorn Founders Day"),
+    (f"{CURRENT_YEAR}-05-01", "[Demo] Spring Convocation recess"),
+    (f"{CURRENT_YEAR}-07-15", "[Demo] Summer reading period"),
+    (f"{CURRENT_YEAR}-11-05", "[Demo] Mid-autumn archival symposium"),
+    (f"{CURRENT_YEAR}-12-20", "[Demo] Hilary term recess begins"),
 ]
+
 TIME_ROWS = ["09:00", "09:45", "10:30", "11:15", "13:00", "13:45"]
 WEEKDAY_SEQUENCE = [WeekDay.monday, WeekDay.tuesday, WeekDay.wednesday, WeekDay.thursday, WeekDay.friday]
 
@@ -126,7 +131,7 @@ class DepartmentSeedContext:
 
 
 def parse_args() -> argparse.Namespace:
-  parser = argparse.ArgumentParser(description="Seed realistic demo data for StudentMS")
+  parser = argparse.ArgumentParser(description="Seed Blackthorn College demo data for StudentMS")
   parser.add_argument("--reset-sample", action="store_true", help="Delete existing demo-tagged records before seeding")
   parser.add_argument("--student-count", type=int, default=0, help="Override students per batch for all departments")
   return parser.parse_args()
@@ -146,14 +151,8 @@ def reset_demo_data(db) -> None:
   student_filters = [Student.email.like(f"%@students.{domain}") for domain in LEGACY_DEMO_DOMAINS]
   demo_users = db.query(User).filter(or_(*user_filters)).all()
   demo_user_ids = [user.id for user in demo_users]
-  demo_student_ids = [
-      student.id
-      for student in db.query(Student).filter(or_(*student_filters)).all()
-  ]
-  demo_subject_ids = [
-      subject.id
-      for subject in db.query(Subject).filter(Subject.code.like("DEMO-%")).all()
-  ]
+  demo_student_ids = [student.id for student in db.query(Student).filter(or_(*student_filters)).all()]
+  demo_subject_ids = [subject.id for subject in db.query(Subject).filter(Subject.code.like("DEMO-%")).all()]
 
   db.query(ResultRecord).filter(ResultRecord.subject_id.in_(demo_subject_ids)).delete(synchronize_session=False)
   if demo_student_ids:
@@ -185,6 +184,17 @@ def ensure_user(db, *, email: str, role: UserRole, is_active: bool = True) -> Us
   return user
 
 
+def seed_student_login_accounts(db, contexts: list[DepartmentSeedContext]) -> None:
+  """Students need matching User rows to sign in (email must equal Student.email)."""
+  seen: set[str] = set()
+  for context in contexts:
+    for student in context.students:
+      if student.email in seen:
+        continue
+      seen.add(student.email)
+      ensure_user(db, email=student.email, role=UserRole.student)
+
+
 def ensure_subject(db, *, name: str, code: str, department: str, batch_year: int, semester: int) -> Subject:
   subject = (
       db.query(Subject)
@@ -212,7 +222,7 @@ def ensure_subject(db, *, name: str, code: str, department: str, batch_year: int
 
 
 def seed_admins(db) -> None:
-  ensure_user(db, email=f"admin@admins.{DEMO_DOMAIN}", role=UserRole.admin)
+  ensure_user(db, email=f"provost@admins.{DEMO_DOMAIN}", role=UserRole.admin)
 
 
 def build_faculty_name(index: int) -> str:
@@ -281,7 +291,6 @@ def seed_department_people(db, *, department_data: dict, student_override: int =
               batch_year=batch_year,
               semester=semester,
               email=email,
-              roll_number=f"{code}-{batch_year}-{student_index + 1:03d}",
           ),
       )
       students.append(student)
@@ -310,7 +319,8 @@ def seed_weekly_timetable(db, contexts: list[DepartmentSeedContext]) -> None:
       start_value = time.fromisoformat(f"{row}:00")
       for day_index, day in enumerate(WEEKDAY_SEQUENCE):
         should_schedule = not (day == WeekDay.wednesday and row_index == len(TIME_ROWS) - 1)
-        if context.department == "MBA":
+        # Civic cohort: lighter Friday afternoon (reading studio culture)
+        if context.code == "CIV":
           should_schedule = should_schedule and not (day == WeekDay.friday and row_index >= 4)
         if not should_schedule:
           slots.append(
@@ -325,14 +335,20 @@ def seed_weekly_timetable(db, contexts: list[DepartmentSeedContext]) -> None:
           continue
 
         subject = subject_cycle[(row_index + day_index) % len(subject_cycle)]
-        faculty_user = faculty_cycle[(row_index * 2 + day_index) % len(faculty_cycle)]
+        # API forbids the same faculty_user_id at the same (day, start_time) across any other
+        # batch/department row. We reuse one faculty pool per department for 2023 and 2024 cohorts,
+        # so shift the cycle by batch_year (and a small code bias) so parallel cohorts never collide.
+        slot_index = row_index * len(WEEKDAY_SEQUENCE) + day_index
+        code_bias = sum(ord(c) for c in context.code) % 7
+        faculty_idx = (slot_index + context.batch_year * 19 + code_bias) % len(faculty_cycle)
+        faculty_user = faculty_cycle[faculty_idx]
         slots.append(
             WeeklyTimetableSlot(
                 day=day,
                 start_time=start_value,
                 subject_id=subject.id,
                 faculty_user_id=faculty_user.id,
-                room=f"{context.code}-{(row_index % 3) + 101}",
+                room=f"HALL-{context.code}-{(row_index % 4) + 201}",
             ),
         )
 
@@ -387,7 +403,7 @@ def seed_attendance(db, contexts: list[DepartmentSeedContext]) -> None:
     class_dates: list[date] = []
     delta = (today.weekday() - weekday_to_index[entry.day]) % 7
     latest_class_date = today - timedelta(days=delta)
-    for week_offset in range(4):
+    for week_offset in range(5):
       class_dates.append(latest_class_date - timedelta(days=week_offset * 7))
 
     for class_date in class_dates:
@@ -450,9 +466,9 @@ def remarks_for_grade(grade: str) -> str:
 def seed_results(db, contexts: list[DepartmentSeedContext]) -> None:
   random.seed(84)
   assessment_templates = [
-      ("Internal Assessment 1", "internal", 30),
-      ("Mid Semester", "midsem", 50),
-      ("End Semester", "endsem", 100),
+      ("Michaelmas internals", "internal", 30),
+      ("Hilary examination", "midsem", 50),
+      ("Trinity finals", "endsem", 100),
   ]
 
   for context in contexts:
@@ -489,6 +505,38 @@ def seed_results(db, contexts: list[DepartmentSeedContext]) -> None:
   db.commit()
 
 
+def print_login_sheet(contexts: list[DepartmentSeedContext]) -> None:
+  """Helpful defaults so you can click-login without hunting the database."""
+  by_code: dict[str, DepartmentSeedContext | None] = {}
+  for ctx in contexts:
+    if ctx.code not in by_code:
+      by_code[ctx.code] = ctx
+
+  print("")
+  print("—— Blackthorn College sample accounts (same password for all) ——")
+  print(f"Password: {DEMO_PASSWORD}")
+  print("")
+  print(f"Provost (admin):     provost@admins.{DEMO_DOMAIN}")
+  print("")
+  print("Teachers (example login per faculty — every numbered faculty account works):")
+  for code in sorted(by_code.keys()):
+    ctx = by_code[code]
+    if not ctx or not ctx.faculty_users:
+      continue
+    sample = ctx.faculty_users[0]
+    print(f"  [{code}] {sample.email}")
+  print("")
+  print("Students (one example per faculty × cohort):")
+  for ctx in sorted(contexts, key=lambda c: (c.code, c.batch_year)):
+    if ctx.students:
+      print(f"  [{ctx.code} · {ctx.batch_year}] {ctx.students[0].email}")
+  total_demo_students = sum(len(c.students) for c in contexts)
+  print("")
+  print(f"Total demo student accounts: {total_demo_students}")
+  print("(Every student row has a matching User — sign in with that email and the password above.)")
+  print("")
+
+
 def main() -> None:
   args = parse_args()
   db = SessionLocal()
@@ -501,6 +549,7 @@ def main() -> None:
     for department_data in DEPARTMENT_OPTIONS:
       contexts.extend(seed_department_people(db, department_data=department_data, student_override=args.student_count))
 
+    seed_student_login_accounts(db, contexts)
     seed_weekly_timetable(db, contexts)
     seed_holidays(db)
     seed_attendance(db, contexts)
@@ -508,15 +557,22 @@ def main() -> None:
 
     faculty_total = db.query(FacultyProfile).filter(FacultyProfile.email.like(f"%@faculty.{DEMO_DOMAIN}")).count()
     student_total = db.query(Student).filter(Student.email.like(f"%@students.{DEMO_DOMAIN}")).count()
+    student_user_total = (
+        db.query(User)
+        .filter(User.role == UserRole.student, User.email.like(f"%@students.{DEMO_DOMAIN}"))
+        .count()
+    )
     subject_total = db.query(Subject).filter(Subject.code.like("DEMO-%")).count()
-    result_total = db.query(ResultRecord).count()
-    print("Sample data seeded successfully.")
-    print(f"Login password for all demo accounts: {DEMO_PASSWORD}")
-    print(f"Demo admin: admin@admins.{DEMO_DOMAIN}")
-    print(f"Faculty profiles seeded: {faculty_total}")
-    print(f"Students seeded: {student_total}")
-    print(f"Subjects seeded: {subject_total}")
-    print(f"Results seeded: {result_total}")
+    result_total = db.query(ResultRecord).join(Subject).filter(Subject.code.like("DEMO-%")).count()
+
+    print("Blackthorn College sample data seeded successfully.")
+    print(f"Institution narrative: historic collegiate demo — three faculties, two cohorts (2023–2024), full timetable, attendance, and results.")
+    print(f"Faculty profiles: {faculty_total}")
+    print(f"Student records: {student_total}")
+    print(f"Student login accounts (User rows): {student_user_total}")
+    print(f"Demo subjects: {subject_total}")
+    print(f"Demo result rows: {result_total}")
+    print_login_sheet(contexts)
   finally:
     db.close()
 

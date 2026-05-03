@@ -76,6 +76,37 @@ curl -X POST http://localhost:8000/auth/bootstrap-admin \
 - API docs: `http://localhost:8000/docs`
 - AI health: `http://localhost:8001/health/live`
 
+### Optional: “Blackthorn College” demo dataset (medium, login-ready)
+
+After migrations are applied and Postgres is up, you can load a cohesive historic-themed university snapshot: three faculties, two cohorts (2023–2024), faculty and **student User accounts**, weekly timetable, attendance over recent weeks, graded assessments, and holidays.
+
+Default password for **all** demo accounts (unless overridden):
+
+- `Blackthorn1847!`
+
+Set `SAMPLE_DATA_PASSWORD` (or `DEMO_PASSWORD`) in `.env` if you want a different shared password.
+
+**Docker:**
+
+```bash
+docker compose exec backend python -m app.seed_sample_data --reset-sample
+```
+
+**Local backend (requires `DATABASE_URL` and dependencies installed):**
+
+```bash
+cd backend
+PYTHONPATH=. python -m app.seed_sample_data --reset-sample
+```
+
+The script prints example emails. Always included:
+
+- **Admin:** `provost@admins.blackthorn.demo`
+- **Teachers:** `let-faculty-01@faculty.blackthorn.demo` (and parallel `nat-…`, `civ-…` accounts)
+- **Students:** `let-2024-001@students.blackthorn.demo`, etc. (every seeded student has a matching login)
+
+`--reset-sample` deletes prior demo-tagged rows (users/emails under the demo domains, demo `DEMO-%` subjects, `[Demo]%` holidays, related attendance/results/timetable slots). It does **not** remove your bootstrap admin (e.g. `admin@example.com`) unless that email matches a demo domain.
+
 ## 2) Admin User Provisioning (After Bootstrap)
 
 Use an admin access token:
