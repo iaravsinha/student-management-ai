@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { Notice, PageIntro, SectionCard } from "../ui";
-import type { AcademicOverview, Holiday, SubjectAttendanceSnapshot, TimetableEntry, User, UserRole } from "../../lib/types";
+import type { AcademicOverview, AttendanceRecord, Holiday, SubjectAttendanceSnapshot, TimetableEntry, User, UserRole } from "../../lib/types";
 import { formatDate, formatLabel, formatTime } from "../../lib/utils";
 import {
   ActionTile,

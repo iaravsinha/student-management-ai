@@ -18,7 +18,7 @@ import {
   Subject,
   TimetableEntry,
 } from "../lib/types";
-import { formatTime, getErrorMessage } from "../lib/utils";
+import { formatDate, formatTime, getErrorMessage } from "../lib/utils";
 
 const createEmptyStudentForm = (department = "", batchYear = new Date().getFullYear(), semester = 1): StudentPayload => ({
   name: "",
