@@ -9,7 +9,7 @@ from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.logging import configure_logging
 import app.models  # noqa: F401
-from app.routes import audit, attendance, auth, departments, faculty, health, overview, results, students, subjects, timetable
+from app.routes import audit, attendance, auth, departments, faculty, health, overview, query, results, students, subjects, timetable
 
 
 logger = configure_logging("backend")
@@ -75,6 +75,7 @@ def create_app() -> FastAPI:
   app.include_router(results.router, prefix="/results", tags=["results"])
   app.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
   app.include_router(timetable.router, prefix="/timetable", tags=["timetable"])
+  app.include_router(query.router, prefix="/query", tags=["query"])
 
   return app
 

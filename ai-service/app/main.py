@@ -2,6 +2,7 @@ from time import perf_counter
 
 from fastapi import FastAPI, Request
 
+from app.core.config import settings
 from app.core.logging import configure_logging
 from app.routes import health, assistant
 
@@ -12,6 +13,15 @@ def create_app() -> FastAPI:
   app = FastAPI(
       title="Student AI Assistant Service",
       version="0.1.0",
+  )
+
+  from fastapi.middleware.cors import CORSMiddleware
+  app.add_middleware(
+      CORSMiddleware,
+      allow_origins=settings.CORS_ORIGINS,
+      allow_credentials=True,
+      allow_methods=["*"],
+      allow_headers=["*"],
   )
 
   app.include_router(health.router, prefix="/health", tags=["health"])

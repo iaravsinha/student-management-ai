@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -21,6 +22,10 @@ class Settings(BaseSettings):
   GEMINI_API_KEY: str | None = None
   AI_RATE_LIMIT_COUNT: int = 60
   AI_RATE_LIMIT_WINDOW_SECONDS: int = 60
+  CORS_ORIGINS: list[str] = Field(
+      default=["http://localhost:3000", "http://localhost"],
+      validation_alias="BACKEND_CORS_ORIGINS",
+  )
 
 
 @lru_cache

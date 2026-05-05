@@ -250,6 +250,17 @@ async def create_subject(
     return response.json()
 
 
+async def fetch_sql_query(query: str, auth_header: str | None = None) -> list[dict]:
+  async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
+    response = await client.post(
+        f"{settings.BACKEND_URL}/query/sql",
+        json={"query": query},
+        headers=_headers(auth_header),
+    )
+    response.raise_for_status()
+    return response.json()
+
+
 async def log_ai_action(
     *,
     action: str,
@@ -283,7 +294,7 @@ def build_subject_percentages(history: list[dict]) -> dict[int, float]:
   for item in history:
     subject_id = int(item["subject_id"])
     totals[subject_id] += 1
-    if item.get("status") == "present":
+    if item.get("status") in {"present", "late"}:
       attended[subject_id] += 1
 
   return {

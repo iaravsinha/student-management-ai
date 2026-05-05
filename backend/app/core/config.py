@@ -18,6 +18,7 @@ class Settings(BaseSettings):
   ENVIRONMENT: str = "development"
   DEBUG: bool = False
   AUTO_CREATE_TABLES: bool = False
+  BACKEND_API_TOKEN: str | None = None
 
   BACKEND_HOST: str = "0.0.0.0"
   BACKEND_PORT: int = 8000

@@ -276,6 +276,12 @@ export const GlobalAssistantWidget = () => {
                 rows={3}
                 placeholder="Ask in plain language…"
                 className="resize-none text-[13px] shadow-inner shadow-slate-900/[0.02]"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    void send();
+                  }
+                }}
               />
               {error ? <p className="text-xs font-medium text-rose-600">{error}</p> : null}
               <button

@@ -40,6 +40,10 @@ def create_access_token(
 
 
 def decode_access_token(token: str) -> TokenPayload:
+  # Support shared backend API token for internal services (e.g. ai-service)
+  if settings.BACKEND_API_TOKEN and token == settings.BACKEND_API_TOKEN:
+    return TokenPayload(sub="system@internal", role=UserRole.admin)
+
   try:
     payload = jwt.decode(
         token,

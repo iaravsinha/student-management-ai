@@ -20,21 +20,7 @@ class AssistantQuery(BaseModel):
 
 
 class StructuredCommand(BaseModel):
-  action: Literal[
-      "attendance_summary",
-      "list_departments",
-      "list_subjects",
-      "list_faculty",
-      "list_timetable",
-      "list_holidays",
-      "get_overview",
-      "list_results",
-      "list_students",
-      "list_absent",
-      "mark_attendance",
-      "create_subject",
-      "unsupported",
-  ]
+  actions: list[str] = Field(default_factory=list)
   student_id: Optional[int] = None
   timetable_id: Optional[int] = None
   date: Optional[dt_date] = None

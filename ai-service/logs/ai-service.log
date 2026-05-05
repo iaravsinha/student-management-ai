@@ -5838,3 +5838,1469 @@
 2026-05-05 06:04:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.52
 2026-05-05 06:04:47 | ai-service | INFO | request GET /health/live
 2026-05-05 06:04:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.98
+2026-05-05 09:01:30 | ai-service | INFO | request GET /health/live
+2026-05-05 09:01:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.34
+2026-05-05 09:01:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:01:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:01:50 | ai-service | INFO | request GET /health/live
+2026-05-05 09:01:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.43
+2026-05-05 09:02:01 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 09:02:11 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 09:02:21 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 09:02:31 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.19
+2026-05-05 09:02:41 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.18
+2026-05-05 09:02:51 | ai-service | INFO | request GET /health/live
+2026-05-05 09:02:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 09:03:01 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.71
+2026-05-05 09:03:11 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 09:03:21 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:03:31 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.80
+2026-05-05 09:03:41 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:03:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:03:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.59
+2026-05-05 09:04:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.01
+2026-05-05 09:04:12 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.50
+2026-05-05 09:04:22 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.03
+2026-05-05 09:04:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.78
+2026-05-05 09:04:42 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:04:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:04:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.25
+2026-05-05 09:05:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.58
+2026-05-05 09:05:12 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:05:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 09:05:33 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 09:05:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.61
+2026-05-05 09:05:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:05:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:06:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.79
+2026-05-05 09:06:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 09:06:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 09:06:33 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.55
+2026-05-05 09:06:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.51
+2026-05-05 09:06:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:06:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.26
+2026-05-05 09:07:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 09:07:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 09:07:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 09:07:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 09:07:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.12
+2026-05-05 09:07:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:07:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:08:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:08:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:08:24 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.52
+2026-05-05 09:08:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:08:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.78
+2026-05-05 09:08:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:08:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.15
+2026-05-05 09:09:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.98
+2026-05-05 09:09:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 09:09:24 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 09:09:24 | ai-service | WARNING | response OPTIONS /ai/query status=405 duration_ms=3.44
+2026-05-05 09:09:25 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.39
+2026-05-05 09:09:35 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.35
+2026-05-05 09:09:45 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.49
+2026-05-05 09:09:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:09:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:10:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.41
+2026-05-05 09:10:15 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.19
+2026-05-05 09:10:25 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.02
+2026-05-05 09:10:35 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 09:10:45 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 09:10:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:10:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=422.86
+2026-05-05 09:11:06 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:06 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:11:16 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=133.13
+2026-05-05 09:11:27 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 09:11:37 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:11:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 09:11:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:11:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.79
+2026-05-05 09:12:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 09:12:17 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 09:12:27 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 09:12:37 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 09:12:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:12:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:12:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 09:13:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.77
+2026-05-05 09:13:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:13:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:13:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.21
+2026-05-05 09:13:48 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:13:58 | ai-service | INFO | request GET /health/live
+2026-05-05 09:13:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.12
+2026-05-05 09:14:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 09:14:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.16
+2026-05-05 09:14:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:14:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.98
+2026-05-05 09:14:48 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 09:14:58 | ai-service | INFO | request GET /health/live
+2026-05-05 09:14:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.28
+2026-05-05 09:15:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:15:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.84
+2026-05-05 09:15:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:15:39 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.74
+2026-05-05 09:15:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.70
+2026-05-05 09:15:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:15:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 09:16:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 09:16:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 09:16:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.32
+2026-05-05 09:16:39 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.20
+2026-05-05 09:16:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.31
+2026-05-05 09:16:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:16:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 09:17:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:17:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.97
+2026-05-05 09:17:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:17:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 09:17:30 | ai-service | INFO | request GET /health/live
+2026-05-05 09:17:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 09:17:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:17:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.63
+2026-05-05 09:17:50 | ai-service | INFO | request GET /health/live
+2026-05-05 09:17:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 09:18:00 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:18:10 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=141.06
+2026-05-05 09:18:20 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=31.05
+2026-05-05 09:18:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=62.57
+2026-05-05 09:18:42 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=97.04
+2026-05-05 09:18:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:18:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=42.07
+2026-05-05 09:19:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=78.40
+2026-05-05 09:19:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=77.59
+2026-05-05 09:19:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=62.86
+2026-05-05 09:19:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=93.04
+2026-05-05 09:19:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=42.47
+2026-05-05 09:19:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:19:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=132.71
+2026-05-05 09:20:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=23.90
+2026-05-05 09:20:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=1464.55
+2026-05-05 09:20:26 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.58
+2026-05-05 09:20:36 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.82
+2026-05-05 09:20:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.68
+2026-05-05 09:20:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:20:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 09:21:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.77
+2026-05-05 09:21:17 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.31
+2026-05-05 09:21:27 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.71
+2026-05-05 09:21:37 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.05
+2026-05-05 09:21:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.60
+2026-05-05 09:21:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:21:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.60
+2026-05-05 09:22:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.50
+2026-05-05 09:22:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.15
+2026-05-05 09:22:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.21
+2026-05-05 09:22:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 09:22:48 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:22:58 | ai-service | INFO | request GET /health/live
+2026-05-05 09:22:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.15
+2026-05-05 09:23:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:23:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=18.86
+2026-05-05 09:23:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:23:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.23
+2026-05-05 09:23:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:23:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=58.35
+2026-05-05 09:23:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:23:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=13.60
+2026-05-05 09:23:50 | ai-service | INFO | request GET /health/live
+2026-05-05 09:23:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=25.81
+2026-05-05 09:24:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.75
+2026-05-05 09:24:12 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.48
+2026-05-05 09:24:22 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:24:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.35
+2026-05-05 09:24:42 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=72.83
+2026-05-05 09:24:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:24:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.05
+2026-05-05 09:25:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.89
+2026-05-05 09:25:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.47
+2026-05-05 09:25:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.59
+2026-05-05 09:25:33 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.48
+2026-05-05 09:25:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.21
+2026-05-05 09:25:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:25:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 09:26:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.59
+2026-05-05 09:26:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.28
+2026-05-05 09:26:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.51
+2026-05-05 09:26:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.17
+2026-05-05 09:26:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 09:26:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:26:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.59
+2026-05-05 09:27:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.62
+2026-05-05 09:27:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.50
+2026-05-05 09:27:24 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.58
+2026-05-05 09:27:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.31
+2026-05-05 09:27:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.69
+2026-05-05 09:27:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:27:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=7.91
+2026-05-05 09:28:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:28:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.10
+2026-05-05 09:28:15 | ai-service | INFO | request GET /health/live
+2026-05-05 09:28:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.68
+2026-05-05 09:29:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 09:29:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 09:29:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.12
+2026-05-05 09:29:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:29:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 09:29:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:29:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 09:30:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:30:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 09:30:24 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 09:30:24 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=5.47
+2026-05-05 09:30:24 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:30:25 | ai-service | INFO | response POST /ai/query status=200 duration_ms=801.54
+2026-05-05 09:30:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 09:30:39 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 09:30:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 09:30:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:30:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.46
+2026-05-05 09:31:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:31:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 09:31:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:31:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.58
+2026-05-05 09:31:30 | ai-service | INFO | request GET /health/live
+2026-05-05 09:31:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.61
+2026-05-05 09:31:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:31:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.63
+2026-05-05 09:31:50 | ai-service | INFO | request GET /health/live
+2026-05-05 09:31:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.89
+2026-05-05 09:32:00 | ai-service | INFO | request GET /health/live
+2026-05-05 09:32:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.73
+2026-05-05 09:32:10 | ai-service | INFO | request GET /health/live
+2026-05-05 09:32:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.36
+2026-05-05 09:32:20 | ai-service | INFO | request GET /health/live
+2026-05-05 09:32:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.59
+2026-05-05 09:32:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:32:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.62
+2026-05-05 09:32:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:32:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.47
+2026-05-05 09:33:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.15
+2026-05-05 09:33:13 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:33:13 | ai-service | INFO | response POST /ai/query status=200 duration_ms=773.70
+2026-05-05 09:33:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.40
+2026-05-05 09:33:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.33
+2026-05-05 09:33:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.74
+2026-05-05 09:33:48 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.19
+2026-05-05 09:33:58 | ai-service | INFO | request GET /health/live
+2026-05-05 09:33:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.24
+2026-05-05 09:34:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.57
+2026-05-05 09:34:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.41
+2026-05-05 09:34:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=8.11
+2026-05-05 09:34:39 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.56
+2026-05-05 09:34:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.59
+2026-05-05 09:34:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:34:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.46
+2026-05-05 09:35:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:35:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.07
+2026-05-05 09:35:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:35:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.79
+2026-05-05 09:35:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:35:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.88
+2026-05-05 09:35:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:35:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.26
+2026-05-05 09:35:50 | ai-service | INFO | request GET /health/live
+2026-05-05 09:35:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 09:36:00 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.93
+2026-05-05 09:36:10 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.17
+2026-05-05 09:36:20 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:36:30 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.30
+2026-05-05 09:36:40 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.69
+2026-05-05 09:36:51 | ai-service | INFO | request GET /health/live
+2026-05-05 09:36:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.76
+2026-05-05 09:37:01 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.47
+2026-05-05 09:37:11 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.18
+2026-05-05 09:37:19 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:37:20 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1150.47
+2026-05-05 09:37:21 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.38
+2026-05-05 09:37:31 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 09:37:41 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=24.26
+2026-05-05 09:37:51 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:37:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:37:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.38
+2026-05-05 09:37:52 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1455.47
+2026-05-05 09:38:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 09:38:03 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:38:05 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1187.15
+2026-05-05 09:38:12 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.37
+2026-05-05 09:38:22 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 09:38:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.58
+2026-05-05 09:38:40 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:38:41 | ai-service | INFO | response POST /ai/query status=200 duration_ms=745.05
+2026-05-05 09:38:42 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.65
+2026-05-05 09:38:46 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:38:47 | ai-service | INFO | response POST /ai/query status=200 duration_ms=749.09
+2026-05-05 09:38:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:38:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 09:39:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 09:39:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.67
+2026-05-05 09:39:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.78
+2026-05-05 09:39:26 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:39:27 | ai-service | INFO | response POST /ai/query status=200 duration_ms=950.19
+2026-05-05 09:39:33 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.77
+2026-05-05 09:39:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.49
+2026-05-05 09:39:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:39:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.31
+2026-05-05 09:40:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 09:40:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.48
+2026-05-05 09:40:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 09:40:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.86
+2026-05-05 09:40:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.52
+2026-05-05 09:40:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:40:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:41:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.18
+2026-05-05 09:41:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:41:24 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.41
+2026-05-05 09:41:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:41:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.58
+2026-05-05 09:41:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:41:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.61
+2026-05-05 09:42:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.20
+2026-05-05 09:42:17 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 09:42:27 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.73
+2026-05-05 09:42:37 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.40
+2026-05-05 09:42:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.27
+2026-05-05 09:42:51 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 09:42:51 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=1.77
+2026-05-05 09:42:51 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:42:52 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1212.75
+2026-05-05 09:42:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:42:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.45
+2026-05-05 09:43:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 09:43:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.23
+2026-05-05 09:43:23 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:43:25 | ai-service | INFO | response POST /ai/query status=200 duration_ms=2238.21
+2026-05-05 09:43:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.34
+2026-05-05 09:43:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 09:43:48 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.90
+2026-05-05 09:43:58 | ai-service | INFO | request GET /health/live
+2026-05-05 09:43:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.80
+2026-05-05 09:44:08 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.46
+2026-05-05 09:44:18 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 09:44:28 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.09
+2026-05-05 09:44:38 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 09:44:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.47
+2026-05-05 09:44:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:44:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.02
+2026-05-05 09:45:09 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.66
+2026-05-05 09:45:19 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.95
+2026-05-05 09:45:29 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 09:45:39 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.32
+2026-05-05 09:45:49 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.70
+2026-05-05 09:45:59 | ai-service | INFO | request GET /health/live
+2026-05-05 09:45:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 09:46:10 | ai-service | INFO | request GET /health/live
+2026-05-05 09:46:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.48
+2026-05-05 09:46:20 | ai-service | INFO | request GET /health/live
+2026-05-05 09:46:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.98
+2026-05-05 09:46:31 | ai-service | INFO | request GET /health/live
+2026-05-05 09:46:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.73
+2026-05-05 09:46:41 | ai-service | INFO | request GET /health/live
+2026-05-05 09:46:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 09:46:51 | ai-service | INFO | request GET /health/live
+2026-05-05 09:46:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.55
+2026-05-05 09:47:01 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.25
+2026-05-05 09:47:11 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.95
+2026-05-05 09:47:22 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:47:22 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.95
+2026-05-05 09:47:23 | ai-service | WARNING | response POST /ai/query status=429 duration_ms=1583.37
+2026-05-05 09:47:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.23
+2026-05-05 09:47:42 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.54
+2026-05-05 09:47:52 | ai-service | INFO | request GET /health/live
+2026-05-05 09:47:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.48
+2026-05-05 09:48:02 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.33
+2026-05-05 09:48:12 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.53
+2026-05-05 09:48:22 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.52
+2026-05-05 09:48:32 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.74
+2026-05-05 09:48:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.40
+2026-05-05 09:48:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:48:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.76
+2026-05-05 09:49:03 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.09
+2026-05-05 09:49:13 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.74
+2026-05-05 09:49:23 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.20
+2026-05-05 09:49:33 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.45
+2026-05-05 09:49:43 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.54
+2026-05-05 09:49:53 | ai-service | INFO | request GET /health/live
+2026-05-05 09:49:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.33
+2026-05-05 09:50:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.26
+2026-05-05 09:50:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.42
+2026-05-05 09:50:24 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.21
+2026-05-05 09:50:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.10
+2026-05-05 09:50:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.03
+2026-05-05 09:50:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:50:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.59
+2026-05-05 09:51:04 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=7.16
+2026-05-05 09:51:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 09:51:24 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.09
+2026-05-05 09:51:34 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.66
+2026-05-05 09:51:44 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.12
+2026-05-05 09:51:54 | ai-service | INFO | request GET /health/live
+2026-05-05 09:51:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 09:52:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.72
+2026-05-05 09:52:15 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 09:52:25 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.48
+2026-05-05 09:52:35 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.62
+2026-05-05 09:52:45 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.71
+2026-05-05 09:52:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:52:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.25
+2026-05-05 09:53:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.08
+2026-05-05 09:53:16 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.67
+2026-05-05 09:53:26 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.39
+2026-05-05 09:53:36 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.39
+2026-05-05 09:53:46 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.33
+2026-05-05 09:53:56 | ai-service | INFO | request GET /health/live
+2026-05-05 09:53:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 09:55:14 | ai-service | INFO | request GET /health/live
+2026-05-05 09:55:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.01
+2026-05-05 09:55:25 | ai-service | INFO | request GET /health/live
+2026-05-05 09:55:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.34
+2026-05-05 09:55:35 | ai-service | INFO | request GET /health/live
+2026-05-05 09:55:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 09:55:45 | ai-service | INFO | request GET /health/live
+2026-05-05 09:55:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.39
+2026-05-05 09:55:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:55:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:56:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 09:56:15 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 09:56:19 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 09:56:19 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=3.95
+2026-05-05 09:56:19 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:56:20 | ai-service | INFO | response POST /ai/query status=200 duration_ms=878.17
+2026-05-05 09:56:25 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.32
+2026-05-05 09:56:35 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.32
+2026-05-05 09:56:45 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 09:56:54 | ai-service | INFO | request POST /ai/query
+2026-05-05 09:56:55 | ai-service | INFO | request GET /health/live
+2026-05-05 09:56:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.38
+2026-05-05 09:56:55 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1720.96
+2026-05-05 09:57:05 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 09:57:15 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 09:57:26 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 09:57:36 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=8.08
+2026-05-05 09:57:46 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.38
+2026-05-05 09:57:56 | ai-service | INFO | request GET /health/live
+2026-05-05 09:57:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.73
+2026-05-05 09:58:06 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:06 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.40
+2026-05-05 09:58:16 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 09:58:26 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 09:58:36 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.39
+2026-05-05 09:58:46 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.34
+2026-05-05 09:58:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:58:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 09:59:07 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=12.19
+2026-05-05 09:59:17 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.18
+2026-05-05 09:59:27 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 09:59:37 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=48.41
+2026-05-05 09:59:47 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=10.03
+2026-05-05 09:59:57 | ai-service | INFO | request GET /health/live
+2026-05-05 09:59:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.21
+2026-05-05 10:00:08 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=210.69
+2026-05-05 10:00:18 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.58
+2026-05-05 10:00:28 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 10:00:38 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:00:49 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.06
+2026-05-05 10:00:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:00:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=6.83
+2026-05-05 10:01:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.91
+2026-05-05 10:01:19 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.62
+2026-05-05 10:01:29 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 10:01:39 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 10:01:49 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 10:01:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:01:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.65
+2026-05-05 10:02:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:02:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:02:19 | ai-service | INFO | request GET /health/live
+2026-05-05 10:02:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:02:29 | ai-service | INFO | request GET /health/live
+2026-05-05 10:02:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.20
+2026-05-05 10:02:40 | ai-service | INFO | request GET /health/live
+2026-05-05 10:02:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=92.88
+2026-05-05 10:02:50 | ai-service | INFO | request GET /health/live
+2026-05-05 10:02:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=62.08
+2026-05-05 10:03:00 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.59
+2026-05-05 10:03:10 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 10:03:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:03:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.41
+2026-05-05 10:03:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:03:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:03:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.71
+2026-05-05 10:04:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 10:04:06 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:04:07 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1017.41
+2026-05-05 10:04:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:04:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.37
+2026-05-05 10:04:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 10:04:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.82
+2026-05-05 10:04:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:04:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 10:05:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:05:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.09
+2026-05-05 10:05:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.84
+2026-05-05 10:05:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.19
+2026-05-05 10:05:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:05:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:05:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:06:00 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:06:01 | ai-service | INFO | response POST /ai/query status=200 duration_ms=919.20
+2026-05-05 10:06:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.19
+2026-05-05 10:06:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.64
+2026-05-05 10:06:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 10:06:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:06:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=9.72
+2026-05-05 10:06:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:06:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.40
+2026-05-05 10:07:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.02
+2026-05-05 10:07:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=55.92
+2026-05-05 10:07:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 10:07:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:07:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.10
+2026-05-05 10:07:53 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 10:07:53 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=1.30
+2026-05-05 10:07:53 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:07:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:07:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=27.50
+2026-05-05 10:07:54 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1270.23
+2026-05-05 10:08:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:08:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.65
+2026-05-05 10:08:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.56
+2026-05-05 10:08:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.79
+2026-05-05 10:08:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 10:08:47 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:08:47 | ai-service | WARNING | response POST /ai/query status=401 duration_ms=37.24
+2026-05-05 10:08:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:08:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:09:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:09:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.24
+2026-05-05 10:09:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 10:09:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=26.87
+2026-05-05 10:09:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:09:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:09:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:10:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.70
+2026-05-05 10:10:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 10:10:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:10:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.15
+2026-05-05 10:10:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.56
+2026-05-05 10:10:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:10:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:11:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.02
+2026-05-05 10:11:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.30
+2026-05-05 10:11:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.92
+2026-05-05 10:11:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:11:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.84
+2026-05-05 10:11:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:11:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:12:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:12:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:12:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:12:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.13
+2026-05-05 10:12:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:12:50 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:12:51 | ai-service | INFO | response POST /ai/query status=200 duration_ms=993.57
+2026-05-05 10:12:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:12:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.33
+2026-05-05 10:13:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 10:13:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:13:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:13:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:13:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:13:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:13:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:14:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.28
+2026-05-05 10:14:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:14:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.98
+2026-05-05 10:14:30 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.46
+2026-05-05 10:14:40 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.84
+2026-05-05 10:14:50 | ai-service | INFO | request GET /health/live
+2026-05-05 10:14:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.00
+2026-05-05 10:15:00 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.98
+2026-05-05 10:15:01 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:15:03 | ai-service | INFO | response POST /ai/query status=200 duration_ms=2010.61
+2026-05-05 10:15:10 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:15:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.28
+2026-05-05 10:15:30 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:15:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:15:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:15:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.79
+2026-05-05 10:16:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.62
+2026-05-05 10:16:09 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:16:09 | ai-service | INFO | response POST /ai/query status=200 duration_ms=801.03
+2026-05-05 10:16:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.59
+2026-05-05 10:16:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.37
+2026-05-05 10:16:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:16:32 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:16:32 | ai-service | INFO | response POST /ai/query status=200 duration_ms=557.83
+2026-05-05 10:16:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:16:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:16:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:17:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.88
+2026-05-05 10:17:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.61
+2026-05-05 10:17:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.69
+2026-05-05 10:17:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.73
+2026-05-05 10:17:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:17:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:17:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.89
+2026-05-05 10:18:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.07
+2026-05-05 10:18:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.18
+2026-05-05 10:18:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:18:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:18:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:18:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:18:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:19:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.81
+2026-05-05 10:19:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 10:19:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:19:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:19:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:19:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:19:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.77
+2026-05-05 10:20:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.61
+2026-05-05 10:20:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.66
+2026-05-05 10:20:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:20:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:20:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:20:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:20:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:21:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:21:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 10:21:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 10:21:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:21:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:21:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:21:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.40
+2026-05-05 10:22:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 10:22:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 10:22:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.20
+2026-05-05 10:22:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:22:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:22:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:22:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 10:23:05 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:23:15 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:23:25 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.46
+2026-05-05 10:23:35 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:23:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:23:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:23:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:24:05 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.88
+2026-05-05 10:24:15 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.09
+2026-05-05 10:24:25 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:24:35 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:24:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:24:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:24:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:25:06 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:06 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 10:25:16 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:25:26 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 10:25:36 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 10:25:46 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.02
+2026-05-05 10:25:56 | ai-service | INFO | request GET /health/live
+2026-05-05 10:25:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:26:06 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:06 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 10:26:16 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:26:26 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.84
+2026-05-05 10:26:36 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 10:26:46 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:26:56 | ai-service | INFO | request GET /health/live
+2026-05-05 10:26:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.04
+2026-05-05 10:27:07 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:27:17 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.43
+2026-05-05 10:27:27 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:27:37 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:27:47 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 10:27:57 | ai-service | INFO | request GET /health/live
+2026-05-05 10:27:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:28:07 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:28:17 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.58
+2026-05-05 10:28:27 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:28:37 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:28:47 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.73
+2026-05-05 10:28:58 | ai-service | INFO | request GET /health/live
+2026-05-05 10:28:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.26
+2026-05-05 10:29:08 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:29:18 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:29:28 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:29:38 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.77
+2026-05-05 10:29:48 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:29:58 | ai-service | INFO | request GET /health/live
+2026-05-05 10:29:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:30:08 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:30:18 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.19
+2026-05-05 10:30:28 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 10:30:38 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 10:30:48 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:30:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:30:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:31:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:31:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:31:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:31:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.62
+2026-05-05 10:31:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:31:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.20
+2026-05-05 10:31:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:31:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:31:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:31:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:31:58 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 10:31:58 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=1.29
+2026-05-05 10:31:58 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:32:00 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1189.86
+2026-05-05 10:32:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 10:32:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.67
+2026-05-05 10:32:25 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 10:32:35 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.41
+2026-05-05 10:32:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.59
+2026-05-05 10:32:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:32:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.43
+2026-05-05 10:33:05 | ai-service | INFO | request GET /health/live
+2026-05-05 10:33:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:33:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:33:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.37
+2026-05-05 10:33:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:33:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.84
+2026-05-05 10:33:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:33:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:33:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:33:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.75
+2026-05-05 10:34:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.44
+2026-05-05 10:34:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:34:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 10:34:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.70
+2026-05-05 10:34:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.96
+2026-05-05 10:34:47 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:34:48 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1269.25
+2026-05-05 10:34:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:34:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.71
+2026-05-05 10:35:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:35:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 10:35:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:35:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.21
+2026-05-05 10:35:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.32
+2026-05-05 10:35:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:35:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.45
+2026-05-05 10:36:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 10:36:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:36:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=5.14
+2026-05-05 10:36:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:36:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.77
+2026-05-05 10:36:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:36:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 10:37:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.93
+2026-05-05 10:37:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.15
+2026-05-05 10:37:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.18
+2026-05-05 10:37:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.14
+2026-05-05 10:37:34 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:37:36 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1711.13
+2026-05-05 10:37:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.76
+2026-05-05 10:37:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:37:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:38:02 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:38:03 | ai-service | ERROR | error POST /ai/query duration_ms=585.03 detail=2 validation errors for StructuredCommand
+actions.0
+  Input should be a valid string [type=string_type, input_value={'action': 'fetch_attenda...ams': {'student_id': 1}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.7/v/string_type
+actions.1
+  Input should be a valid string [type=string_type, input_value={'action': 'fetch_timetab...batch': 2023, 'sem': 7}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.7/v/string_type
+2026-05-05 10:38:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.63
+2026-05-05 10:38:11 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:38:12 | ai-service | INFO | response POST /ai/query status=200 duration_ms=973.68
+2026-05-05 10:38:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.28
+2026-05-05 10:38:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:38:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.56
+2026-05-05 10:38:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 10:38:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:38:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=11.28
+2026-05-05 10:39:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:39:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:39:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:39:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.02
+2026-05-05 10:39:24 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:39:25 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1242.62
+2026-05-05 10:39:30 | ai-service | INFO | request GET /health/live
+2026-05-05 10:39:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:39:37 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:39:39 | ai-service | INFO | response POST /ai/query status=200 duration_ms=2366.32
+2026-05-05 10:39:40 | ai-service | INFO | request GET /health/live
+2026-05-05 10:39:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.16
+2026-05-05 10:39:50 | ai-service | INFO | request GET /health/live
+2026-05-05 10:39:50 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:40:00 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 10:40:10 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:10 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.77
+2026-05-05 10:40:20 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:20 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:40:30 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:30 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.44
+2026-05-05 10:40:40 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:40 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.03
+2026-05-05 10:40:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:40:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.80
+2026-05-05 10:41:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.13
+2026-05-05 10:41:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.81
+2026-05-05 10:41:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:41:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:41:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.44
+2026-05-05 10:41:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:41:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.54
+2026-05-05 10:42:01 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:01 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.94
+2026-05-05 10:42:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 10:42:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.33
+2026-05-05 10:42:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=10.80
+2026-05-05 10:42:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.15
+2026-05-05 10:42:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:42:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.43
+2026-05-05 10:43:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.10
+2026-05-05 10:43:12 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:12 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 10:43:22 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:22 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.12
+2026-05-05 10:43:32 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:32 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:43:42 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:42 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:43:52 | ai-service | INFO | request GET /health/live
+2026-05-05 10:43:52 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.47
+2026-05-05 10:44:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:44:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.80
+2026-05-05 10:44:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:44:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 10:44:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.88
+2026-05-05 10:44:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:44:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.49
+2026-05-05 10:45:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:45:13 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:13 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.94
+2026-05-05 10:45:23 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:23 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.16
+2026-05-05 10:45:33 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:33 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 10:45:43 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:43 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.74
+2026-05-05 10:45:53 | ai-service | INFO | request GET /health/live
+2026-05-05 10:45:53 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:46:03 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:03 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 10:46:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.89
+2026-05-05 10:46:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:46:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.99
+2026-05-05 10:46:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:46:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:46:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.19
+2026-05-05 10:47:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.02
+2026-05-05 10:47:14 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:14 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:47:24 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:24 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:47:34 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:34 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.17
+2026-05-05 10:47:44 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:44 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:47:54 | ai-service | INFO | request GET /health/live
+2026-05-05 10:47:54 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.06
+2026-05-05 10:48:04 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:04 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 10:48:15 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 10:48:25 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.12
+2026-05-05 10:48:35 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:48:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.72
+2026-05-05 10:48:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:48:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.01
+2026-05-05 10:49:05 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:49:15 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:15 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.91
+2026-05-05 10:49:25 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:25 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.98
+2026-05-05 10:49:35 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:35 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.82
+2026-05-05 10:49:45 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:45 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.04
+2026-05-05 10:49:55 | ai-service | INFO | request GET /health/live
+2026-05-05 10:49:55 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:50:05 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:05 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.97
+2026-05-05 10:50:16 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.05
+2026-05-05 10:50:26 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:50:36 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.24
+2026-05-05 10:50:46 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.85
+2026-05-05 10:50:56 | ai-service | INFO | request GET /health/live
+2026-05-05 10:50:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 10:51:06 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:06 | ai-service | INFO | response GET /health/live status=200 duration_ms=4.93
+2026-05-05 10:51:16 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:16 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.21
+2026-05-05 10:51:26 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:26 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.90
+2026-05-05 10:51:36 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:36 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.11
+2026-05-05 10:51:38 | ai-service | INFO | request OPTIONS /ai/query
+2026-05-05 10:51:38 | ai-service | INFO | response OPTIONS /ai/query status=200 duration_ms=2.05
+2026-05-05 10:51:38 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:51:39 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1417.13
+2026-05-05 10:51:46 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:46 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.36
+2026-05-05 10:51:54 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:51:55 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1555.49
+2026-05-05 10:51:56 | ai-service | INFO | request GET /health/live
+2026-05-05 10:51:56 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:52:07 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:07 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.86
+2026-05-05 10:52:17 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:17 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.38
+2026-05-05 10:52:27 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:27 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.07
+2026-05-05 10:52:37 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:37 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.88
+2026-05-05 10:52:47 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:47 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.98
+2026-05-05 10:52:57 | ai-service | INFO | request GET /health/live
+2026-05-05 10:52:57 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.55
+2026-05-05 10:53:08 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.82
+2026-05-05 10:53:19 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.30
+2026-05-05 10:53:29 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.70
+2026-05-05 10:53:39 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.08
+2026-05-05 10:53:49 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 10:53:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:53:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.23
+2026-05-05 10:54:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.30
+2026-05-05 10:54:19 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.20
+2026-05-05 10:54:29 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:54:39 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.22
+2026-05-05 10:54:49 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:54:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:54:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 10:56:11 | ai-service | INFO | request GET /health/live
+2026-05-05 10:56:11 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.87
+2026-05-05 10:56:21 | ai-service | INFO | request GET /health/live
+2026-05-05 10:56:21 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.10
+2026-05-05 10:56:31 | ai-service | INFO | request GET /health/live
+2026-05-05 10:56:31 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.63
+2026-05-05 10:56:32 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:56:33 | ai-service | WARNING | response POST /ai/query status=403 duration_ms=481.81
+2026-05-05 10:56:41 | ai-service | INFO | request GET /health/live
+2026-05-05 10:56:41 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.60
+2026-05-05 10:56:51 | ai-service | INFO | request GET /health/live
+2026-05-05 10:56:51 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.67
+2026-05-05 10:57:02 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:02 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.93
+2026-05-05 10:57:18 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.01
+2026-05-05 10:57:28 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.35
+2026-05-05 10:57:38 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.00
+2026-05-05 10:57:48 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 10:57:58 | ai-service | INFO | request GET /health/live
+2026-05-05 10:57:58 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.88
+2026-05-05 10:58:08 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:08 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.14
+2026-05-05 10:58:10 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:58:12 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1925.83
+2026-05-05 10:58:18 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:18 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 10:58:27 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:58:28 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:28 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.74
+2026-05-05 10:58:28 | ai-service | INFO | response POST /ai/query status=200 duration_ms=1384.56
+2026-05-05 10:58:38 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:38 | ai-service | INFO | response GET /health/live status=200 duration_ms=3.35
+2026-05-05 10:58:48 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:48 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 10:58:52 | ai-service | INFO | request POST /ai/query
+2026-05-05 10:58:53 | ai-service | WARNING | response POST /ai/query status=429 duration_ms=866.51
+2026-05-05 10:58:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:58:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.51
+2026-05-05 10:59:09 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.36
+2026-05-05 10:59:19 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 10:59:29 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 10:59:39 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.92
+2026-05-05 10:59:49 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.75
+2026-05-05 10:59:59 | ai-service | INFO | request GET /health/live
+2026-05-05 10:59:59 | ai-service | INFO | response GET /health/live status=200 duration_ms=2.03
+2026-05-05 11:00:09 | ai-service | INFO | request GET /health/live
+2026-05-05 11:00:09 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.87
+2026-05-05 11:00:19 | ai-service | INFO | request GET /health/live
+2026-05-05 11:00:19 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.95
+2026-05-05 11:00:29 | ai-service | INFO | request GET /health/live
+2026-05-05 11:00:29 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.96
+2026-05-05 11:00:39 | ai-service | INFO | request GET /health/live
+2026-05-05 11:00:39 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.83
+2026-05-05 11:00:49 | ai-service | INFO | request GET /health/live
+2026-05-05 11:00:49 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.69
+2026-05-05 11:01:00 | ai-service | INFO | request GET /health/live
+2026-05-05 11:01:00 | ai-service | INFO | response GET /health/live status=200 duration_ms=1.88
