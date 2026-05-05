@@ -8,6 +8,8 @@ from app.agents.backend_agent import (
     fetch_attendance_history,
     fetch_class_students,
     fetch_current_user,
+    fetch_current_student,
+    fetch_current_faculty,
     fetch_departments,
     fetch_faculty,
     fetch_holidays,
@@ -18,6 +20,7 @@ from app.agents.backend_agent import (
     fetch_student_results,
     fetch_subjects,
     fetch_timetable,
+    fetch_sql_query,
     mark_bulk_attendance,
 )
 from app.core.config import settings
@@ -164,11 +167,35 @@ async def run_query_chain(
 ) -> tuple[str, StructuredCommand, dict]:
   user = await fetch_current_user(auth_header)
   permissions = await fetch_permissions(auth_header)
-  student = await fetch_student(student_id, auth_header) if student_id else None
+  
+  student = None
+  faculty_profile = None
+  
+  if user:
+    role = user.get("role")
+    if role == "student":
+      try:
+        student = await fetch_current_student(auth_header)
+        if student:
+          student_id = student.get("id")
+      except Exception:
+        pass
+    elif role == "teacher":
+      try:
+        faculty_profile = await fetch_current_faculty(auth_header)
+      except Exception:
+        pass
+
+  if not student and student_id:
+    try:
+      student = await fetch_student(student_id, auth_header)
+    except Exception:
+      pass
   
   context = {
       "user": user,
       "student": student,
+      "faculty_profile": faculty_profile,
       "timetable_id": timetable_id,
       "date": str(attendance_date) if attendance_date else None,
       "permissions": permissions,
@@ -250,6 +277,13 @@ async def run_query_chain(
       elif action == "create_subject":
         # Handled separately if execute is True
         pass
+      elif action == "execute_sql":
+        from app.services.llm_client import sql_query_from_hosted_llm
+        sql_query = await sql_query_from_hosted_llm(query, context)
+        if sql_query:
+          sql_clean = sql_query.replace("```sql", "").replace("```", "").strip()
+          fetched_data["sql_query"] = sql_clean
+          fetched_data["sql_results"] = await fetch_sql_query(sql_clean, auth_header)
     except Exception as e:
       fetched_data[f"error_{action}"] = str(e)
 
@@ -257,7 +291,7 @@ async def run_query_chain(
   has_fetch = any(a.startswith("fetch_") for a in command.actions)
   
   if "mark_attendance" in command.actions and (not has_fetch or execute):
-    answer, meta = await _handle_mark_attendance(command, execute, auth_header)
+    answer, meta = await _handle_mark_attendance(command, execute, auth_header, user)
     return answer, command, meta
   
   if "create_subject" in command.actions and (not has_fetch or execute):
@@ -277,9 +311,27 @@ async def run_query_chain(
   
   return answer or "I couldn't process that data.", command, {"fetched_data_keys": list(fetched_data.keys())}
 
-async def _handle_mark_attendance(command: StructuredCommand, execute: bool, auth_header: str | None) -> tuple[str, dict]:
-  if not command.timetable_id or not command.date:
-    return "Class and date required to mark attendance.", {}
+async def _handle_mark_attendance(command: StructuredCommand, execute: bool, auth_header: str | None, user: dict | None = None) -> tuple[str, dict]:
+  if not command.timetable_id:
+    if user and user.get("role") == "teacher":
+      try:
+        from app.agents.backend_agent import fetch_sql_query
+        sql = f"SELECT timetable.id, subjects.name as subject_name, timetable.day, timetable.start_time, timetable.end_time FROM timetable JOIN subjects ON timetable.subject_id = subjects.id WHERE timetable.faculty_user_id = {user.get('id')}"
+        entries = await fetch_sql_query(sql, auth_header)
+        if entries and len(entries) > 0:
+          options = "\n".join([f"- **Slot ID {e['id']}**: {e['subject_name']} ({e['day']}s, {e['start_time']} - {e['end_time']})" for e in entries])
+          return (
+              "Please specify which class slot you want to mark attendance for. "
+              f"Here are your scheduled classes:\n\n{options}\n\n"
+              f"You can say: *'mark all present for slot ID {entries[0]['id']} on {command.date or 'today'}'*",
+              {}
+          )
+      except Exception:
+        pass
+    return "Class required to mark attendance. Please specify which subject or timetable slot.", {}
+
+  if not command.date:
+    return "Date required to mark attendance. Please specify a date (e.g. 'today' or '6th may').", {}
   
   students = await fetch_class_students(command.timetable_id, auth_header=auth_header)
   absent_rolls = {str(r).strip().lower() for r in command.absent_roll_numbers}

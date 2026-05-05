@@ -89,7 +89,7 @@ export const ResultManager = ({ user }: ResultManagerProps) => {
         
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Subject</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Subject Code</label>
             <select 
               value={selectedSubjectId} 
               onChange={(e) => setSelectedSubjectId(e.target.value ? Number(e.target.value) : "")}
@@ -97,21 +97,21 @@ export const ResultManager = ({ user }: ResultManagerProps) => {
             >
               <option value="">Select subject...</option>
               {subjects.map(s => (
-                <option key={s.id} value={s.id}>{s.name} ({s.department} · Sem {s.semester})</option>
+                <option key={s.id} value={s.id}>{s.code ? `[${s.code}] ` : ""}{s.name} ({s.department} · Sem {s.semester})</option>
               ))}
             </select>
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Student</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Enrollment Number</label>
             <select 
               value={form.student_id} 
               onChange={(e) => setForm(f => ({ ...f, student_id: e.target.value }))}
               disabled={!selectedSubjectId || loading}
             >
-              <option value="">Select student...</option>
+              <option value="">Select enrollment number...</option>
               {filteredStudents.map(s => (
-                <option key={s.id} value={s.id}>{s.name} ({s.enrollment_number})</option>
+                <option key={s.id} value={s.id}>{s.enrollment_number} — {s.name}</option>
               ))}
             </select>
           </div>

@@ -20,13 +20,27 @@ type AssistantHistoryMessage = {
 
 const STORAGE_KEY = "studentms-assistant-page";
 
-const suggestionPrompts = [
-  { text: "Show weak subjects for this student.", tag: "Performance" },
-  { text: "Summarize attendance risk for the current student.", tag: "Attendance" },
-  { text: "Show students absent today.", tag: "Operations" },
-  { text: "Mark all present except roll 4 5 6.", tag: "Commands" },
-  { text: "What should I focus on next based on recent performance?", tag: "Planning" },
+const studentSuggestions = [
+  { text: "Summarize my attendance and highlights.", tag: "Attendance" },
+  { text: "How are my grades in recent exams?", tag: "Performance" },
+  { text: "Show my timetable for this week.", tag: "Schedule" },
+  { text: "What areas should I focus on to improve my score?", tag: "Planning" },
 ];
+
+const teacherSuggestions = [
+  { text: "Who is at risk due to low attendance in my department?", tag: "Attendance" },
+  { text: "Show performance metrics and weak subjects in my classes.", tag: "Performance" },
+  { text: "Mark all present for today's slot.", tag: "Operations" },
+  { text: "Draft a parent update note for underperforming students.", tag: "Communication" },
+];
+
+const adminSuggestions = [
+  { text: "Show an overview of total classes and overall attendance.", tag: "Directory" },
+  { text: "Identify high-risk departments with lowest average grades.", tag: "Analytics" },
+  { text: "Create a new subject called 'Advanced AI'.", tag: "Operations" },
+  { text: "How many active students are enrolled across all programs?", tag: "Directory" },
+];
+
 
 const TypingDots = () => (
   <div className="flex items-center gap-1.5" aria-hidden>
@@ -55,6 +69,12 @@ export const ChatInterface = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const historyRef = useRef<HTMLDivElement | null>(null);
+
+  const suggestions = useMemo(() => {
+    if (user?.role === "student") return studentSuggestions;
+    if (user?.role === "teacher") return teacherSuggestions;
+    return adminSuggestions;
+  }, [user?.role]);
 
   // Load history from localStorage on mount
   useEffect(() => {
@@ -204,7 +224,7 @@ export const ChatInterface = () => {
               <label className="block space-y-2">
                 <span className="text-[13px] font-semibold text-slate-700">Student focus</span>
                 {isStudentUser ? (
-                  <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Student ID" disabled />
+                  <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Enrollment Number" disabled />
                 ) : (
                   <select value={studentId} onChange={(event) => setStudentId(event.target.value)} className="text-[13px]">
                     <option value="">Select a student</option>
@@ -258,12 +278,12 @@ export const ChatInterface = () => {
             <div>
               <p className="text-[13px] font-semibold text-slate-700">Suggested prompts</p>
               <div className="scrollbar-thin mt-3 flex gap-2 overflow-x-auto pb-1">
-                {suggestionPrompts.map(({ text, tag }) => (
+                {suggestions.map(({ text, tag }) => (
                   <button
                     key={text}
                     type="button"
                     onClick={() => void sendMessage(text)}
-                    disabled={loading || Number(studentId) <= 0}
+                    disabled={loading || (isStudentUser && Number(studentId) <= 0)}
                     className="group shrink-0 max-w-[240px] rounded-2xl border border-slate-200/90 bg-white px-4 py-3 text-left shadow-sm transition hover:border-cyan-300/70 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-700">{tag}</span>

@@ -8,24 +8,47 @@ from app.core.config import settings
 
 
 SYSTEM_PROMPT = """Map request to JSON: {"actions": ["action1", "action2"], "student_id": 123, ...}.
-Actions: fetch_attendance (view history), fetch_results (view grades), fetch_timetable, fetch_directory (search students), fetch_org_structure, fetch_overview, mark_attendance (submit new record), create_subject (add new).
+Actions: fetch_attendance (view history), fetch_results (view grades), fetch_timetable, fetch_directory (search students), fetch_org_structure, fetch_overview, mark_attendance (submit new record), create_subject (add new), execute_sql (for custom stats, aggregations, queries, or database questions not covered by general endpoints).
 CRITICAL:
 - Use 'context.student.id' for student_id, NOT 'context.user.id'. 
 - ROLE-BASED ACCESS CONTROL:
   * For STUDENT role: NEVER use 'fetch_directory', 'fetch_overview', 'fetch_org_structure', or 'mark_attendance'. They ONLY access their own attendance, results, and timetable.
   * For TEACHER role: Can 'fetch_attendance', 'fetch_results', 'mark_attendance' for students in their department.
+- If the query requires complex counting, stats, or information from multiple tables that cannot be answered with a simple action, use 'execute_sql'.
 - If the user asks "what can you do", return {"actions": []}.
 Return ONLY the JSON."""
 
-SQL_PROMPT = """Generate read-only SELECT SQL. Weak subjects: results.grade IN ('C','D','F') OR attendance pct < 75%. Tables: students(id, name, roll_number, email, dept, batch, sem), subjects(id, name, code, dept, batch, sem), results(id, student_id, subject_id, subject_name, marks, max, grade), attendance(id, student_id, subject_id, timetable_id, date, status), timetable(id, subject_id, day, start, end, room, faculty_id). Join on subject_id/student_id. Use student.id from context. Output SQL only."""
+SQL_PROMPT = """Generate read-only SELECT SQL.
+WEAK SUBJECTS: results.grade IN ('C','D','F') OR attendance percentage < 75%.
+TABLES:
+- students(id, name, enrollment_number, roll_number, email, department, batch_year, semester)
+- subjects(id, name, code, department, batch_year, semester)
+- results(id, student_id, subject_id, subject_name, marks_obtained, max_marks, grade)
+- attendance(id, student_id, subject_id, timetable_id, date, status)
+- timetable(id, subject_id, day, start_time, end_time, room, faculty_user_id)
+
+ROLE-BASED PARAMETERS & SECURITY CONSTRAINTS:
+1. If the logged in user is a STUDENT (role: "student"), they can ONLY query their own records.
+   - You MUST filter by 'student_id = :student_id' or 'students.email = :student_email' or 'students.id = :student_id' in your SQL query where relevant.
+   - For timetables, you MUST filter by 'department = :student_dept'.
+   - NEVER query faculty_profiles or other students' records.
+2. If the logged in user is a TEACHER (role: "teacher"), they can ONLY query records in their department.
+   - You MUST filter by 'department = :faculty_dept' or join on students and filter by student.department = :faculty_dept where relevant.
+3. Use named parameters like ':student_id', ':student_email', ':student_dept', ':faculty_dept' where applicable.
+4. Join on student_id or subject_id where necessary.
+5. Generate ONLY the executable SELECT SQL string, no description, no markdown formatting."""
 
 CHAT_SYSTEM_PROMPT = """You are a highly concise Academic Assistant.
-- Use context JSON. Prefer 'attendance_summary' and 'result_summary' for data queries.
+- Personalize the response dynamically based on who is logged in!
+  * If context has 'student', greet them by name and acknowledge their role as a student, tailoring recommendations to their academics (attendance, grades, timetable).
+  * If context has 'faculty_profile', greet them as professor (e.g. "Professor <Name>") and reference their department, tailoring recommendations to class management and attendance entry.
+  * If context has 'user' role 'admin', provide comprehensive organizational insights.
+- Use context JSON. Prefer 'attendance_summary', 'result_summary' or 'sql_results' for data queries.
 - NEVER use internal database IDs (like "Subject 38" or "Student 101") in your final response. 
 - ALWAYS use the exact names (e.g., "Latin Readings", "John Doe") found in the context.
 - IGNORE any database IDs mentioned in the conversation history; always prefer the names in the current context.
 - ONLY discuss specific subjects that have active records in the provided summaries.
-- If asked "what can you do", you can: check attendance/results, view timetables, search the directory, and manage academic records.
+- If asked "what can you do", you can: check attendance/results, view timetables, search the directory, execute custom analytics, and manage academic records.
 - BE MATHEMATICALLY ACCURATE. When calculating things like "what if I skip 5 classes", use the counts from the context.
   Calculation rule: (current_present) / (current_total + classes_to_skip). 
   Example: if 25/28 (89%) and skip 5, new is 25/33 (~75.7%).

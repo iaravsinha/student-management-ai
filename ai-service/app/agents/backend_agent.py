@@ -36,6 +36,35 @@ async def fetch_current_user(auth_header: str | None = None) -> dict | None:
     return response.json()
 
 
+async def fetch_current_student(auth_header: str | None = None) -> dict | None:
+  if not auth_header:
+    return None
+  async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
+    response = await client.get(
+        f"{settings.BACKEND_URL}/students/me",
+        headers=_headers(auth_header),
+    )
+    if response.status_code == 404:
+      return None
+    response.raise_for_status()
+    return response.json()
+
+
+async def fetch_current_faculty(auth_header: str | None = None) -> dict | None:
+  if not auth_header:
+    return None
+  async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
+    response = await client.get(
+        f"{settings.BACKEND_URL}/faculty/me",
+        headers=_headers(auth_header),
+    )
+    if response.status_code == 404:
+      return None
+    response.raise_for_status()
+    return response.json()
+
+
+
 async def fetch_permissions(auth_header: str | None = None) -> list[str]:
   if not auth_header:
     return []

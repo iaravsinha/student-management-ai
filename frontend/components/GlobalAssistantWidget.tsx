@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { useAuth } from "../context/AuthContext";
 import { aiApi } from "../lib/ai-api";
@@ -22,11 +22,24 @@ type PersistedState = {
 
 const STORAGE_KEY = "studentms-global-assistant";
 
-const quickStarters = [
-  "Summarize today’s attendance risk.",
-  "What weak subjects should we watch?",
-  "Draft a short parent update note.",
+const studentStarters = [
+  "Summarize my attendance and highlights.",
+  "How are my grades in recent exams?",
+  "Show my timetable for this week.",
 ];
+
+const teacherStarters = [
+  "Who is at risk due to low attendance in my department?",
+  "Show performance metrics and weak subjects in my classes.",
+  "Draft a parent update note.",
+];
+
+const adminStarters = [
+  "Show overall campus class and attendance counts.",
+  "Identify high-risk departments with lowest average grades.",
+  "How many active students are enrolled across programs?",
+];
+
 
 const TypingDots = () => (
   <div className="flex items-center gap-1 px-1 py-0.5" aria-hidden>
@@ -52,6 +65,12 @@ export const GlobalAssistantWidget = () => {
   const [date, setDate] = useState(getLocalDateInputValue());
   const [execute, setExecute] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const quickStarters = useMemo(() => {
+    if (user?.role === "student") return studentStarters;
+    if (user?.role === "teacher") return teacherStarters;
+    return adminStarters;
+  }, [user?.role]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -258,7 +277,7 @@ export const GlobalAssistantWidget = () => {
               </summary>
               <div className="space-y-2 border-t border-slate-200/70 px-3 pb-3 pt-2">
                 <div className="grid grid-cols-3 gap-2">
-                  <input value={studentId} onChange={(e) => setStudentId(e.target.value)} placeholder="Student ID" className="!py-2 text-xs" />
+                  <input value={studentId} onChange={(e) => setStudentId(e.target.value)} placeholder="Enrollment Number" className="!py-2 text-xs" />
                   <input value={timetableId} onChange={(e) => setTimetableId(e.target.value)} placeholder="Class ID" className="!py-2 text-xs" />
                   <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="!py-2 text-xs" />
                 </div>
@@ -305,12 +324,15 @@ export const GlobalAssistantWidget = () => {
 
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="group relative grid h-[56px] w-[56px] shrink-0 place-items-center rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-900 text-sm font-bold tracking-wide text-white shadow-[0_12px_40px_-8px_rgba(15,23,42,0.65)] ring-2 ring-white/90 transition hover:scale-[1.04] hover:shadow-xl focus-visible:ring-[3px] focus-visible:ring-cyan-400/40"
-        aria-label="Open assistant"
+        onClick={() => setOpen((prev) => !prev)}
+        className="group relative flex h-12 shrink-0 items-center gap-2.5 rounded-full bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950 px-5 py-3 text-sm font-bold tracking-wide text-white shadow-[0_12px_40px_-8px_rgba(15,23,42,0.65)] ring-2 ring-white/90 transition duration-300 hover:scale-[1.04] hover:shadow-xl hover:from-slate-900 hover:to-cyan-900 focus-visible:ring-[3px] focus-visible:ring-cyan-400/40"
+        aria-label="Toggle assistant"
       >
-        <span className="pointer-events-none absolute inset-[-6px] rounded-full bg-gradient-to-br from-cyan-400/40 to-amber-300/30 opacity-0 blur-md transition group-hover:opacity-100" />
-        <span className="relative">AI</span>
+        <span className="pointer-events-none absolute inset-[-6px] rounded-full bg-gradient-to-br from-cyan-400/30 to-amber-300/20 opacity-0 blur-md transition duration-300 group-hover:opacity-100" />
+        <svg viewBox="0 0 24 24" className="relative h-5 w-5 text-cyan-300 transition-transform duration-500 group-hover:rotate-12 shrink-0" fill="currentColor">
+          <path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5 5.5-2.5-5.5-2.5z" />
+        </svg>
+        <span className="relative">Ask Xplore</span>
       </button>
     </div>
   );
