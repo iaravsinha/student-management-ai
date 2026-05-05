@@ -266,11 +266,16 @@ def build_academic_overview(db: Session, current_user: User) -> AcademicOverview
       # Simplify flow for student
       flow = [f for f in flow if f.entity in {"Student", "Attendance", "Grades", "Timetable", "Subject"}]
       for f in flow:
-          if f.entity == "Student": f.live_records = metrics.student_count
-          if f.entity == "Subject": f.live_records = metrics.subject_count
-          if f.entity == "Timetable": f.live_records = metrics.timetable_slot_count
-          if f.entity == "Attendance": f.live_records = metrics.attendance_record_count
-          if f.entity == "Grades": f.live_records = metrics.result_record_count
+          if f.entity == "Student":
+              f.live_records = metrics.student_count
+          if f.entity == "Subject":
+              f.live_records = metrics.subject_count
+          if f.entity == "Timetable":
+              f.live_records = metrics.timetable_slot_count
+          if f.entity == "Attendance":
+              f.live_records = metrics.attendance_record_count
+          if f.entity == "Grades":
+              f.live_records = metrics.result_record_count
 
   return AcademicOverviewResponse(
       role=current_user.role,
