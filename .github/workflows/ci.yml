@@ -38,12 +38,16 @@ jobs:
       - name: 5. Run tests
         run: |
           # Run Backend tests
-          export PYTHONPATH=$(pwd)/backend
-          python -m pytest backend/tests
-          
+          cd backend
+          export PYTHONPATH=.
+          python -m pytest tests
+          cd ..
+
           # Run AI Service tests
-          export PYTHONPATH=$(pwd)/ai-service
-          python -m pytest ai-service/tests
+          cd ai-service
+          export PYTHONPATH=.
+          python -m pytest tests
+          cd ..
 
       - name: 6. Build Docker images
         run: docker compose build
