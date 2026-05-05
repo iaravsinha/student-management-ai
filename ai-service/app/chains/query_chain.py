@@ -31,36 +31,90 @@ def _compact_context_for_llm(context: dict) -> dict:
   compact = dict(context)
   fetched = compact.get("fetched_data", {})
   
-  # Map subject IDs to names for the LLM
+  # 0. Pre-extract for mapping
   subjects = fetched.get("subjects", [])
   id_to_subj = {s["id"]: s["name"] for s in subjects if "id" in s and "name" in s}
-  
-  # Map faculty user IDs to names
   faculty = fetched.get("faculty", [])
-  id_to_faculty = {f["user_id"]: f["name"] for f in faculty if "user_id" in f and "name" in f}
+  id_to_faculty = {f.get("user_id"): f.get("name") for f in faculty if "user_id" in f}
 
+  # 1. Identify subjects with active data to prune the master list
+  active_subj_ids = set()
+  if isinstance(fetched.get("attendance"), list):
+      active_subj_ids.update(r.get("subject_id") for r in fetched["attendance"] if r.get("subject_id"))
+  if isinstance(fetched.get("results"), list):
+      active_subj_ids.update(r.get("subject_id") for r in fetched["results"] if r.get("subject_id"))
+
+  if "subjects" in fetched and isinstance(fetched["subjects"], list):
+      # If we have specific data, only show those subjects to the LLM to avoid "No records found" clutter
+      if active_subj_ids:
+          fetched["subjects"] = [s for s in subjects if s.get("id") in active_subj_ids]
+      fetched["subjects"] = [{"id": s.get("id"), "name": s.get("name")} for s in fetched["subjects"]][:40]
+
+  if "faculty" in fetched and isinstance(fetched["faculty"], list):
+      fetched["faculty"] = [{"id": f.get("id"), "name": f.get("name")} for f in fetched["faculty"]][:10]
+  
+  if "departments" in fetched:
+      del fetched["departments"] # Not needed for results/attendance queries
+
+  # 2. Results Summary
+  if "results" in fetched and isinstance(fetched["results"], list):
+      res_summary = {}
+      for r in fetched["results"]:
+          name = r.get("subject_name") or id_to_subj.get(r.get("subject_id"), "Unknown")
+          if name not in res_summary: res_summary[name] = []
+          res_summary[name].append(f"{r.get('assessment_name', 'Exam')}: {r.get('marks_obtained')}/{r.get('max_marks')} ({r.get('grade')})")
+      fetched["result_summary"] = res_summary
+      # Prune raw results
+      for r in fetched["results"]:
+          for k in ["created_at", "updated_at", "remarks", "student_id"]: r.pop(k, None)
+      fetched["results"] = fetched["results"][:20]
+
+  # 2. Process attendance records
   if "attendance" in fetched and isinstance(fetched["attendance"], list):
+    stats = {}
     for record in fetched["attendance"]:
         sid = record.get("subject_id")
-        if sid in id_to_subj:
-            record["subject_name"] = id_to_subj[sid]
-    fetched["attendance"] = fetched["attendance"][:40]
+        name = id_to_subj.get(sid, f"Subject {sid}")
+        record["subject_name"] = name
+        
+        # Calculate summary
+        if name not in stats: stats[name] = {"total": 0, "present": 0}
+        stats[name]["total"] += 1
+        if record.get("status") in {"present", "late"}: 
+            stats[name]["present"] += 1
+            
+        # Remove extra metadata
+        for k in ["created_at", "updated_at", "remarks", "student_id"]: record.pop(k, None)
+    
+    fetched["attendance_summary"] = {
+        name: f"{int(s['present']/s['total']*100)}% ({s['present']}/{s['total']})"
+        for name, s in stats.items()
+    }
+    fetched["attendance"] = fetched["attendance"][:30]
 
+  # 3. Process timetable
   if "timetable" in fetched and isinstance(fetched["timetable"], list):
     for entry in fetched["timetable"]:
         fid = entry.get("faculty_user_id")
         if fid in id_to_faculty:
             entry["faculty_name"] = id_to_faculty[fid]
-    fetched["timetable"] = fetched["timetable"][:30]
+        # Remove extra metadata
+        for k in ["created_at", "updated_at"]: entry.pop(k, None)
+    fetched["timetable"] = fetched["timetable"][:20]
 
+  # 4. Process results
   if "results" in fetched and isinstance(fetched["results"], list):
-    fetched["results"] = fetched["results"][:30]
+    for r in fetched["results"]:
+        for k in ["created_at", "updated_at", "remarks"]: r.pop(k, None)
+    fetched["results"] = fetched["results"][:20]
 
+  # 5. Prune history
   if isinstance(compact.get("conversation_history"), list):
     compact["conversation_history"] = [
         {"role": str(i.get("role"))[:16], "content": str(i.get("content"))[:250]}
         for i in compact["conversation_history"][-6:]
     ]
+
   return compact
 
 async def run_query_chain(
@@ -108,6 +162,11 @@ async def run_query_chain(
   command.student_id = command.student_id or student_id
   command.timetable_id = command.timetable_id or timetable_id
   command.date = command.date or attendance_date
+
+  # Safeguard: If the LLM mistakenly returns the user's account ID as the student_id, 
+  # correct it to the actual student profile ID found in the context.
+  if student and user and command.student_id == user.get("id") and student.get("id") != user.get("id"):
+      command.student_id = student.get("id")
 
   fetched_data = {}
   sid = command.student_id or student_id
@@ -157,11 +216,13 @@ async def run_query_chain(
       fetched_data[f"error_{action}"] = str(e)
 
   # Process Write Actions
-  if "mark_attendance" in command.actions:
+  has_fetch = any(a.startswith("fetch_") for a in command.actions)
+  
+  if "mark_attendance" in command.actions and (not has_fetch or execute):
     answer, meta = await _handle_mark_attendance(command, execute, auth_header)
     return answer, command, meta
   
-  if "create_subject" in command.actions:
+  if "create_subject" in command.actions and (not has_fetch or execute):
     answer, meta = await _handle_create_subject(command, execute, auth_header, permissions)
     return answer, command, meta
 

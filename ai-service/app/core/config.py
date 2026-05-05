@@ -16,7 +16,7 @@ class Settings(BaseSettings):
   REQUEST_TIMEOUT_SECONDS: float = 10.0
   ATTENDANCE_TARGET_PERCENT: float = 75.0
   LLM_PROVIDER: str = "groq"
-  LLM_MODEL: str = "llama-3.3-70b-versatile"
+  LLM_MODEL: str = "llama-3.1-8b-instant"
   OPENROUTER_API_KEY: str | None = None
   GROQ_API_KEY: str | None = None
   GEMINI_API_KEY: str | None = None

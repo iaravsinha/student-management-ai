@@ -36,9 +36,18 @@ def create_app() -> FastAPI:
       response = await call_next(request)
       elapsed_ms = (perf_counter() - start) * 1000
       level_log = logger.warning if response.status_code >= 400 else logger.info
+      
+      body_peek = ""
+      if response.status_code == 413:
+          try:
+              body = await request.body()
+              body_peek = f" | body_size={len(body)} | body_start={body[:500]!r}"
+          except Exception:
+              body_peek = " | could not read body"
+
       level_log(
           f"response {request.method} {request.url.path} "
-          f"status={response.status_code} duration_ms={elapsed_ms:.2f}",
+          f"status={response.status_code} duration_ms={elapsed_ms:.2f}{body_peek}",
       )
       return response
     except Exception as exc:
