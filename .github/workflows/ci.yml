@@ -38,11 +38,11 @@ jobs:
       - name: 5. Run tests
         run: |
           cd backend
-          pytest
+          python -m pytest
           cd ..
 
           cd ai-service
-          pytest
+          python -m pytest
           cd ..
 
       - name: 6. Build Docker images
