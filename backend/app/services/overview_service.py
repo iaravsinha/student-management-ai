@@ -238,12 +238,46 @@ def _personal_overview(db: Session, current_user: User) -> PersonalOverview | No
 
 
 def build_academic_overview(db: Session, current_user: User) -> AcademicOverviewResponse:
+  personal = _personal_overview(db, current_user)
+  metrics = _metrics(db)
+  flow = _dependency_flow(db)
+
+  # If student, restrict metrics to their scope
+  if current_user.role == UserRole.student and personal:
+    student = db.query(Student).filter(Student.email == current_user.email).first()
+    if student:
+      metrics = OverviewMetrics(
+          department_count=1,
+          faculty_count=db.query(func.count(FacultyProfile.id)).filter(FacultyProfile.department == student.department).scalar() or 0,
+          student_count=db.query(func.count(Student.id)).filter(
+              Student.department == student.department,
+              Student.batch_year == student.batch_year,
+              Student.semester == student.semester
+          ).scalar() or 0,
+          subject_count=db.query(func.count(Subject.id)).filter(
+              Subject.department == student.department,
+              Subject.batch_year == student.batch_year,
+              Subject.semester == student.semester
+          ).scalar() or 0,
+          timetable_slot_count=personal.timetable_slot_count,
+          attendance_record_count=personal.attendance_record_count,
+          result_record_count=personal.result_record_count,
+      )
+      # Simplify flow for student
+      flow = [f for f in flow if f.entity in {"Student", "Attendance", "Grades", "Timetable", "Subject"}]
+      for f in flow:
+          if f.entity == "Student": f.live_records = metrics.student_count
+          if f.entity == "Subject": f.live_records = metrics.subject_count
+          if f.entity == "Timetable": f.live_records = metrics.timetable_slot_count
+          if f.entity == "Attendance": f.live_records = metrics.attendance_record_count
+          if f.entity == "Grades": f.live_records = metrics.result_record_count
+
   return AcademicOverviewResponse(
       role=current_user.role,
       hierarchy=[UserRole.admin, UserRole.teacher, UserRole.student],
-      metrics=_metrics(db),
+      metrics=metrics,
       modules=MODULES,
-      dependency_flow=_dependency_flow(db),
-      departments=department_service.list_departments_with_summary(db),
-      personal=_personal_overview(db, current_user),
+      dependency_flow=flow,
+      departments=department_service.list_departments_with_summary(db) if current_user.role != UserRole.student else [],
+      personal=personal,
   )

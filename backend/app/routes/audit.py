@@ -10,7 +10,7 @@ from app.services import audit_service
 router = APIRouter()
 
 
-@router.get("/", response_model=list[AuditLogRead])
+@router.get("", response_model=list[AuditLogRead])
 def list_audit_logs(
     limit: int = Query(default=100, ge=1, le=500),
     db: Session = Depends(get_db),

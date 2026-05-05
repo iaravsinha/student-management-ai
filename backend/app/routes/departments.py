@@ -9,7 +9,7 @@ from app.services import department_service
 router = APIRouter()
 
 
-@router.get("/", response_model=list[DepartmentSummary])
+@router.get("", response_model=list[DepartmentSummary])
 def list_departments(
     db: Session = Depends(get_db),
     _=Depends(require_permission(Operation.DEPARTMENT_READ)),

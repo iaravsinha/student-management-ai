@@ -17,7 +17,7 @@ from app.services import timetable_service
 router = APIRouter()
 
 
-@router.post("/", response_model=TimetableRead)
+@router.post("", response_model=TimetableRead)
 def create_timetable(
     payload: TimetableCreate,
     db: Session = Depends(get_db),
@@ -26,7 +26,7 @@ def create_timetable(
   return timetable_service.create_timetable_entry(db, payload)
 
 
-@router.get("/", response_model=list[TimetableRead])
+@router.get("", response_model=list[TimetableRead])
 def list_timetable(
     department: str | None = None,
     batch_year: int | None = None,

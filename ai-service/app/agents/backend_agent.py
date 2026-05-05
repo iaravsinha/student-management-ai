@@ -93,7 +93,7 @@ async def fetch_students(
     params["batch_year"] = batch_year
   async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
     response = await client.get(
-        f"{settings.BACKEND_URL}/students/",
+        f"{settings.BACKEND_URL}/students",
         params=params,
         headers=_headers(auth_header),
     )
@@ -104,7 +104,7 @@ async def fetch_students(
 async def fetch_departments(auth_header: str | None = None) -> list[dict]:
   async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
     response = await client.get(
-        f"{settings.BACKEND_URL}/departments/",
+        f"{settings.BACKEND_URL}/departments",
         headers=_headers(auth_header),
     )
     response.raise_for_status()
@@ -127,18 +127,22 @@ async def fetch_subjects(
     params["semester"] = semester
   async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
     response = await client.get(
-        f"{settings.BACKEND_URL}/subjects/",
+        f"{settings.BACKEND_URL}/subjects",
         params=params,
         headers=_headers(auth_header),
     )
     response.raise_for_status()
-    return response.json()
+    data = response.json()
+    import logging
+    logger = logging.getLogger("ai-service")
+    logger.info(f"Backend Subject API returned {len(data) if isinstance(data, list) else 'non-list'} items")
+    return data
 
 
 async def fetch_faculty(auth_header: str | None = None) -> list[dict]:
   async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
     response = await client.get(
-        f"{settings.BACKEND_URL}/faculty/",
+        f"{settings.BACKEND_URL}/faculty",
         headers=_headers(auth_header),
     )
     response.raise_for_status()
@@ -161,7 +165,7 @@ async def fetch_timetable(
     params["semester"] = semester
   async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
     response = await client.get(
-        f"{settings.BACKEND_URL}/timetable/",
+        f"{settings.BACKEND_URL}/timetable",
         params=params,
         headers=_headers(auth_header),
     )
@@ -301,4 +305,3 @@ def build_subject_percentages(history: list[dict]) -> dict[int, float]:
       subject_id: attendance_percentage(attended[subject_id], total)
       for subject_id, total in totals.items()
   }
-

@@ -36,7 +36,7 @@ async def import_students(
   return await student_service.import_students_from_excel(db, file, current_user=current_user)
 
 
-@router.get("/", response_model=StudentListResponse)
+@router.get("", response_model=StudentListResponse)
 def list_students(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=100),

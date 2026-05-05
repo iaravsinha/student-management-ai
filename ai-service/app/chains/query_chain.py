@@ -32,10 +32,26 @@ def _compact_context_for_llm(context: dict) -> dict:
   fetched = compact.get("fetched_data", {})
   
   # 0. Pre-extract for mapping
+  # 0. Pre-extract for mapping (handle both string and int IDs)
   subjects = fetched.get("subjects", [])
-  id_to_subj = {s["id"]: s["name"] for s in subjects if "id" in s and "name" in s}
+  if not subjects:
+      import logging
+      logger = logging.getLogger("ai-service")
+      logger.warning(f"No subjects found in fetched_data. Keys present: {list(fetched.keys())}")
+  
+  id_to_subj = {}
+  for s in subjects:
+      if "id" in s and "name" in s:
+          id_to_subj[str(s["id"])] = s["name"]
+          id_to_subj[int(s["id"])] = s["name"]
+
   faculty = fetched.get("faculty", [])
-  id_to_faculty = {f.get("user_id"): f.get("name") for f in faculty if "user_id" in f}
+  id_to_faculty = {}
+  for f in faculty:
+      fid = f.get("user_id") or f.get("id")
+      if fid and f.get("name"):
+          id_to_faculty[str(fid)] = f["name"]
+          id_to_faculty[int(fid)] = f["name"]
 
   # 1. Identify subjects with active data to prune the master list
   active_subj_ids = set()
@@ -45,27 +61,48 @@ def _compact_context_for_llm(context: dict) -> dict:
       active_subj_ids.update(r.get("subject_id") for r in fetched["results"] if r.get("subject_id"))
 
   if "subjects" in fetched and isinstance(fetched["subjects"], list):
-      # If we have specific data, only show those subjects to the LLM to avoid "No records found" clutter
-      if active_subj_ids:
-          fetched["subjects"] = [s for s in subjects if s.get("id") in active_subj_ids]
-      fetched["subjects"] = [{"id": s.get("id"), "name": s.get("name")} for s in fetched["subjects"]][:40]
+      filtered_subjects = subjects
+      
+      # If student profile exists, prioritize their current subjects
+      student_profile = compact.get("student")
+      if student_profile and student_profile.get("department"):
+          dept = student_profile.get("department")
+          batch = student_profile.get("batch_year")
+          sem = student_profile.get("semester")
+          filtered_subjects = [
+              s for s in subjects 
+              if s.get("department") == dept and s.get("batch_year") == batch and s.get("semester") == sem
+          ]
+          # If pruning by current semester leaves nothing, fall back to active subjects (from history)
+          if not filtered_subjects and active_subj_ids:
+              filtered_subjects = [s for s in subjects if s.get("id") in active_subj_ids]
+      elif active_subj_ids:
+          filtered_subjects = [s for s in subjects if s.get("id") in active_subj_ids]
+
+      fetched["subjects"] = [{"id": s.get("id"), "name": s.get("name")} for s in filtered_subjects][:40]
 
   if "faculty" in fetched and isinstance(fetched["faculty"], list):
       fetched["faculty"] = [{"id": f.get("id"), "name": f.get("name")} for f in fetched["faculty"]][:10]
   
   if "departments" in fetched:
-      del fetched["departments"] # Not needed for results/attendance queries
+      del fetched["departments"]
 
   # 2. Results Summary
   if "results" in fetched and isinstance(fetched["results"], list):
       res_summary = {}
       for r in fetched["results"]:
-          name = r.get("subject_name") or id_to_subj.get(r.get("subject_id"), "Unknown")
+          name = r.get("subject_name") or id_to_subj.get(r.get("subject_id"), "Unknown Subject")
           if name not in res_summary: res_summary[name] = []
-          res_summary[name].append(f"{r.get('assessment_name', 'Exam')}: {r.get('marks_obtained')}/{r.get('max_marks')} ({r.get('grade')})")
+          res_summary[name].append({
+              "assessment": r.get('assessment_name', 'Exam'),
+              "score": f"{r.get('marks_obtained')}/{r.get('max_marks')}",
+              "grade": r.get('grade'),
+              "subject": name
+          })
       fetched["result_summary"] = res_summary
       # Prune raw results
       for r in fetched["results"]:
+          r["subject_name"] = id_to_subj.get(r.get("subject_id"), "Unknown Subject")
           for k in ["created_at", "updated_at", "remarks", "student_id"]: r.pop(k, None)
       fetched["results"] = fetched["results"][:20]
 
@@ -77,17 +114,20 @@ def _compact_context_for_llm(context: dict) -> dict:
         name = id_to_subj.get(sid, f"Subject {sid}")
         record["subject_name"] = name
         
-        # Calculate summary
         if name not in stats: stats[name] = {"total": 0, "present": 0}
         stats[name]["total"] += 1
         if record.get("status") in {"present", "late"}: 
             stats[name]["present"] += 1
             
-        # Remove extra metadata
         for k in ["created_at", "updated_at", "remarks", "student_id"]: record.pop(k, None)
     
     fetched["attendance_summary"] = {
-        name: f"{int(s['present']/s['total']*100)}% ({s['present']}/{s['total']})"
+        name: {
+            "percentage": f"{int(s['present']/s['total']*100)}%",
+            "attended": s["present"],
+            "total": s["total"],
+            "display": f"{int(s['present']/s['total']*100)}% ({s['present']}/{s['total']})"
+        }
         for name, s in stats.items()
     }
     fetched["attendance"] = fetched["attendance"][:30]
@@ -95,18 +135,13 @@ def _compact_context_for_llm(context: dict) -> dict:
   # 3. Process timetable
   if "timetable" in fetched and isinstance(fetched["timetable"], list):
     for entry in fetched["timetable"]:
+        sid = entry.get("subject_id")
+        entry["subject_name"] = id_to_subj.get(sid, f"Subject {sid}")
         fid = entry.get("faculty_user_id")
         if fid in id_to_faculty:
             entry["faculty_name"] = id_to_faculty[fid]
-        # Remove extra metadata
         for k in ["created_at", "updated_at"]: entry.pop(k, None)
     fetched["timetable"] = fetched["timetable"][:20]
-
-  # 4. Process results
-  if "results" in fetched and isinstance(fetched["results"], list):
-    for r in fetched["results"]:
-        for k in ["created_at", "updated_at", "remarks"]: r.pop(k, None)
-    fetched["results"] = fetched["results"][:20]
 
   # 5. Prune history
   if isinstance(compact.get("conversation_history"), list):
@@ -169,22 +204,25 @@ async def run_query_chain(
       command.student_id = student.get("id")
 
   fetched_data = {}
-  sid = command.student_id or student_id
+  
+  # MANDATORY: Always fetch mapping data to ensure IDs are converted to names
+  try:
+    subjects_list = await fetch_subjects(auth_header=auth_header)
+    fetched_data["subjects"] = subjects_list
+  except Exception as e:
+    import logging
+    logger = logging.getLogger("ai-service")
+    logger.error(f"Mapping fetch (subjects) failed: {e}")
+  
+  try:
+    faculty_list = await fetch_faculty(auth_header=auth_header)
+    fetched_data["faculty"] = faculty_list
+  except Exception as e:
+    import logging
+    logger = logging.getLogger("ai-service")
+    logger.error(f"Mapping fetch (faculty) failed: {e}")
 
-  # Ensure master data is available for correlation
-  if any(a in {"fetch_attendance", "fetch_results", "fetch_timetable"} for a in command.actions):
-    try:
-      if "subjects" not in fetched_data:
-        fetched_data["subjects"] = await fetch_subjects(auth_header=auth_header)
-    except Exception: pass
-    try:
-      if "faculty" not in fetched_data:
-        fetched_data["faculty"] = await fetch_faculty(auth_header=auth_header)
-    except Exception: pass
-    try:
-      if "departments" not in fetched_data:
-        fetched_data["departments"] = await fetch_departments(auth_header=auth_header)
-    except Exception: pass
+  sid = command.student_id or student_id
 
   # Map identified actions to pre-made API calls
   for action in command.actions:
@@ -228,7 +266,14 @@ async def run_query_chain(
 
   # Final Step: Pass all fetched data to LLM for a human response
   full_context = {**context, "fetched_data": fetched_data, "conversation_history": conversation_history or []}
-  answer = await answer_from_hosted_llm(query, _compact_context_for_llm(full_context))
+  from app.chains.query_chain import _compact_context_for_llm
+  import logging
+  logger = logging.getLogger("ai-service")
+  
+  compact_context = _compact_context_for_llm(full_context)
+  logger.info(f"Final LLM Context (compact): {json.dumps(compact_context, indent=2)}")
+  
+  answer = await answer_from_hosted_llm(query, compact_context)
   
   return answer or "I couldn't process that data.", command, {"fetched_data_keys": list(fetched_data.keys())}
 

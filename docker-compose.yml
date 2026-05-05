@@ -1,4 +1,16 @@
 services:
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
   frontend:
     build:
       context: ./frontend
@@ -17,7 +29,6 @@ services:
       - BACKEND_PROXY_TARGET=${BACKEND_PROXY_TARGET:-http://backend:8000}
       - AI_PROXY_TARGET=${AI_PROXY_TARGET:-http://ai-service:8001}
     ports:
-      - "80:3000"
       - "3000:3000"
     depends_on:
       backend:
@@ -25,7 +36,7 @@ services:
       ai-service:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/ >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3000/health >/dev/null || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -61,7 +72,7 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=0
       - SECRET_KEY=${JWT_SECRET}
-      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost:3000","http://localhost"]}
+      - BACKEND_CORS_ORIGINS=${BACKEND_CORS_ORIGINS:-["http://localhost:3000","http://localhost","http://127.0.0.1:3000","http://127.0.0.1"]}
     command: ["sh", "-c", "PYTHONPATH=/app alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
     ports:
       - "8000:8000"

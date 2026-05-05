@@ -9,7 +9,7 @@ from app.services import subject_service
 router = APIRouter()
 
 
-@router.get("/", response_model=list[SubjectRead])
+@router.get("", response_model=list[SubjectRead])
 def list_subjects(
     department: str | None = Query(default=None),
     batch_year: int | None = Query(default=None, ge=2000, le=2100),

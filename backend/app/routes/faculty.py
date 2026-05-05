@@ -9,7 +9,7 @@ from app.schemas.faculty import FacultyProfileRead
 router = APIRouter()
 
 
-@router.get("/", response_model=list[FacultyProfileRead])
+@router.get("", response_model=list[FacultyProfileRead])
 def list_faculty(
     db: Session = Depends(get_db),
     _=Depends(require_permission(Operation.FACULTY_READ)),
