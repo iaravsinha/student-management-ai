@@ -37,10 +37,12 @@ jobs:
 
       - name: 5. Run tests
         run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/backend
           cd backend
           python -m pytest
           cd ..
 
+          export PYTHONPATH=$PYTHONPATH:$(pwd)/ai-service
           cd ai-service
           python -m pytest
           cd ..
