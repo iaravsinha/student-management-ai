@@ -196,7 +196,6 @@ def update_student(db: Session, student_id: int, payload: StudentUpdate) -> Stud
   updates.pop("enrollment_number", None)
   updates.pop("roll_number", None)
   department = updates.get("department", student.department)
-  batch_year = updates.get("batch_year", student.batch_year)
   department_record = department_service.require_department(db, department)
   updates["department"] = department_record.name
   if department_record.name != student.department:

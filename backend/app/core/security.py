@@ -8,6 +8,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from app.core.config import settings
+from app.models.user import UserRole
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

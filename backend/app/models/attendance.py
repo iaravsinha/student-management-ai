@@ -1,7 +1,7 @@
 from datetime import date
 from enum import Enum
 
-from sqlalchemy import Date, Enum as SqlEnum, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import Date, Enum as SqlEnum, ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base

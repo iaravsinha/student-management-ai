@@ -165,12 +165,6 @@ def _personal_overview(db: Session, current_user: User) -> PersonalOverview | No
         .scalar()
         or 0
     )
-    student_count = (
-        db.query(func.count(Student.id))
-        .filter(Student.department == faculty.department)
-        .scalar()
-        or 0
-    )
     return PersonalOverview(
         label=faculty.name,
         department=faculty.department,

@@ -566,7 +566,7 @@ def main() -> None:
     result_total = db.query(ResultRecord).join(Subject).filter(Subject.code.like("DEMO-%")).count()
 
     print("Blackthorn College sample data seeded successfully.")
-    print(f"Institution narrative: historic collegiate demo — three faculties, two cohorts (2023–2024), full timetable, attendance, and results.")
+    print("Institution narrative: historic collegiate demo — three faculties, two cohorts (2023–2024), full timetable, attendance, and results.")
     print(f"Faculty profiles: {faculty_total}")
     print(f"Student records: {student_total}")
     print(f"Student login accounts (User rows): {student_user_total}")

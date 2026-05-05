@@ -1,15 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from typing import Any
 
 from app.core.database import get_db
-from app.models.user import User, UserRole
+from app.models.user import User
 from app.core.auth import get_current_user
 
 router = APIRouter()
-
-from pydantic import BaseModel
 
 class SQLQuery(BaseModel):
     query: str
