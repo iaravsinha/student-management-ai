@@ -37,13 +37,12 @@ jobs:
 
       - name: 5. Run tests
         run: |
-          # Set paths for all modules
-          export PYTHONPATH=$PYTHONPATH:$(pwd)/backend:$(pwd)/ai-service
-          
           # Run Backend tests
+          export PYTHONPATH=$(pwd)/backend
           python -m pytest backend/tests
           
           # Run AI Service tests
+          export PYTHONPATH=$(pwd)/ai-service
           python -m pytest ai-service/tests
 
       - name: 6. Build Docker images
