@@ -2,9 +2,9 @@ import json
 import httpx
 import logging
 
-logger = logging.getLogger("ai-service")
-
 from app.core.config import settings
+
+logger = logging.getLogger("ai-service")
 
 
 SYSTEM_PROMPT = """Map request to JSON: {"actions": ["action1", "action2"], "student_id": 123, ...}.

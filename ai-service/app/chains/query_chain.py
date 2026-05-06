@@ -1,7 +1,6 @@
 from datetime import date
 import json
 
-from pydantic import ValidationError
 
 from app.agents.backend_agent import (
     create_subject,
@@ -12,7 +11,6 @@ from app.agents.backend_agent import (
     fetch_current_faculty,
     fetch_departments,
     fetch_faculty,
-    fetch_holidays,
     fetch_overview,
     fetch_permissions,
     fetch_student,
@@ -23,7 +21,6 @@ from app.agents.backend_agent import (
     fetch_sql_query,
     mark_bulk_attendance,
 )
-from app.core.config import settings
 from app.schemas.assistant import StructuredCommand
 from app.services.llm_client import (
     answer_from_hosted_llm, 
@@ -95,7 +92,8 @@ def _compact_context_for_llm(context: dict) -> dict:
       res_summary = {}
       for r in fetched["results"]:
           name = r.get("subject_name") or id_to_subj.get(r.get("subject_id"), "Unknown Subject")
-          if name not in res_summary: res_summary[name] = []
+          if name not in res_summary:
+              res_summary[name] = []
           res_summary[name].append({
               "assessment": r.get('assessment_name', 'Exam'),
               "score": f"{r.get('marks_obtained')}/{r.get('max_marks')}",
@@ -106,7 +104,8 @@ def _compact_context_for_llm(context: dict) -> dict:
       # Prune raw results
       for r in fetched["results"]:
           r["subject_name"] = id_to_subj.get(r.get("subject_id"), "Unknown Subject")
-          for k in ["created_at", "updated_at", "remarks", "student_id"]: r.pop(k, None)
+          for k in ["created_at", "updated_at", "remarks", "student_id"]:
+              r.pop(k, None)
       fetched["results"] = fetched["results"][:20]
 
   # 2. Process attendance records
@@ -117,12 +116,14 @@ def _compact_context_for_llm(context: dict) -> dict:
         name = id_to_subj.get(sid, f"Subject {sid}")
         record["subject_name"] = name
         
-        if name not in stats: stats[name] = {"total": 0, "present": 0}
+        if name not in stats:
+            stats[name] = {"total": 0, "present": 0}
         stats[name]["total"] += 1
         if record.get("status") in {"present", "late"}: 
             stats[name]["present"] += 1
             
-        for k in ["created_at", "updated_at", "remarks", "student_id"]: record.pop(k, None)
+        for k in ["created_at", "updated_at", "remarks", "student_id"]:
+            record.pop(k, None)
     
     fetched["attendance_summary"] = {
         name: {
@@ -143,7 +144,8 @@ def _compact_context_for_llm(context: dict) -> dict:
         fid = entry.get("faculty_user_id")
         if fid in id_to_faculty:
             entry["faculty_name"] = id_to_faculty[fid]
-        for k in ["created_at", "updated_at"]: entry.pop(k, None)
+        for k in ["created_at", "updated_at"]:
+            entry.pop(k, None)
     fetched["timetable"] = fetched["timetable"][:20]
 
   # 5. Prune history
