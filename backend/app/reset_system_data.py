@@ -15,7 +15,7 @@ from app.models.user import User, UserRole
 
 
 def parse_args() -> argparse.Namespace:
-  parser = argparse.ArgumentParser(description="Reset StudentMS data while preserving one admin account")
+  parser = argparse.ArgumentParser(description="Reset EdXplore data while preserving one admin account")
   parser.add_argument(
       "--keep-admin-email",
       default=None,

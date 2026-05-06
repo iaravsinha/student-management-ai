@@ -3,13 +3,14 @@ from time import perf_counter
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.analytics_middleware import AnalyticsMiddleware
 from app.core.audit_middleware import AuditLoggingMiddleware
 from app.core.auth_middleware import TokenValidationMiddleware
 from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.logging import configure_logging
 import app.models  # noqa: F401
-from app.routes import audit, attendance, auth, departments, faculty, health, overview, query, results, students, subjects, timetable
+from app.routes import analytics, audit, attendance, auth, departments, faculty, health, overview, query, results, students, subjects, timetable
 
 
 logger = configure_logging("backend")
@@ -34,6 +35,9 @@ def create_app() -> FastAPI:
   )
   app.add_middleware(TokenValidationMiddleware)
   app.add_middleware(AuditLoggingMiddleware)
+  # AnalyticsMiddleware is outermost so it captures every request after inner
+  # middleware (TokenValidationMiddleware) has populated request.state.token_payload.
+  app.add_middleware(AnalyticsMiddleware)
 
   @app.on_event("startup")
   def ensure_tables_exist() -> None:
@@ -77,6 +81,7 @@ def create_app() -> FastAPI:
   app.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
   app.include_router(timetable.router, prefix="/timetable", tags=["timetable"])
   app.include_router(query.router, prefix="/query", tags=["query"])
+  app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
 
   return app
 

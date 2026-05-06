@@ -8,6 +8,7 @@ from app.models.user import User, UserRole
 
 
 class Operation(StrEnum):
+  ANALYTICS_READ = "analytics:read"
   AUTH_USER_CREATE = "auth:user:create"
   AUTH_USER_READ = "auth:user:read"
   AUDIT_READ = "audit:read"

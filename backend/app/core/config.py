@@ -13,7 +13,7 @@ class Settings(BaseSettings):
       extra="ignore",
   )
 
-  APP_NAME: str = "Student Management API"
+  APP_NAME: str = "EdXplore API"
   APP_VERSION: str = "1.0.0"
   ENVIRONMENT: str = "development"
   DEBUG: bool = False

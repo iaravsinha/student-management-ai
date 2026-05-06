@@ -29,7 +29,7 @@ from app.schemas.timetable import WeeklyTimetableUpsertRequest, WeeklyTimetableS
 
 # —— Historic “Blackthorn College” demo realm (medium dataset, login-ready) ——
 DEMO_DOMAIN = "blackthorn.demo"
-LEGACY_DEMO_DOMAINS = ["demo.studentms.local", "studentmsdemo.edu", DEMO_DOMAIN]
+LEGACY_DEMO_DOMAINS = ["demo.edxplore.local", "edxploredemo.edu", DEMO_DOMAIN]
 
 DEFAULT_SAMPLE_PASSWORD = "Blackthorn1847!"
 DEMO_PASSWORD = (
@@ -131,7 +131,7 @@ class DepartmentSeedContext:
 
 
 def parse_args() -> argparse.Namespace:
-  parser = argparse.ArgumentParser(description="Seed Blackthorn College demo data for StudentMS")
+  parser = argparse.ArgumentParser(description="Seed Blackthorn College demo data for EdXplore")
   parser.add_argument("--reset-sample", action="store_true", help="Delete existing demo-tagged records before seeding")
   parser.add_argument("--student-count", type=int, default=0, help="Override students per batch for all departments")
   return parser.parse_args()
