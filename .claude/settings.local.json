@@ -9,7 +9,20 @@
       "Bash(git -C \"D:\\\\Minor Project\\\\student-management-ai\" diff --stat)",
       "Bash(git -C \"D:\\\\Minor Project\\\\student-management-ai\" add README.md PROJECT_DOCUMENTATION.md)",
       "Bash(git -C 'D:\\\\Minor Project\\\\student-management-ai' commit -m ' *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Minor Project\\\\student-management-ai\\\\backend\" -Recurse -File)",
+      "Bash(Sort-Object)",
+      "Bash(python -m alembic upgrade head)",
+      "Bash(python -c \"import alembic; print\\(alembic.__version__\\)\")",
+      "Bash(pip show *)",
+      "Bash(where alembic *)",
+      "Bash(pip3 show *)",
+      "Bash(python3 -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(python -c \"import sys; print\\(sys.executable, sys.version\\)\")",
+      "Bash(pip list *)",
+      "Bash(docker compose *)",
+      "PowerShell(docker info *)",
+      "PowerShell(docker context ls *)"
     ]
   }
 }

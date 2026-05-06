@@ -32,7 +32,7 @@ const LoginPage = () => {
   return (
     <>
       <Head>
-        <title>Login | StudentMS</title>
+        <title>Login | EdXplore</title>
       </Head>
 
       <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
@@ -51,7 +51,7 @@ const LoginPage = () => {
                 Navigate academics with clarity—records, rhythm, and copilot in one lane.
               </h1>
               <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-200">
-                StudentMS aligns admins, faculty, and students around shared operational truth rather than scattered spreadsheets.
+                EdXplore aligns admins, faculty, and students around shared operational truth rather than scattered spreadsheets.
               </p>
             </div>
 
@@ -71,7 +71,7 @@ const LoginPage = () => {
             <div className="w-full max-w-md space-y-8">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-cyan-700">Welcome back</p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Sign in to StudentMS</h2>
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Sign in to EdXplore</h2>
                 <p className="mt-3 text-sm leading-relaxed text-slate-500">
                   Authenticate with the credentials provisioned by your institution administrator.
                 </p>

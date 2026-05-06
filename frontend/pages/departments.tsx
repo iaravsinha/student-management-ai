@@ -144,7 +144,7 @@ const DepartmentsPage = () => {
   return (
     <>
       <Head>
-        <title>Departments | StudentMS</title>
+        <title>Departments | EdXplore</title>
       </Head>
       <AppLayout title="Departments">
         <PageIntro

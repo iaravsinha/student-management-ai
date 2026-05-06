@@ -111,7 +111,7 @@ const DashboardPage = () => {
   return (
     <>
       <Head>
-        <title>Dashboard | StudentMS</title>
+        <title>Dashboard | EdXplore</title>
       </Head>
       <AppLayout title="Dashboard">
         <DashboardHome

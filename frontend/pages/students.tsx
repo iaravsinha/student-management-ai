@@ -382,7 +382,7 @@ const StudentsPage = () => {
   return (
     <>
       <Head>
-        <title>{isStudentUser ? "My Profile" : "Students"} | StudentMS</title>
+        <title>{isStudentUser ? "My Profile" : "Students"} | EdXplore</title>
       </Head>
       <AppLayout title={isStudentUser ? "My Profile" : "Students"} actions={canEdit ? <ActionButton onClick={openCreatePanel}>Add student</ActionButton> : null}>
         <PageIntro

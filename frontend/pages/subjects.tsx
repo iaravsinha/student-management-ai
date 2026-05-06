@@ -210,7 +210,7 @@ const SubjectsPage = () => {
   return (
     <>
       <Head>
-        <title>My Subjects | StudentMS</title>
+        <title>My Subjects | EdXplore</title>
       </Head>
       <AppLayout title="My Subjects">
         <PageIntro

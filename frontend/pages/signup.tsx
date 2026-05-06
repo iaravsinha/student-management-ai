@@ -11,7 +11,7 @@ const SignupPage = () => {
   return (
     <>
       <Head>
-        <title>Account Provisioning | StudentMS</title>
+        <title>Account Provisioning | EdXplore</title>
       </Head>
 
       <main className="grid min-h-screen place-items-center px-4 py-8 sm:px-6 lg:py-12">

@@ -1,6 +1,6 @@
-# SAMI — Complete Technical Documentation
+# EdXplore — Complete Technical Documentation
 
-This document is the definitive developer reference for SAMI (Student Management AI): architecture, database schema, API reference, authentication, RBAC, AI engine design, frontend structure, environment variables, deployment, and development workflows.
+This document is the definitive developer reference for EdXplore (Academic Workspace & AI Assistant): architecture, database schema, API reference, authentication, RBAC, AI engine design, frontend structure, environment variables, deployment, and development workflows.
 
 ---
 
@@ -12,19 +12,20 @@ This document is the definitive developer reference for SAMI (Student Management
 4. [Authentication & Security](#4-authentication--security)
 5. [RBAC — Role-Based Access Control](#5-rbac--role-based-access-control)
 6. [API Reference](#6-api-reference)
-7. [AI Service — Design & Data Flow](#7-ai-service--design--data-flow)
-8. [Frontend — Component Structure](#8-frontend--component-structure)
-9. [Environment Variables Reference](#9-environment-variables-reference)
-10. [Docker & Deployment](#10-docker--deployment)
-11. [Developer Workflows](#11-developer-workflows)
-12. [Testing](#12-testing)
-13. [Troubleshooting](#13-troubleshooting)
+7. [Visitor Analytics & Click Tracking](#7-visitor-analytics--click-tracking)
+8. [AI Service — Design & Data Flow](#8-ai-service--design--data-flow)
+9. [Frontend — Component Structure](#9-frontend--component-structure)
+10. [Environment Variables Reference](#10-environment-variables-reference)
+11. [Docker & Deployment](#11-docker--deployment)
+12. [Developer Workflows](#12-developer-workflows)
+13. [Testing](#13-testing)
+14. [Troubleshooting](#14-troubleshooting)
 
 ---
 
 ## 1. System Architecture
 
-SAMI is a microservices application composed of six services orchestrated by Docker Compose and exposed through a single Nginx reverse proxy.
+EdXplore is a microservices application composed of six services orchestrated by Docker Compose and exposed through a single Nginx reverse proxy.
 
 ### Service Topology
 
@@ -82,14 +83,15 @@ student-management-ai/
 │   │   └── versions/                # Individual schema revisions
 │   ├── app/
 │   │   ├── core/
-│   │   │   ├── auth.py              # JWT token validation dependency
-│   │   │   ├── security.py          # Password hashing (bcrypt), token creation
-│   │   │   ├── config.py            # Pydantic settings loader
-│   │   │   ├── database.py          # SQLAlchemy engine & session factory
-│   │   │   ├── auth_middleware.py   # Request-level token injection middleware
-│   │   │   ├── audit_middleware.py  # Mutation audit logging middleware
-│   │   │   ├── permissions.py       # Role-permission mapping & enforcement
-│   │   │   └── logging.py           # Loguru configuration
+│   │   │   ├── auth.py                  # JWT token validation dependency
+│   │   │   ├── security.py              # Password hashing (bcrypt), token creation
+│   │   │   ├── config.py                # Pydantic settings loader
+│   │   │   ├── database.py              # SQLAlchemy engine & session factory
+│   │   │   ├── auth_middleware.py       # Request-level token injection middleware
+│   │   │   ├── audit_middleware.py      # Mutation audit logging middleware
+│   │   │   ├── analytics_middleware.py  # Visitor & click tracking middleware
+│   │   │   ├── permissions.py           # Role-permission mapping & enforcement
+│   │   │   └── logging.py               # Loguru configuration
 │   │   ├── models/                  # SQLAlchemy declarative models
 │   │   │   ├── user.py
 │   │   │   ├── student.py
@@ -99,7 +101,8 @@ student-management-ai/
 │   │   │   ├── timetable.py
 │   │   │   ├── attendance.py
 │   │   │   ├── result.py
-│   │   │   └── audit.py
+│   │   │   ├── audit.py
+│   │   │   └── analytics.py             # VisitorStats, VisitorClickLog
 │   │   ├── routes/                  # FastAPI routers
 │   │   │   ├── auth.py
 │   │   │   ├── students.py
@@ -112,6 +115,7 @@ student-management-ai/
 │   │   │   ├── overview.py
 │   │   │   ├── query.py
 │   │   │   ├── audit.py
+│   │   │   ├── analytics.py             # Visitor stats & click log endpoints
 │   │   │   └── health.py
 │   │   ├── schemas/                 # Pydantic request/response models
 │   │   ├── services/                # Business logic
@@ -121,7 +125,8 @@ student-management-ai/
 │   │   │   ├── timetable_service.py
 │   │   │   ├── result_service.py
 │   │   │   ├── department_service.py
-│   │   │   └── overview_service.py
+│   │   │   ├── overview_service.py
+│   │   │   └── analytics_service.py     # Visit logging, stats queries, top routes/IPs
 │   │   ├── main.py                  # App factory, router registration, middleware
 │   │   └── seed_sample_data.py      # Demo data generator
 │   └── requirements.txt
@@ -211,6 +216,7 @@ erDiagram
     subjects ||--o{ timetable : "scheduled in"
     subjects ||--o{ result_records : "graded under"
     faculty_profiles ||--o{ timetable : "teaches"
+    users ||--o{ visitor_click_logs : "optional FK"
 
     users {
         int id PK
@@ -302,6 +308,29 @@ erDiagram
         json details
         datetime created_at
     }
+
+    visitor_stats {
+        int id PK
+        int total_visits
+        int unique_visitors
+        datetime created_at
+        datetime updated_at
+    }
+
+    visitor_click_logs {
+        int id PK
+        string ip_address
+        string user_agent
+        string endpoint
+        string action_type
+        string method
+        int status_code
+        string session_id
+        string actor_email
+        int user_id FK
+        jsonb meta
+        datetime timestamp
+    }
 ```
 
 ### Key Constraints
@@ -312,6 +341,14 @@ erDiagram
 - `faculty_profiles.faculty_code` — unique per institution
 - `subjects.code` — unique per institution
 - All foreign keys are enforced with cascade rules for referential integrity
+
+### Analytics Tables
+
+**`visitor_stats`** holds a single row (id=1) that is incremented on each tracked request. It stores running totals for `total_visits` and `unique_visitors` (counted by distinct `ip_address`). Period breakdowns (today, week, month) are computed live from `visitor_click_logs` at query time.
+
+**`visitor_click_logs`** captures one row per tracked request. The `meta` column is PostgreSQL **JSONB** for schema-free extensibility. The `actor_email` column is populated directly from the JWT `sub` claim — no extra DB round-trip per request. `user_id` is a nullable FK reserved for cases where the caller can supply it explicitly.
+
+Indexes: `ip_address`, `endpoint`, `method`, `timestamp`, `session_id`, `actor_email`, `user_id` — covering all common filter and sort patterns in the analytics endpoints.
 
 ---
 
@@ -388,6 +425,7 @@ The AI service calls the Backend API using a shared `BACKEND_API_TOKEN` (Bearer 
 | **Timetable** — Edit | Yes | No | No |
 | **Timetable** — View | Yes | Yes | Own semester |
 | **Audit Logs** — View | Yes | No | No |
+| **Visitor Analytics** — View | Yes | No | No |
 | **Custom SQL** — Execute | Yes | Dept-filtered SELECT | Self-filtered SELECT |
 | **AI Context Scope** | Institution-wide | Department-filtered | Self only |
 
@@ -499,6 +537,55 @@ Interactive API docs: **[http://localhost:8000/docs](http://localhost:8000/docs)
 | POST | `/query/` | JWT | Execute RBAC-enforced SELECT query |
 | GET | `/audit/` | Admin | View audit log entries |
 
+### Visitor Analytics
+
+All endpoints require **Admin** role.
+
+| Method | Path | Query Parameters | Description |
+| :--- | :--- | :--- | :--- |
+| GET | `/analytics/visitors` | — | Visitor totals, unique IPs, today / week / month breakdowns |
+| GET | `/analytics/clicks` | `page`, `page_size`, `ip_address`, `start_date`, `end_date`, `endpoint`, `method` | Paginated, filterable per-request click log |
+| GET | `/analytics/top-routes` | `limit` (1–100, default 10) | Most accessed endpoints ranked by request count |
+| GET | `/analytics/top-ips` | `limit` (1–100, default 10) | Most active IPs ranked by request count |
+
+**`GET /analytics/visitors` response:**
+```json
+{
+  "id": 1,
+  "total_visits": 1042,
+  "unique_visitors": 87,
+  "today_visits": 34,
+  "week_visits": 210,
+  "month_visits": 890,
+  "updated_at": "2026-05-07T10:30:00Z"
+}
+```
+
+**`GET /analytics/clicks` response:**
+```json
+{
+  "items": [
+    {
+      "id": 5001,
+      "ip_address": "192.168.1.10",
+      "user_agent": "Mozilla/5.0 ...",
+      "endpoint": "/students",
+      "action_type": "request",
+      "method": "GET",
+      "status_code": 200,
+      "session_id": null,
+      "actor_email": "teacher@example.com",
+      "user_id": null,
+      "meta": { "status_code": 200, "query_params": null },
+      "timestamp": "2026-05-07T09:15:00Z"
+    }
+  ],
+  "total": 1042,
+  "page": 1,
+  "page_size": 50
+}
+```
+
 ### Health Checks
 
 | Method | Path | Description |
@@ -541,7 +628,72 @@ When `execute: true` and the AI generates an actionable command (e.g., mark atte
 
 ---
 
-## 7. AI Service — Design & Data Flow
+## 7. Visitor Analytics & Click Tracking
+
+### Overview
+
+Every HTTP request to the backend is automatically captured by `AnalyticsMiddleware`. Logging happens in a **background thread** via `asyncio.create_task` + `loop.run_in_executor`, so it never adds latency to the response path. If the DB write fails for any reason, the error is logged and silently discarded — analytics never crash the application.
+
+### Middleware Behaviour
+
+```
+Request arrives
+  └─ AnalyticsMiddleware.dispatch()
+       ├─ call_next(request)  ← response is sent to client immediately
+       └─ asyncio.create_task(_bg())  ← fires in background
+            └─ thread pool: _log_sync()
+                 ├─ INSERT INTO visitor_click_logs
+                 └─ UPDATE visitor_stats (id=1)
+```
+
+**Paths that are never tracked:**
+
+| Prefix | Reason |
+| :--- | :--- |
+| `/health` | Noise from Docker health-check polling |
+| `/docs`, `/redoc`, `/openapi.json` | Swagger UI browsing |
+| `/analytics` | Prevents recursive self-logging |
+
+**Sensitive path handling:** Query strings are stripped from `meta.query_params` for any request matching `/auth/` to avoid accidentally logging credentials.
+
+### IP Extraction
+
+The middleware resolves the real client IP in priority order:
+
+1. `X-Forwarded-For` header — leftmost (original client) entry
+2. `X-Real-IP` header
+3. `request.client.host` (direct connection)
+
+All loopback variants (`::1`, `::ffff:127.0.0.1`) are normalised to `127.0.0.1` for consistent grouping in development.
+
+### Unique Visitor Counting
+
+Before inserting each click log, the service runs:
+
+```sql
+SELECT EXISTS (
+  SELECT 1 FROM visitor_click_logs WHERE ip_address = :ip
+)
+```
+
+If no prior record exists for that IP, `visitor_stats.unique_visitors` is incremented. Minor over-counting under concurrent load from the same new IP is an accepted trade-off — no locking or Redis coordination is used.
+
+### Data Stored Per Request
+
+| Field | Source |
+| :--- | :--- |
+| `ip_address` | Extracted via proxy-header logic above |
+| `user_agent` | `User-Agent` request header (truncated at 512 chars) |
+| `endpoint` | `request.url.path` |
+| `method` | HTTP verb |
+| `status_code` | Response status code |
+| `actor_email` | `request.state.token_payload.sub` (JWT email, if authenticated) |
+| `session_id` | `session_id` cookie or `X-Session-ID` header |
+| `meta` | JSONB: `{ status_code, query_params }` |
+
+---
+
+## 8. AI Service — Design & Data Flow
 
 ### Overview
 
@@ -603,7 +755,7 @@ This prevents silent misapplication to the wrong class.
 
 ---
 
-## 8. Frontend — Component Structure
+## 9. Frontend — Component Structure
 
 ### Pages and Routes
 
@@ -652,7 +804,7 @@ const { user, token, login, logout, isLoading } = useAuth();
 
 ---
 
-## 9. Environment Variables Reference
+## 10. Environment Variables Reference
 
 Copy `.env.example` to `.env` before running the stack. All services read from the same root `.env` file via Docker Compose `env_file`.
 
@@ -702,7 +854,7 @@ Copy `.env.example` to `.env` before running the stack. All services read from t
 
 ---
 
-## 10. Docker & Deployment
+## 11. Docker & Deployment
 
 ### Development Stack (`docker-compose.yml`)
 
@@ -755,7 +907,7 @@ Each service exposes health endpoints that Docker uses to determine readiness:
 
 ---
 
-## 11. Developer Workflows
+## 12. Developer Workflows
 
 ### Full Makefile Reference
 
@@ -808,7 +960,7 @@ The `--reset-sample` flag clears any previous sample data before re-seeding.
 
 ---
 
-## 12. Testing
+## 13. Testing
 
 ### Backend Tests
 
@@ -837,7 +989,7 @@ Both use **ruff** for Python linting and formatting (configured in `pyproject.to
 
 ---
 
-## 13. Troubleshooting
+## 14. Troubleshooting
 
 ### 502 Bad Gateway
 

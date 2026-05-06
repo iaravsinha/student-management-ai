@@ -145,7 +145,7 @@ const AdminUsersPage = () => {
   return (
     <>
       <Head>
-        <title>Admin Users | StudentMS</title>
+        <title>Admin Users | EdXplore</title>
       </Head>
       <AppLayout title="Admin Users">
         <PageIntro

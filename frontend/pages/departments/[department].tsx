@@ -99,7 +99,7 @@ const DepartmentDetailPage = () => {
   return (
     <>
       <Head>
-        <title>{departmentName || "Department"} | StudentMS</title>
+        <title>{departmentName || "Department"} | EdXplore</title>
       </Head>
       <AppLayout title="Department Explorer">
         <PageIntro

@@ -378,7 +378,7 @@ const TimetablePage = () => {
   return (
     <>
       <Head>
-        <title>Timetable | StudentMS</title>
+        <title>Timetable | EdXplore</title>
       </Head>
       <AppLayout title="Timetable">
         <PageIntro

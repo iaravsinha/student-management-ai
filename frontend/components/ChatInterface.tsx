@@ -18,7 +18,7 @@ type AssistantHistoryMessage = {
   content: string;
 };
 
-const STORAGE_KEY = "studentms-assistant-page";
+const STORAGE_KEY = "edxplore-assistant-page";
 
 const studentSuggestions = [
   { text: "Summarize my attendance and highlights.", tag: "Attendance" },

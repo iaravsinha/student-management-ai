@@ -147,11 +147,11 @@ export const AppLayout = ({
                 <div className="relative grid h-11 w-11 shrink-0 place-items-center">
                   <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-400/35 to-amber-300/25 blur-md" />
                   <span className="relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 text-sm font-bold tracking-tight text-white shadow-lg shadow-slate-900/25">
-                    SM
+                    EX
                   </span>
                 </div>
                 <div className="min-w-0">
-                  <p className="text-base font-semibold tracking-tight text-slate-950">StudentMS</p>
+                  <p className="text-base font-semibold tracking-tight text-slate-950">EdXplore</p>
                   <p className="truncate text-xs font-medium text-slate-500">{roleHeadline}</p>
                 </div>
               </Link>
@@ -222,7 +222,7 @@ export const AppLayout = ({
               </div>
             </div>
 
-            <div className="scrollbar-thin mt-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">
+            <div className="scrollbar-thin mt-4 flex gap-2 overflow-x-auto pb-1 lg:!hidden">
               {navItems.map((item) => {
                 const active = pathActive(item.href);
                 const label = user?.role === "student" && item.studentLabel ? item.studentLabel : item.label;
@@ -242,27 +242,6 @@ export const AppLayout = ({
                 );
               })}
             </div>
-
-            <nav className="mt-4 hidden flex-wrap gap-2 border-t border-slate-200/70 pt-4 lg:flex" aria-label="Workspace shortcuts">
-              {navItems.map((item) => {
-                const active = pathActive(item.href);
-                const label = user?.role === "student" && item.studentLabel ? item.studentLabel : item.label;
-                return (
-                  <Link
-                    key={`top-${item.href}`}
-                    href={item.href}
-                    className={cn(
-                      "rounded-xl border px-3.5 py-2 text-[13px] font-semibold transition",
-                      active
-                        ? "border-slate-900 bg-slate-900 text-white"
-                        : "border-transparent bg-slate-50/90 text-slate-600 hover:border-cyan-300/60 hover:bg-white hover:text-slate-900",
-                    )}
-                  >
-                    {label}
-                  </Link>
-                );
-              })}
-            </nav>
 
             {mobileMenuOpen ? (
               <div className="mt-4 space-y-1 border-t border-slate-200/80 pt-4 animate-fade-up lg:hidden">

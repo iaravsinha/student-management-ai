@@ -129,7 +129,7 @@ const FacultyPage = () => {
   return (
     <>
       <Head>
-        <title>Faculty | StudentMS</title>
+        <title>Faculty | EdXplore</title>
       </Head>
       <AppLayout title="Faculty">
         <PageIntro

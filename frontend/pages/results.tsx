@@ -236,7 +236,7 @@ const ResultsPage = () => {
   return (
     <>
       <Head>
-        <title>Results | StudentMS</title>
+        <title>Results | EdXplore</title>
       </Head>
       <AppLayout title="Results">
         <PageIntro

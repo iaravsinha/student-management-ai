@@ -8,7 +8,7 @@ const ChatPage = () => {
   return (
     <>
       <Head>
-        <title>AI Assistant | StudentMS</title>
+        <title>AI Assistant | EdXplore</title>
       </Head>
       <AppLayout title="AI Assistant">
         <PageIntro

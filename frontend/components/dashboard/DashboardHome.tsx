@@ -500,7 +500,7 @@ export const DashboardHome = ({ user, overview, timetable, holidays, subjectAtte
       ) : null}
 
       {role === "admin" && pipelineNodes.length > 0 ? (
-        <SectionCard title="Operational pipeline" description="Entity counts chained in the order data typically flows through StudentMS.">
+        <SectionCard title="Operational pipeline" description="Entity counts chained in the order data typically flows through EdXplore.">
           <FlowPipeline nodes={pipelineNodes} />
         </SectionCard>
       ) : null}

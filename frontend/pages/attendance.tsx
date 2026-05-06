@@ -427,7 +427,7 @@ const AttendancePage = () => {
   return (
     <>
       <Head>
-        <title>Attendance | StudentMS</title>
+        <title>Attendance | EdXplore</title>
       </Head>
       <AppLayout title="Attendance">
         <PageIntro

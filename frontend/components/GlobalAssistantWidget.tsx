@@ -20,7 +20,7 @@ type PersistedState = {
   execute: boolean;
 };
 
-const STORAGE_KEY = "studentms-global-assistant";
+const STORAGE_KEY = "edxplore-global-assistant";
 
 const studentStarters = [
   "Summarize my attendance and highlights.",

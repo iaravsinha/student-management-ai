@@ -1,12 +1,12 @@
-# SAMI — Student Management AI
+# EdXplore — Academic Workspace & AI Assistant
 
-**SAMI** is a production-ready, microservices-based Student Management System with a built-in context-aware AI Academic Assistant. It enables institutions to manage students, faculty, attendance, results, and timetables through a unified, role-aware web dashboard.
+**EdXplore** is a production-ready, microservices-based student management system with a built-in context-aware AI Academic Assistant. It enables institutions to manage students, faculty, attendance, results, and timetables through a unified, role-aware web dashboard.
 
 ---
 
 ## Architecture
 
-SAMI is structured as a decoupled microservices stack orchestrated via Docker Compose, reverse-proxied through Nginx.
+EdXplore is structured as a decoupled microservices stack orchestrated via Docker Compose, reverse-proxied through Nginx.
 
 ```mermaid
 graph TD
@@ -62,6 +62,14 @@ graph TD
 - **Analytics dashboards** — KPI tiles for admins and personal snapshots for students.
 - **Audit logging** — All data mutations tracked and queryable.
 - **Custom SQL queries** — RBAC-enforced SELECT-only analytics endpoint.
+
+### Visitor Analytics & Click Tracking
+- **Automatic request logging** — Every API request is captured in the background without adding latency.
+- **Visitor statistics** — Running totals for total visits and unique visitors (by IP address).
+- **Period breakdowns** — Today, this week, and this month visit counts on demand.
+- **Click logs** — Per-request log with IP, user agent, endpoint, HTTP method, status code, and authenticated user.
+- **Top routes & IPs** — Ranked endpoint and IP activity for traffic analysis.
+- All analytics endpoints are **admin-only** and available at `/analytics`.
 
 ---
 
@@ -205,6 +213,8 @@ Set `NEXT_PUBLIC_BACKEND_URL=http://localhost:8000` and `NEXT_PUBLIC_AI_SERVICE_
 | Backend Swagger UI | [http://localhost:8000/docs](http://localhost:8000/docs) |
 | Backend ReDoc | [http://localhost:8000/redoc](http://localhost:8000/redoc) |
 | AI Service Health | [http://localhost:8001/health/live](http://localhost:8001/health/live) |
+
+The full API reference — including all analytics endpoints — is documented in [PROJECT_DOCUMENTATION.md](./PROJECT_DOCUMENTATION.md#6-api-reference).
 
 ---
 

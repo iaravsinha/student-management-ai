@@ -27,7 +27,7 @@ const HomePage = () => {
   return (
     <>
       <Head>
-        <title>StudentMS | Modern Student Management</title>
+        <title>EdXplore | Modern Student Management</title>
       </Head>
       <main className="min-h-screen px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
         <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-[1320px] flex-col gap-14 lg:gap-20">
@@ -36,11 +36,11 @@ const HomePage = () => {
               <div className="relative grid h-12 w-12 shrink-0 place-items-center">
                 <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/35 to-amber-300/25 opacity-70 blur-md transition group-hover:opacity-100" />
                 <span className="relative grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-sm font-bold text-white shadow-lg">
-                  SM
+                  EX
                 </span>
               </div>
               <div>
-                <p className="text-lg font-semibold tracking-tight text-slate-950">StudentMS</p>
+                <p className="text-lg font-semibold tracking-tight text-slate-950">EdXplore</p>
                 <p className="text-sm text-slate-500">Academic cloud cockpit</p>
               </div>
             </Link>
