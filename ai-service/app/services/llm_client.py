@@ -27,6 +27,15 @@ TABLES:
 - attendance(id, student_id, subject_id, timetable_id, date, status)
 - timetable(id, subject_id, day, start_time, end_time, room, faculty_user_id)
 
+FORMULAS & CALCULATIONS:
+1. OVERALL PERCENTAGE / RESULT PERCENTAGE: To calculate a student's overall percentage, you MUST sum all marks obtained across all subjects/records and divide by the sum of max marks:
+   `SUM(r.marks_obtained) * 100.0 / SUM(r.max_marks)`
+   - CRITICAL: NEVER use AVG(r.marks_obtained / r.max_marks * 100) or similar. Since marks_obtained and max_marks are integers, dividing them directly does integer division in PostgreSQL, resulting in 0% or 100% for individual entries!
+   - ALWAYS multiply the numerator (marks_obtained or SUM(marks_obtained)) by 100.0 first to force float division.
+   - Correct pattern for HAVING/SELECT: `SUM(r.marks_obtained) * 100.0 / SUM(r.max_marks)`
+2. SUBJECT PERCENTAGE / GRADE PERCENTAGE: To calculate a student's percentage in a specific subject or exam, use:
+   `r.marks_obtained * 100.0 / r.max_marks`
+
 ROLE-BASED PARAMETERS & SECURITY CONSTRAINTS:
 1. If the logged in user is a STUDENT (role: "student"), they can ONLY query their own records.
    - You MUST filter by 'student_id = :student_id' or 'students.email = :student_email' or 'students.id = :student_id' in your SQL query where relevant.

@@ -45,3 +45,5 @@ htmlcov/
 brain/
 sampleid.txt
 *.log
+spare_api_keys.txt
+sample_accounts_credentials.txt

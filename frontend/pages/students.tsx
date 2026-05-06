@@ -244,9 +244,31 @@ const StudentsPage = () => {
       setStudents(response.data.items);
       setTotal(response.data.total);
       setPage(response.data.page);
-      const firstStudent = response.data.items[0] ?? null;
-      setSelectedStudent(firstStudent);
-      await loadStudentDetails(firstStudent);
+      // Check for student_id in the URL to auto-select
+      const qStudentId = router.query.student_id;
+      if (qStudentId && !isStudentUser) {
+        const studentIdNum = Number(qStudentId);
+        const match = response.data.items.find((s) => s.id === studentIdNum);
+        if (match) {
+          setSelectedStudent(match);
+          await loadStudentDetails(match);
+        } else {
+          try {
+            const singleRes = await api.get<Student>(`/students/${studentIdNum}`);
+            const fetchedStudent = singleRes.data;
+            setSelectedStudent(fetchedStudent);
+            await loadStudentDetails(fetchedStudent);
+          } catch {
+            const firstStudent = response.data.items[0] ?? null;
+            setSelectedStudent(firstStudent);
+            await loadStudentDetails(firstStudent);
+          }
+        }
+      } else {
+        const firstStudent = response.data.items[0] ?? null;
+        setSelectedStudent(firstStudent);
+        await loadStudentDetails(firstStudent);
+      }
     } catch (loadError) {
       setError(getErrorMessage(loadError, "Failed to load students"));
     } finally {
