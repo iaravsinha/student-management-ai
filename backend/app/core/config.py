@@ -20,6 +20,12 @@ class Settings(BaseSettings):
   AUTO_CREATE_TABLES: bool = False
   BACKEND_API_TOKEN: str | None = None
 
+  EMBEDDING_PROVIDER: str = "gemini"
+  EMBEDDING_MODEL: str = "text-embedding-004"
+  OPENAI_API_KEY: str | None = None
+  OPENROUTER_API_KEY: str | None = None
+  GEMINI_API_KEY: str | None = None
+
   BACKEND_HOST: str = "0.0.0.0"
   BACKEND_PORT: int = 8000
   BACKEND_ROOT_PATH: str = ""

@@ -10,7 +10,7 @@ from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.logging import configure_logging
 import app.models  # noqa: F401
-from app.routes import analytics, audit, attendance, auth, departments, faculty, health, overview, query, results, students, subjects, timetable
+from app.routes import analytics, audit, attendance, auth, departments, faculty, health, overview, query, results, students, subjects, timetable, semantic_search, admin_embedding
 
 
 logger = configure_logging("backend")
@@ -82,6 +82,8 @@ def create_app() -> FastAPI:
   app.include_router(timetable.router, prefix="/timetable", tags=["timetable"])
   app.include_router(query.router, prefix="/query", tags=["query"])
   app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+  app.include_router(semantic_search.router, prefix="/ai", tags=["ai"])
+  app.include_router(admin_embedding.router, prefix="/admin", tags=["admin"])
 
   return app
 

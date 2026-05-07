@@ -7,7 +7,6 @@ from app.core.db import get_db
 from app.core.permissions import Operation, require_permission
 from app.schemas.analytics import (
     ClickLogListResponse,
-    ClickLogRead,
     TopIPItem,
     TopRouteItem,
     VisitorStatsRead,
