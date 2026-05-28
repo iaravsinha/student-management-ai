@@ -9,8 +9,15 @@ logger = logging.getLogger("ai-service")
 
 SYSTEM_PROMPT = """Map request to JSON: {"actions": ["action1", "action2"], "student_id": 123, ...}.
 Actions: fetch_attendance (view history), fetch_results (view grades), fetch_timetable, fetch_directory (search students), fetch_org_structure, fetch_overview, mark_attendance (submit new record), create_subject (add new), execute_sql (for custom stats, aggregations, queries, or database questions not covered by general endpoints).
-CRITICAL:
+CRITICAL guidelines:
+- NEVER use 'execute_sql' for inserting, updating, deleting, or modifying data. For any operations that alter or write data (like marking attendance), you MUST use the formal action endpoints like 'mark_attendance' or 'create_subject'.
+- If the user requests to mark attendance, mark students as present/absent, or submit attendance, ALWAYS map it to the 'mark_attendance' action. If the timetable_id is not explicitly specified but a subject name is provided, extract the subject name into 'subject_name' so the backend can auto-resolve the ID.
 - Use 'context.student.id' for student_id, NOT 'context.user.id'. 
+- For 'mark_attendance' with exceptions or conditional lists:
+  * Extract roll numbers or enrollment numbers (e.g. 'LET-0002', '0002') for students mentioned as present in 'present_roll_numbers' and absent in 'absent_roll_numbers'.
+  * If the user requests to mark ALL as absent EXCEPT a specific list of students, those exceptional students are present. So, put their roll/enrollment numbers (e.g. 'LET-0002') into 'present_roll_numbers', keep 'absent_roll_numbers' empty, and set 'default_attendance_status' to 'absent'.
+  * If the user requests to mark ALL as present EXCEPT a specific list of students, those exceptional students are absent. So, put their roll/enrollment numbers into 'absent_roll_numbers', keep 'present_roll_numbers' empty, and set 'default_attendance_status' to 'present'.
+  * Always set 'default_attendance_status' to 'absent' if the primary action is to mark everyone/all as absent, and 'present' if the primary action is to mark everyone/all as present.
 - ROLE-BASED ACCESS CONTROL:
   * For STUDENT role: NEVER use 'fetch_directory', 'fetch_overview', 'fetch_org_structure', or 'mark_attendance'. They ONLY access their own attendance, results, and timetable.
   * For TEACHER role: Can 'fetch_attendance', 'fetch_results', 'mark_attendance' for students in their department.

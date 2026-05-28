@@ -334,3 +334,24 @@ def build_subject_percentages(history: list[dict]) -> dict[int, float]:
       subject_id: attendance_percentage(attended[subject_id], total)
       for subject_id, total in totals.items()
   }
+
+
+async def fetch_semantic_search(
+    query: str,
+    top_k: int = 5,
+    filters: dict | None = None,
+    auth_header: str | None = None,
+) -> list[dict]:
+  async with httpx.AsyncClient(timeout=settings.REQUEST_TIMEOUT_SECONDS) as client:
+    response = await client.post(
+        f"{settings.BACKEND_URL}/ai/semantic-search",
+        headers=_headers(auth_header),
+        json={
+            "query": query,
+            "top_k": top_k,
+            "filters": filters,
+        },
+    )
+    response.raise_for_status()
+    return response.json()
+

@@ -203,8 +203,32 @@ async def run_query_chain(
       "permissions": permissions,
   }
 
+  # If the query is literally "execute" (case-insensitive) or similar, but execute is True,
+  # we resolve the query to the previous user intent to perform classification and handling correctly.
+  if query.strip().lower() in ("execute", "execute command", "execute command.", "execute.") and conversation_history:
+      execute = True  # Force execute to True since the user explicitly requested it
+      for msg in reversed(conversation_history):
+          if msg.get("role") == "user" and msg.get("content", "").strip().lower() not in ("execute", "execute command", "execute command.", "execute."):
+              query = msg["content"]
+              import logging
+              logger = logging.getLogger("ai-service")
+              logger.info(f"Resolved 'execute' query to previous user intent query and forced execution: {query}")
+              break
+
   cmd_json = await command_from_hosted_llm(query, context)
   
+  if cmd_json:
+      # Sanitize list fields to prevent Pydantic validation errors if LLM outputs null or string
+      for list_field in ["actions", "present_roll_numbers", "absent_roll_numbers"]:
+          val = cmd_json.get(list_field)
+          if val is None:
+              cmd_json[list_field] = []
+          elif isinstance(val, str):
+              # If LLM returned a single string value (e.g. "all" or "001"), convert it to a list
+              cmd_json[list_field] = [val]
+          elif not isinstance(val, list):
+              cmd_json[list_field] = []
+
   # Normalize actions if LLM returns objects instead of strings
   if cmd_json and isinstance(cmd_json.get("actions"), list):
     normalized = []
@@ -293,12 +317,32 @@ async def run_query_chain(
   has_fetch = any(a.startswith("fetch_") for a in command.actions)
   
   if "mark_attendance" in command.actions and (not has_fetch or execute):
-    answer, meta = await _handle_mark_attendance(command, execute, auth_header, user)
+    answer, meta = await _handle_mark_attendance(command, execute, auth_header, user, query)
     return answer, command, meta
   
   if "create_subject" in command.actions and (not has_fetch or execute):
     answer, meta = await _handle_create_subject(command, execute, auth_header, permissions)
     return answer, command, meta
+
+  # Ground the response with relevant institutional guidelines, policies, and semantic context
+  try:
+    from app.agents.backend_agent import fetch_semantic_search
+    semantic_docs = await fetch_semantic_search(query=query, top_k=3, auth_header=auth_header)
+    if semantic_docs:
+      fetched_data["semantic_context"] = [
+          {
+              "title": doc["title"],
+              "content": doc["content"],
+              "document_type": doc["document_type"],
+              "similarity": f"{int(doc['similarity_score'] * 100)}%"
+          }
+          for doc in semantic_docs
+          if doc.get("similarity_score", 0.0) >= 0.35
+      ]
+  except Exception as e:
+    import logging
+    logger = logging.getLogger("ai-service")
+    logger.error(f"Semantic search grounding failed: {e}")
 
   # Final Step: Pass all fetched data to LLM for a human response
   full_context = {**context, "fetched_data": fetched_data, "conversation_history": conversation_history or []}
@@ -313,24 +357,84 @@ async def run_query_chain(
   
   return answer or "I couldn't process that data.", command, {"fetched_data_keys": list(fetched_data.keys())}
 
-async def _handle_mark_attendance(command: StructuredCommand, execute: bool, auth_header: str | None, user: dict | None = None) -> tuple[str, dict]:
+def _student_matches(student: dict, roll_set: set[str]) -> bool:
+  roll = str(student.get("roll_number", "")).strip().lower()
+  enroll = str(student.get("enrollment_number", "")).strip().lower()
+  
+  roll_int = ""
+  try:
+    roll_int = str(int(roll))
+  except ValueError:
+    pass
+    
+  for r in roll_set:
+    r_clean = r.strip().lower()
+    if r_clean in (roll, enroll, roll_int):
+      return True
+    try:
+      r_int = str(int(r_clean))
+      if r_int and r_int == roll_int:
+        return True
+    except ValueError:
+      pass
+  return False
+
+
+async def _handle_mark_attendance(command: StructuredCommand, execute: bool, auth_header: str | None, user: dict | None = None, query: str = "") -> tuple[str, dict]:
   if not command.timetable_id:
     if user and user.get("role") == "teacher":
       try:
         from app.agents.backend_agent import fetch_sql_query
-        sql = f"SELECT timetable.id, subjects.name as subject_name, timetable.day, timetable.start_time, timetable.end_time FROM timetable JOIN subjects ON timetable.subject_id = subjects.id WHERE timetable.faculty_user_id = {user.get('id')}"
+        sql = f"SELECT timetables.id, subjects.name as subject_name, timetables.day, timetables.start_time, timetables.end_time FROM timetables JOIN subjects ON timetables.subject_id = subjects.id WHERE timetables.faculty_user_id = {user.get('id')}"
         entries = await fetch_sql_query(sql, auth_header)
         if entries and len(entries) > 0:
-          options = "\n".join([f"- **Slot ID {e['id']}**: {e['subject_name']} ({e['day']}s, {e['start_time']} - {e['end_time']})" for e in entries])
-          return (
-              "Please specify which class slot you want to mark attendance for. "
-              f"Here are your scheduled classes:\n\n{options}\n\n"
-              f"You can say: *'mark all present for slot ID {entries[0]['id']} on {command.date or 'today'}'*",
-              {}
-          )
-      except Exception:
+          subj_query = command.subject_name
+          matched_entry = None
+          
+          # 1. Match using extracted subject_name
+          if subj_query:
+            q_clean = str(subj_query).strip().lower()
+            matched_entry = next(
+                (e for e in entries if q_clean in e["subject_name"].lower() or e["subject_name"].lower() in q_clean),
+                None
+            )
+            
+          # 2. Fallback: Search inside raw query text for any scheduled subject names
+          if not matched_entry and query:
+            raw_q = query.strip().lower()
+            best_match = None
+            for e in entries:
+                s_name = e["subject_name"].lower()
+                if s_name in raw_q:
+                    if not best_match or len(s_name) > len(best_match["subject_name"]):
+                        best_match = e
+            if best_match:
+                matched_entry = best_match
+                
+          # 3. Last fallback: If teacher has exactly one scheduled slot overall, default to it
+          if not matched_entry and len(entries) == 1:
+            matched_entry = entries[0]
+            
+          if matched_entry:
+            command.timetable_id = matched_entry["id"]
+            import logging
+            logger = logging.getLogger("ai-service")
+            logger.info(f"Auto-resolved timetable_id to {command.timetable_id} for subject '{matched_entry['subject_name']}'")
+          else:
+            options = "\n".join([f"- **Slot ID {e['id']}**: {e['subject_name']} ({e['day']}s, {e['start_time']} - {e['end_time']})" for e in entries])
+            return (
+                "Please specify which class slot you want to mark attendance for. "
+                f"Here are your scheduled classes:\n\n{options}\n\n"
+                f"You can say: *'mark all present for slot ID {entries[0]['id']} on {command.date or 'today'}'*",
+                {}
+            )
+      except Exception as e:
+        import logging
+        logger = logging.getLogger("ai-service")
+        logger.error(f"Error in automatic timetable_id resolution: {e}")
         pass
-    return "Class required to mark attendance. Please specify which subject or timetable slot.", {}
+    if not command.timetable_id:
+      return "Class required to mark attendance. Please specify which subject or timetable slot.", {}
 
   if not command.date:
     return "Date required to mark attendance. Please specify a date (e.g. 'today' or '6th may').", {}
@@ -339,23 +443,42 @@ async def _handle_mark_attendance(command: StructuredCommand, execute: bool, aut
   absent_rolls = {str(r).strip().lower() for r in command.absent_roll_numbers}
   present_rolls = {str(r).strip().lower() for r in command.present_roll_numbers}
   
+  default_status = command.default_attendance_status or "present"
+  if query:
+      q_lower = query.lower()
+      if any(p in q_lower for p in [
+          "all absent", "everyone absent", "all students to absent", "all to absent", 
+          "all students as absent", "all students absent", "mark all as absent", 
+          "mark all students as absent", "mark everyone as absent", "set all students as absent",
+          "set all as absent", "set everyone as absent"
+      ]):
+          default_status = "absent"
+
+  if default_status == "absent" and not command.default_attendance_status:
+      command.default_attendance_status = "absent"
+
   records = []
   for s in students:
-    roll = str(s.get("roll_number", "")).strip().lower()
-    # If present_rolls specified, only those are present. If absent_rolls specified, those are absent.
-    # Default is present.
+    is_in_present = _student_matches(s, present_rolls)
+    is_in_absent = _student_matches(s, absent_rolls)
+
     if present_rolls:
-        status = "present" if roll in present_rolls else "absent"
+        status = "present" if is_in_present else "absent"
     elif absent_rolls:
-        status = "absent" if roll in absent_rolls else "present"
+        status = "absent" if is_in_absent else "present"
     else:
-        status = "present"
+        status = default_status
     records.append({"student_id": s["id"], "status": status})
 
   if not execute:
     return f"Prepared attendance for {len(records)} students. Enable 'Execute' to save.", {"records": records}
   
-  saved = await mark_bulk_attendance(command.timetable_id, command.date, records, auth_header)
+  saved = await mark_bulk_attendance(
+      timetable_id=command.timetable_id,
+      attendance_date=command.date,
+      records=records,
+      auth_header=auth_header,
+  )
   return f"Successfully marked attendance for {len(saved)} students.", {"saved_count": len(saved)}
 
 async def _handle_create_subject(command: StructuredCommand, execute: bool, auth_header: str | None, permissions: list[str]) -> tuple[str, dict]:

@@ -18,7 +18,7 @@ from app.services import student_service
 router = APIRouter()
 
 
-@router.post("/", response_model=StudentRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=StudentRead, status_code=status.HTTP_201_CREATED)
 def create_student(
     payload: StudentCreate,
     db: Session = Depends(get_db),
@@ -39,7 +39,7 @@ async def import_students(
 @router.get("", response_model=StudentListResponse)
 def list_students(
     page: int = Query(default=1, ge=1),
-    page_size: int = Query(default=10, ge=1, le=100),
+    page_size: int = Query(default=10, ge=1, le=1000),
     enrollment_number: str | None = Query(default=None),
     department: str | None = Query(default=None),
     batch_year: int | None = Query(default=None, ge=2000, le=2100),

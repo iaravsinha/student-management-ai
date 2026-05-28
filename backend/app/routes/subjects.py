@@ -25,7 +25,7 @@ def list_subjects(
   )
 
 
-@router.post("/", response_model=SubjectRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=SubjectRead, status_code=status.HTTP_201_CREATED)
 def create_subject(
     payload: SubjectCreate,
     db: Session = Depends(get_db),

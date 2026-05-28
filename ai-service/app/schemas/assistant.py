@@ -26,6 +26,7 @@ class StructuredCommand(BaseModel):
   date: Optional[dt_date] = None
   present_roll_numbers: list[str] = Field(default_factory=list)
   absent_roll_numbers: list[str] = Field(default_factory=list)
+  default_attendance_status: Optional[str] = "present"
   subject_name: str | None = None
   subject_code: str | None = None
   department: str | None = None

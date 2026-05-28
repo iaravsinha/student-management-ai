@@ -86,7 +86,10 @@ def create_timetable_entry(db: Session, payload: TimetableCreate) -> Timetable:
         detail="Selected faculty already has a class in this time slot",
     )
 
-  entry = Timetable(**payload.model_dump(), department=department.name, subject_name=subject.name)
+  data = payload.model_dump()
+  data["department"] = department.name
+  data["subject_name"] = subject.name
+  entry = Timetable(**data)
   db.add(entry)
   db.commit()
   db.refresh(entry)

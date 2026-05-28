@@ -222,7 +222,7 @@ export const AppLayout = ({
               </div>
             </div>
 
-            <div className="scrollbar-thin mt-4 flex gap-2 overflow-x-auto pb-1 lg:!hidden">
+            <div className="scrollbar-thin mt-4 flex gap-2 overflow-x-auto pb-1 lg:hidden">
               {navItems.map((item) => {
                 const active = pathActive(item.href);
                 const label = user?.role === "student" && item.studentLabel ? item.studentLabel : item.label;
@@ -245,6 +245,28 @@ export const AppLayout = ({
 
             {mobileMenuOpen ? (
               <div className="mt-4 space-y-1 border-t border-slate-200/80 pt-4 animate-fade-up lg:hidden">
+                {/* Mobile User Identity Profile Block with Instant Accessible Signout */}
+                <div className="mb-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Signed in as</p>
+                      <p className="truncate text-sm font-bold text-slate-800">{user?.email}</p>
+                      <span className="mt-1 inline-flex items-center rounded-full bg-cyan-100 px-2.5 py-0.5 text-xs font-semibold text-cyan-800">
+                        {formatLabel(user?.role || "user")}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="flex h-10 items-center gap-2 rounded-xl bg-rose-50 px-3 text-xs font-semibold text-rose-600 transition hover:bg-rose-100"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-none stroke-current stroke-[2]">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                      </svg>
+                      Sign out
+                    </button>
+                  </div>
+                </div>
+
                 {grouped.map(([group, items]) => (
                   <div key={group} className="space-y-1">
                     <p className="px-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{group}</p>
@@ -253,9 +275,6 @@ export const AppLayout = ({
                     ))}
                   </div>
                 ))}
-                <ActionButton variant="secondary" className="mt-3 w-full justify-center rounded-xl" onClick={handleLogout}>
-                  Sign out
-                </ActionButton>
                 {actions ? <div className="pt-3">{actions}</div> : null}
               </div>
             ) : null}

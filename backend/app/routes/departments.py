@@ -17,7 +17,7 @@ def list_departments(
   return department_service.list_departments_with_summary(db)
 
 
-@router.post("/", response_model=DepartmentRead, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=DepartmentRead, status_code=status.HTTP_201_CREATED)
 def create_department(
     payload: DepartmentCreate,
     db: Session = Depends(get_db),
