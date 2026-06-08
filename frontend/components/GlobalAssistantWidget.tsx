@@ -126,6 +126,11 @@ export const GlobalAssistantWidget = () => {
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, loading, open]);
 
+  const resetChat = () => {
+    setMessages([]);
+    setError("");
+  };
+
   const send = async (event?: FormEvent, overrideQuery?: string) => {
     event?.preventDefault();
     const cleanQuery = (overrideQuery ?? query).trim();
@@ -174,7 +179,7 @@ export const GlobalAssistantWidget = () => {
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {open ? (
         <div
-          className="flex max-h-[min(560px,calc(100vh-6rem))] w-[min(400px,calc(100vw-2.25rem))] flex-col overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 shadow-[0_28px_80px_-32px_rgba(15,23,42,0.55)] backdrop-blur-xl animate-fade-up"
+          className="flex max-h-[min(760px,calc(100vh-5rem))] w-[min(480px,calc(100vw-2rem))] flex-col overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 shadow-[0_28px_80px_-32px_rgba(15,23,42,0.55)] backdrop-blur-xl animate-fade-up"
           style={{ animationDuration: "0.35s" }}
         >
           <div className="relative shrink-0 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-900 px-5 pb-6 pt-5 text-white">
@@ -198,13 +203,25 @@ export const GlobalAssistantWidget = () => {
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20"
-              >
-                Close
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={resetChat}
+                  title="Clear conversation history"
+                  className="rounded-xl bg-white/10 p-2 text-white/90 transition hover:bg-rose-500/20 hover:text-rose-200"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-white/20"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
 
@@ -268,25 +285,68 @@ export const GlobalAssistantWidget = () => {
           </div>
 
           <div className="shrink-0 space-y-3 border-t border-slate-200/80 bg-white/95 px-4 py-4">
-            <details className="group rounded-xl border border-slate-200/80 bg-slate-50/90 [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-[13px] font-semibold text-slate-700">
-                Advanced context
-                <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" aria-hidden>
-                  <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
-                </svg>
-              </summary>
-              <div className="space-y-2 border-t border-slate-200/70 px-3 pb-3 pt-2">
-                <div className="grid grid-cols-3 gap-2">
-                  <input value={studentId} onChange={(e) => setStudentId(e.target.value)} placeholder="Enrollment Number" className="!py-2 text-xs" />
-                  <input value={timetableId} onChange={(e) => setTimetableId(e.target.value)} placeholder="Class ID" className="!py-2 text-xs" />
-                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="!py-2 text-xs" />
+            {user?.role === "admin" && (
+              <details className="group rounded-xl border border-slate-200/85 bg-slate-50/90 transition-all duration-200 hover:border-slate-300/80 [&_summary::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:text-slate-900 select-none">
+                  <span className="flex items-center gap-1.5">
+                    <svg className="h-4 w-4 text-cyan-600/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    Simulated Context Overrides
+                  </span>
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-slate-400 transition group-open:rotate-180" aria-hidden>
+                    <path fill="currentColor" d="M7 10l5 5 5-5H7z" />
+                  </svg>
+                </summary>
+                <div className="space-y-4 border-t border-slate-200/70 px-3.5 pb-4 pt-3">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <label className="block space-y-1">
+                      <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Student ID Override</span>
+                      <input 
+                        value={studentId} 
+                        onChange={(e) => setStudentId(e.target.value)} 
+                        placeholder="e.g., 1" 
+                        className="w-full !py-1.5 px-2.5 text-xs rounded-lg border border-slate-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30" 
+                      />
+                    </label>
+                    <label className="block space-y-1">
+                      <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Class Slot ID Override</span>
+                      <input 
+                        value={timetableId} 
+                        onChange={(e) => setTimetableId(e.target.value)} 
+                        placeholder="e.g., 12" 
+                        className="w-full !py-1.5 px-2.5 text-xs rounded-lg border border-slate-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30" 
+                      />
+                    </label>
+                    <label className="block space-y-1">
+                      <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Simulated Date</span>
+                      <input 
+                        type="date" 
+                        value={date} 
+                        onChange={(e) => setDate(e.target.value)} 
+                        className="w-full !py-1 px-2 text-xs rounded-lg border border-slate-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/30" 
+                      />
+                    </label>
+                  </div>
                 </div>
-                <label className="flex cursor-pointer items-center gap-2 text-[11px] text-slate-600">
-                  <input type="checkbox" checked={execute} onChange={(e) => setExecute(e.target.checked)} className="rounded border-slate-300" />
-                  Execute allowed commands
-                </label>
-              </div>
-            </details>
+              </details>
+            )}
+
+            <div className="flex items-start gap-2.5 rounded-xl bg-slate-50/60 p-2.5 border border-slate-100 shadow-sm">
+              <input 
+                type="checkbox" 
+                id="execute-checkbox"
+                checked={execute} 
+                onChange={(e) => setExecute(e.target.checked)} 
+                className="mt-0.5 h-3.5 w-3.5 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500/30" 
+              />
+              <label htmlFor="execute-checkbox" className="flex-1 cursor-pointer select-none">
+                <p className="text-[11px] font-semibold text-slate-700">Allow assistant to take actions on my behalf</p>
+                <p className="mt-0.5 text-[9.5px] leading-relaxed text-slate-400">
+                  Lets the AI perform tasks like submitting forms or marking attendance when you request it.
+                </p>
+              </label>
+            </div>
 
             <form onSubmit={(e) => void send(e)} className="space-y-2">
               <textarea

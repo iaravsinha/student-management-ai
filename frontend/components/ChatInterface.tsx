@@ -224,7 +224,7 @@ export const ChatInterface = () => {
               <label className="block space-y-2">
                 <span className="text-[13px] font-semibold text-slate-700">Student focus</span>
                 {isStudentUser ? (
-                  <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Enrollment Number" disabled />
+                  <input value={studentId} onChange={(event) => setStudentId(event.target.value)} placeholder="Student ID" disabled />
                 ) : (
                   <select value={studentId} onChange={(event) => setStudentId(event.target.value)} className="text-[13px]">
                     <option value="">Select a student</option>
@@ -257,19 +257,10 @@ export const ChatInterface = () => {
                     ))}
                   </select>
                 </label>
-                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                <div className="mt-4">
                   <label className="block space-y-2">
                     <span className="text-[13px] font-semibold text-slate-700">Command date</span>
                     <input type="date" value={selectedDate} onChange={(event) => setSelectedDate(event.target.value)} className="text-[13px]" />
-                  </label>
-                  <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200/80 bg-slate-50/90 px-3 py-3 text-[13px] font-medium text-slate-700">
-                    <input
-                      type="checkbox"
-                      checked={executeCommand}
-                      onChange={(event) => setExecuteCommand(event.target.checked)}
-                      className="h-4 w-4 rounded border-slate-300"
-                    />
-                    Execute safe commands
                   </label>
                 </div>
               </div>
@@ -314,7 +305,23 @@ export const ChatInterface = () => {
                 Messages stay on this page—pair them with the lens on the left for richer answers.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+             <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setMessages([]);
+                  setError("");
+                  if (typeof window !== "undefined") {
+                    window.localStorage.removeItem(STORAGE_KEY);
+                  }
+                }}
+                className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/90 transition hover:bg-rose-500/20 hover:text-rose-100"
+              >
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Clear History
+              </button>
               <Badge tone="neutral" className="border-white/10 bg-white/10 text-white ring-white/20">
                 {formatLabel(user?.role || "guest")}
               </Badge>
@@ -431,7 +438,23 @@ export const ChatInterface = () => {
           )}
         </div>
 
-        <form onSubmit={onSubmit} className="shrink-0 border-t border-slate-200/80 bg-white/95 px-5 py-5">
+        <form onSubmit={onSubmit} className="shrink-0 border-t border-slate-200/80 bg-white/95 px-5 py-5 space-y-4">
+          <div className="flex items-start gap-2.5 rounded-xl bg-slate-50/60 p-3 border border-slate-100 shadow-sm max-w-xl animate-fade-up">
+            <input 
+              type="checkbox" 
+              id="execute-checkbox-page"
+              checked={executeCommand} 
+              onChange={(e) => setExecuteCommand(e.target.checked)} 
+              className="mt-0.5 h-4 w-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500/30" 
+            />
+            <label htmlFor="execute-checkbox-page" className="flex-1 cursor-pointer select-none">
+              <p className="text-[12px] font-semibold text-slate-700">Allow assistant to take actions on my behalf</p>
+              <p className="mt-0.5 text-[10px] leading-relaxed text-slate-500">
+                Lets the AI perform tasks like submitting forms or marking attendance when you request it.
+              </p>
+            </label>
+          </div>
+
           <textarea
             value={query}
             onChange={(event) => setQuery(event.target.value)}

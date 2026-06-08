@@ -59,6 +59,8 @@ def _compact_context_for_llm(context: dict) -> dict:
       active_subj_ids.update(r.get("subject_id") for r in fetched["attendance"] if r.get("subject_id"))
   if isinstance(fetched.get("results"), list):
       active_subj_ids.update(r.get("subject_id") for r in fetched["results"] if r.get("subject_id"))
+  if isinstance(fetched.get("timetable"), list):
+      active_subj_ids.update(r.get("subject_id") for r in fetched["timetable"] if r.get("subject_id"))
 
   if "subjects" in fetched and isinstance(fetched["subjects"], list):
       filtered_subjects = subjects
@@ -144,6 +146,13 @@ def _compact_context_for_llm(context: dict) -> dict:
         fid = entry.get("faculty_user_id")
         if fid in id_to_faculty:
             entry["faculty_name"] = id_to_faculty[fid]
+        
+        # Clean up day field (e.g. "WeekDay.thursday" -> "thursday")
+        if "day" in entry and isinstance(entry["day"], str):
+            if entry["day"].startswith("WeekDay."):
+                entry["day"] = entry["day"].split(".")[-1]
+            entry["day"] = entry["day"].lower()
+
         for k in ["created_at", "updated_at"]:
             entry.pop(k, None)
     fetched["timetable"] = fetched["timetable"][:20]
@@ -288,7 +297,9 @@ async def run_query_chain(
         dept = command.department or (student or {}).get("department")
         batch = command.batch_year or (student or {}).get("batch_year")
         sem = command.semester or (student or {}).get("semester")
-        fetched_data["timetable"] = await fetch_timetable(dept, batch, sem, auth_header)
+        fetched_data["timetable"] = await fetch_timetable(
+            department=dept, batch_year=batch, semester=sem, auth_header=auth_header
+        )
       elif action == "fetch_directory":
         fetched_data["students"] = await fetch_students(page=1, page_size=100, auth_header=auth_header)
       elif action == "fetch_org_structure":

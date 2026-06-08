@@ -122,11 +122,9 @@ def list_timetable_for_user_with_filters(
           status_code=status.HTTP_404_NOT_FOUND,
           detail="Student profile not found for this account",
       )
-    query = query.filter(
-        Timetable.department == student.department,
-        Timetable.batch_year == student.batch_year,
-        Timetable.semester == student.semester,
-    )
+    department = student.department
+    batch_year = student.batch_year
+    semester = student.semester
   if department:
     query = query.filter(Timetable.department == department)
   if batch_year is not None:

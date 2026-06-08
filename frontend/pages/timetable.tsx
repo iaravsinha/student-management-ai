@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { getDepartmentOption } from "../lib/academic";
 import { api } from "../lib/api";
 import { useDepartmentCatalog } from "../lib/useDepartmentCatalog";
-import { FacultyProfile, Holiday, HolidayPayload, Subject, SubjectPayload, TimetableEntry, WeekDay, WeeklyTimetablePayload } from "../lib/types";
+import { FacultyProfile, Holiday, HolidayPayload, Student, Subject, SubjectPayload, TimetableEntry, WeekDay, WeeklyTimetablePayload } from "../lib/types";
 import { WEEK_DAYS, addMinutesToTime, formatDate, formatLabel, formatTime, getErrorMessage, getLocalDateInputValue } from "../lib/utils";
 
 const defaultRows = ["09:00", "09:45", "10:30", "11:15", "12:00", "12:45", "13:30", "14:15", "15:00"];
@@ -46,6 +46,8 @@ const TimetablePage = () => {
   const router = useRouter();
   const { user } = useAuth();
   const canManage = user?.role === "admin";
+  const isStudent = user?.role === "student";
+  const [student, setStudent] = useState<Student | null>(null);
   const { catalog, fallbackDepartment, loading: departmentsLoading, error: departmentsError } = useDepartmentCatalog(
     true,
   );
@@ -83,6 +85,9 @@ const TimetablePage = () => {
   const subjectsBySemester = useMemo(() => {
     const grouped = new Map<number, Subject[]>();
     for (const subject of batchSubjects) {
+      if (isStudent && subject.semester !== semester) {
+        continue;
+      }
       const current = grouped.get(subject.semester) || [];
       current.push(subject);
       grouped.set(subject.semester, current);
@@ -93,10 +98,13 @@ const TimetablePage = () => {
         semester: value,
         subjects: semesterSubjects.sort((left, right) => left.name.localeCompare(right.name)),
       }));
-  }, [batchSubjects]);
+  }, [batchSubjects, isStudent, semester]);
   const groupedEntries = useMemo(() => plannerDays.map((day) => ({ day, entries: entries.filter((entry) => entry.day === day) })), [entries]);
 
   useEffect(() => {
+    if (isStudent) {
+      return;
+    }
     if (!router.isReady || !fallbackDepartment) {
       return;
     }
@@ -106,9 +114,12 @@ const TimetablePage = () => {
     setDepartment(config.name);
     setBatchYear(config.batches.includes(queryBatchYear) ? queryBatchYear : config.batches[0]);
     setSemester(config.semesters[0]);
-  }, [catalog, fallbackDepartment, router.isReady, router.query.batch_year, router.query.department]);
+  }, [catalog, fallbackDepartment, router.isReady, router.query.batch_year, router.query.department, isStudent]);
 
   useEffect(() => {
+    if (isStudent) {
+      return;
+    }
     if (!fallbackDepartment) {
       return;
     }
@@ -117,7 +128,39 @@ const TimetablePage = () => {
       setBatchYear(fallbackDepartment.batches[0]);
       setSemester(fallbackDepartment.semesters[0]);
     }
-  }, [department, fallbackDepartment]);
+  }, [department, fallbackDepartment, isStudent]);
+
+  useEffect(() => {
+    if (!isStudent) {
+      return;
+    }
+    let cancelled = false;
+    const loadStudentProfile = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await api.get<Student>("/students/me");
+        if (cancelled) return;
+        const me = response.data;
+        setStudent(me);
+        setDepartment(me.department);
+        setBatchYear(me.batch_year);
+        setSemester(me.semester);
+      } catch (loadError) {
+        if (!cancelled) {
+          setError(getErrorMessage(loadError, "Unable to load student profile"));
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+    void loadStudentProfile();
+    return () => {
+      cancelled = true;
+    };
+  }, [isStudent]);
 
   useEffect(() => {
     setSubjectForm(emptySubjectForm(department, batchYear, semester));
@@ -383,8 +426,8 @@ const TimetablePage = () => {
       <AppLayout title="Timetable">
         <PageIntro
           eyebrow="Academic schedule"
-          title="Repeating weekly timetable planner"
-          description="Plan the whole week in 45-minute slots. Leave any slot vacant or assign a subject, faculty, and room, and the saved week will automatically feed student views, teacher views, and attendance availability."
+          title={isStudent ? "Your weekly timetable" : "Repeating weekly timetable planner"}
+          description={isStudent ? "View your weekly timetable slot details. Each weekday lists your rostered classes, subjects, rooms, and faculty." : "Plan the whole week in 45-minute slots. Leave any slot vacant or assign a subject, faculty, and room, and the saved week will automatically feed student views, teacher views, and attendance availability."}
         />
 
         {departmentsError ? <Notice tone="danger">{departmentsError}</Notice> : null}
@@ -431,40 +474,55 @@ const TimetablePage = () => {
           </SectionCard>
 
           <div className="space-y-6">
-            <SectionCard title="Batch subject catalog" description="Choose a department, batch, and semester, then add, edit, or delete the subjects available to that academic group.">
-              <div className="grid gap-4 md:grid-cols-3">
-                <select value={department} onChange={(event) => {
-                  const config = getDepartmentOption(catalog, event.target.value) || fallbackDepartment;
-                  if (!config) {
-                    return;
-                  }
-                  setDepartment(config.name);
-                  setBatchYear(config.batches[0]);
-                  setSemester(config.semesters[0]);
-                }}>
-                  {catalog.map((option) => <option key={option.id} value={option.name}>{option.name}</option>)}
-                </select>
-                <select value={batchYear} onChange={(event) => setBatchYear(Number(event.target.value))}>
-                  {(departmentConfig?.batches || []).map((batch) => <option key={batch} value={batch}>{batch} batch</option>)}
-                </select>
-                <select value={semester} onChange={(event) => setSemester(Number(event.target.value))}>
-                  {(departmentConfig?.semesters || []).map((value) => <option key={value} value={value}>Semester {value}</option>)}
-                </select>
-              </div>
+            <SectionCard
+              title={isStudent ? "Your subjects" : "Batch subject catalog"}
+              description={isStudent ? "The subjects assigned to your department, batch, and semester this term." : "Choose a department, batch, and semester, then add, edit, or delete the subjects available to that academic group."}
+            >
+              {!isStudent ? (
+                <div className="grid gap-4 md:grid-cols-3">
+                  <select value={department} onChange={(event) => {
+                    const config = getDepartmentOption(catalog, event.target.value) || fallbackDepartment;
+                    if (!config) {
+                      return;
+                    }
+                    setDepartment(config.name);
+                    setBatchYear(config.batches[0]);
+                    setSemester(config.semesters[0]);
+                  }}>
+                    {catalog.map((option) => <option key={option.id} value={option.name}>{option.name}</option>)}
+                  </select>
+                  <select value={batchYear} onChange={(event) => setBatchYear(Number(event.target.value))}>
+                    {(departmentConfig?.batches || []).map((batch) => <option key={batch} value={batch}>{batch} batch</option>)}
+                  </select>
+                  <select value={semester} onChange={(event) => setSemester(Number(event.target.value))}>
+                    {(departmentConfig?.semesters || []).map((value) => <option key={value} value={value}>Semester {value}</option>)}
+                  </select>
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+                  {department} · {batchYear} batch · Semester {semester}
+                </div>
+              )}
 
               <div className="mt-5 space-y-3">
                 {loadingSubjects ? <p className="text-sm text-slate-500">Loading subjects...</p> : null}
                 {!loadingSubjects && batchSubjects.length === 0 ? <p className="text-sm text-slate-500">No subjects added for this batch yet.</p> : null}
                 {!loadingSubjects && batchSubjects.length > 0 ? (
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">
-                    {batchSubjects.length} subjects found for the {batchYear} batch. The planner below is currently set to Semester {semester}.
+                    {isStudent
+                      ? `${batchSubjects.length} subjects found for your cohort.`
+                      : `${batchSubjects.length} subjects found for the ${batchYear} batch. The planner below is currently set to Semester ${semester}.`}
                   </div>
                 ) : null}
                 {subjectsBySemester.map((group) => (
                   <div key={group.semester} className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Semester {group.semester}</p>
-                      {group.semester === semester ? <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">Planner semester</span> : null}
+                      {group.semester === semester ? (
+                        <span className="rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">
+                          {isStudent ? "Current semester" : "Planner semester"}
+                        </span>
+                      ) : null}
                     </div>
                     {group.subjects.map((subject) => (
                       <div key={subject.id} className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between">
